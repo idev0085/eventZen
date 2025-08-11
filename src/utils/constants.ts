@@ -6,6 +6,7 @@ export const APP_CONFIG = {
 
 export const COLORS = {
   primary: '#004FB8',
+  secondary: '#0E69E3',
   textBoxPrimary: '#F5F5F5',
   textBoxSecondary: '#B8B8B8',
   surface: '#FFFFFF',

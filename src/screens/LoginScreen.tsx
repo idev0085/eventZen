@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import Card from '../components/card';
 import CustomText from '../components/text';
 import TextBox from '../components/textBox';
-import Button from '../components/button';
+import Button from '../components/ui/button';
 
 export default function LoginScreen() {
   return (
