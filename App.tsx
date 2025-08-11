@@ -1,28 +1,33 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect } from 'react';
+import { StatusBar, Platform } from 'react-native';
+// import AppNavigator from './src/navigation/AppNavigator';
+import AuthNavigator from './src/navigation/AuthNavigator';
+// import { AuthService } from './src/services/AuthService';
+// import { ThemeService } from './src/services/ThemeService';
+// import { AdService } from './src/services/AdService';
+// import { PermissionService } from './src/services/PermissionService';
+// import initI18n from './src/utils/i18n';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+// Initialize i18n
+//initI18n();
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App() {
+  useEffect(() => {
+    initializeApp();
+  }, []);
+
+  const initializeApp = async () => {
+
+  };
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
-    </View>
+    <>
+      <StatusBar
+        // barStyle={ThemeService.getStatusBarStyle()}
+        backgroundColor="transparent"
+        translucent={Platform.OS === 'android'}
+      />
+      <AuthNavigator />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;
