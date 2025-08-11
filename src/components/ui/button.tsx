@@ -94,8 +94,6 @@ const Button: React.FC<ButtonProps> = ({
           {iconRight && <View style={styles.icon}>{iconRight}</View>}
         </View>
       )}
-      <ActivityIndicator animating={loading} />
-      <Text style={[styles.buttonText, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 };

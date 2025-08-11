@@ -20,7 +20,7 @@ export default function LoginScreen() {
       <CustomText style={styles.infoText}>
         We will send OTP to your email
       </CustomText>
-      <Button>Hello</Button>
+      <Button title="Login" />
     </Card>
   );
 }
