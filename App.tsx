@@ -16,9 +16,7 @@ export default function App() {
     initializeApp();
   }, []);
 
-  const initializeApp = async () => {
-
-  };
+  const initializeApp = async () => {};
 
   return (
     <>
