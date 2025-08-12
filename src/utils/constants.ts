@@ -48,6 +48,13 @@ export const PERMISSIONS = {
   },
 };
 
+export const ICONS = {
+  ARROW_WHITE: require('../icons/arrow_white.png'),
+  LOGIN_BG: require('../icons/login_bg.png'),
+  EDIT: require('../icons/edit.png'),
+  INFO: require('../icons/info.png'),
+}
+
 export const API_ENDPOINTS = {
   BASE_URL: 'https://api.eventzen.com',
   AUTH: '/auth',
