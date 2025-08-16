@@ -3,8 +3,12 @@ import Card from '../components/card';
 import CustomText from '../components/text';
 import TextBox from '../components/textBox';
 import Button from '../components/ui/button';
+import { AddToCalendar } from '../utils/constants';
 
 export default function LoginScreen() {
+  const btnHandler = () => {
+    console.log('CAlled');
+  };
   return (
     <Card style={styles.card}>
       <CustomText style={styles.title}>Welcome Back</CustomText>
@@ -20,7 +24,8 @@ export default function LoginScreen() {
       <CustomText style={styles.infoText}>
         We will send OTP to your email
       </CustomText>
-      <Button title="Login" />
+      <AddToCalendar height={40} widith={40} />
+      <Button title="Login" onPress={btnHandler} />
     </Card>
   );
 }
