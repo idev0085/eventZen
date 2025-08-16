@@ -1,3 +1,5 @@
+import { AddToCalendar } from '../../assets/svg/component/AddToCalendar';
+
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
@@ -96,3 +98,6 @@ export const API_ENDPOINTS = {
   AUTH: '/auth',
   USER: '/user',
 };
+
+// react-native svg components
+export { AddToCalendar };
