@@ -11,7 +11,9 @@ const { assetExts, sourceExts } = defaultConfig.resolver;
  */
 const config = {
   transformer: {
-    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+    babelTransformerPath: require.resolve(
+      'react-native-svg-transformer/react-native',
+    ),
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
@@ -21,7 +23,7 @@ const config = {
   },
   resolver: {
     assetExts: assetExts.filter(ext => ext !== 'svg'),
-    sourceExts: [...sourceExts, 'svg', 'cjs'], // Added 'cjs' for commonJS module support if needed
+    sourceExts: [...sourceExts, 'svg'],
   },
 };
 
