@@ -1,4 +1,16 @@
-import { AddToCalendar } from '../../assets/svg/component/AddToCalendar';
+import AddToCalendar from '../../assets/svg/svgComponents/AddToCalendar';
+import AlertWithCircle from '../../assets/svg/svgComponents/AlertWithCircle';
+import LoginBg from '../../assets/svg/svgComponents/LoginBg';
+import OtpCenter from '../../assets/svg/svgComponents/OtpCenter';
+import SocialFacebook from '../../assets/svg/svgComponents/SocialFacebook';
+import SocialInstagram from '../../assets/svg/svgComponents/SocialIntagram';
+import SocialLinkedin from '../../assets/svg/svgComponents/SocialLinkedin';
+import SocialTwitter from '../../assets/svg/svgComponents/SocialTwitter';
+import TabHome from '../../assets/svg/svgComponents/TabHome';
+import TabSession from '../../assets/svg/svgComponents/TabSession';
+import TimerIcon from '../../assets/svg/svgComponents/TimerIcon';
+import TimerViewIcon from '../../assets/svg/svgComponents/TimerViewIcon';
+import WorkShopView from '../../assets/svg/svgComponents/WorkShopView';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -100,4 +112,19 @@ export const API_ENDPOINTS = {
 };
 
 // react-native svg components
-export { AddToCalendar };
+
+export {
+  AddToCalendar,
+  AlertWithCircle,
+  SocialFacebook,
+  SocialInstagram,
+  SocialLinkedin,
+  SocialTwitter,
+  TabSession,
+  TabHome,
+  TimerIcon,
+  TimerViewIcon,
+  WorkShopView,
+  LoginBg,
+  OtpCenter,
+};

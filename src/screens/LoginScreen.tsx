@@ -24,7 +24,7 @@ export default function LoginScreen() {
       <CustomText style={styles.infoText}>
         We will send OTP to your email
       </CustomText>
-      <AddToCalendar height={40} widith={40} />
+      <AddToCalendar />
       <Button title="Login" onPress={btnHandler} />
     </Card>
   );
