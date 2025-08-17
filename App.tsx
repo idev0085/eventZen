@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { StatusBar, Platform } from 'react-native';
 // import AppNavigator from './src/navigation/AppNavigator';
 import AuthNavigator from './src/navigation/AuthNavigator';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeService } from './src/services/ThemeService';
 // import { AuthService } from './src/services/AuthService';
 // import { ThemeService } from './src/services/ThemeService';
@@ -23,12 +23,18 @@ export default function App() {
   return (
     <>
       <SafeAreaProvider>
-        <StatusBar
-          barStyle={ThemeService.getStatusBarStyle()}
-          backgroundColor="transparent"
-          translucent={Platform.OS === 'android'}
-        />
-        <AuthNavigator />
+        <SafeAreaView
+          style={{
+            flex: 1,
+          }}
+        >
+          <StatusBar
+            barStyle={ThemeService.getStatusBarStyle()}
+            backgroundColor="transparent"
+            translucent={Platform.OS === 'android'}
+          />
+          <AuthNavigator />
+        </SafeAreaView>
       </SafeAreaProvider>
     </>
   );

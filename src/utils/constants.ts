@@ -1,6 +1,7 @@
 import AddToCalendar from '../../assets/svg/svgComponents/AddToCalendar';
 import AlertWithCircle from '../../assets/svg/svgComponents/AlertWithCircle';
 import OtpCenter from '../../assets/svg/svgComponents/OtpCenter';
+import OtpEdit from '../../assets/svg/svgComponents/OtpEdit';
 import SocialFacebook from '../../assets/svg/svgComponents/SocialFacebook';
 import SocialInstagram from '../../assets/svg/svgComponents/SocialIntagram';
 import SocialLinkedin from '../../assets/svg/svgComponents/SocialLinkedin';
@@ -22,6 +23,7 @@ export const COLORS = {
   secondary: '#0E69E3',
   textBoxPrimary: '#F5F5F5',
   textBoxSecondary: '#B8B8B8',
+  textInputPrimary: '#D8D8D8',
   surface: '#FFFFFF',
   error: '#EF4444',
   warning: '#F59E0B',
@@ -128,5 +130,6 @@ export {
   TimerViewIcon,
   WorkShopView,
   OtpCenter,
-  GreenBadge
+  OtpEdit,
+  GreenBadge,
 };
