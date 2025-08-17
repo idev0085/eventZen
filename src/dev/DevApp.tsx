@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Button } from 'react-native';
-import App from '../../App';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
@@ -8,7 +7,7 @@ import LoginScreen from '../screens/LoginScreen';
 const Stack = createStackNavigator();
 
 const TestScreen = ({ navigation }: any) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  <View style={{ flex: 1 }}>
     <Button
       title="Go to Main App"
       onPress={() => navigation.navigate('LoginScreen')}
@@ -21,10 +20,9 @@ export default function DevApp() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Test">
-        <Stack.Screen name="Test" component={TestScreen} />
         <Stack.Screen
-          name="MainApp"
-          component={App}
+          name="Test"
+          component={TestScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
