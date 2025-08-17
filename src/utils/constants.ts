@@ -130,14 +130,6 @@ export {
   TimerViewIcon,
   WorkShopView,
   OtpCenter,
-<<<<<<< HEAD
-<<<<<<< HEAD
   OtpEdit,
-=======
-  GreenBadge
->>>>>>> cd1d496 (Re-usable UI d)
-=======
   GreenBadge,
-  OtpEdit,
->>>>>>> 6a70253 (✔️ Enter OTP screen implemented.)
 };
