@@ -1,6 +1,5 @@
 import AddToCalendar from '../../assets/svg/svgComponents/AddToCalendar';
 import AlertWithCircle from '../../assets/svg/svgComponents/AlertWithCircle';
-import LoginBg from '../../assets/svg/svgComponents/LoginBg';
 import OtpCenter from '../../assets/svg/svgComponents/OtpCenter';
 import SocialFacebook from '../../assets/svg/svgComponents/SocialFacebook';
 import SocialInstagram from '../../assets/svg/svgComponents/SocialIntagram';
@@ -111,8 +110,11 @@ export const API_ENDPOINTS = {
   USER: '/user',
 };
 
-// react-native svg components
+export const PNG_IMAGES = {
+  LoginBg: require('../../assets/images/background.png'),
+};
 
+// react-native svg components
 export {
   AddToCalendar,
   AlertWithCircle,
@@ -125,6 +127,5 @@ export {
   TimerIcon,
   TimerViewIcon,
   WorkShopView,
-  LoginBg,
   OtpCenter,
 };
