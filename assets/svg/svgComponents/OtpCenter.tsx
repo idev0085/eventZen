@@ -11,7 +11,6 @@ import Svg, {
 interface CustomSvgProps extends SvgProps {
   xmlns?: string;
 }
-
 const OtpCenter = ({ height = 129, width = 153, ...props }: CustomSvgProps) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"

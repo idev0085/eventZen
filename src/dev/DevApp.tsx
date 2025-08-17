@@ -3,6 +3,7 @@ import { View, Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
+import EnterLoginOTPScreen from '../screens/EnterLoginOTPScreen';
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,7 @@ const TestScreen = ({ navigation }: any) => (
       onPress={() => navigation.navigate('LoginScreen')}
     />
     {/* Your test components */}
+    <EnterLoginOTPScreen />
   </View>
 );
 
