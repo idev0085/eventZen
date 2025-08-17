@@ -2,7 +2,6 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import TextBox from '../components/ui/textBox';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, PNG_IMAGES, TEXT_SIZES } from '../utils/constants';
 import RightArrowLoginButton from '../../assets/svg/svgComponents/RightArrowLoginButton';
 
@@ -11,54 +10,49 @@ export default function LoginScreen() {
     console.log('CAlled');
   };
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Image source={PNG_IMAGES.LoginBg} style={styles.background} />
-        <Card style={styles.card}>
-          <View>
-            <CustomText style={styles.title}>Welcome Back !</CustomText>
-            <CustomText style={styles.subtitle}>Login to continue !</CustomText>
-            <TextBox
-              style={styles.input}
-              placeholder="Email"
-              onChangeText={() => {}}
-              value=""
-              editable={true}
-              required={true}
-            />
-            <CustomText style={styles.infoText}>
-              We will send you one time
-            </CustomText>
-            <CustomText style={{ marginBottom: 50, ...styles.infoText }}>
-              password (OTP)
-            </CustomText>
-            <View style={styles.btnContainer}>
-              <Pressable
-                onPress={btnHandler}
-                android_ripple={{ color: 'rgba(0,0,0,0.1)', borderless: true }}
-                style={({ pressed }) => [
-                  {
-                    position: 'absolute',
-                    left: '35%',
-                    top: -15,
-                    transform: [{ scale: pressed ? 0.9 : 1 }],
-                  },
-                ]}
-              >
-                <RightArrowLoginButton />
-              </Pressable>
-            </View>
+    <View>
+      <Image source={PNG_IMAGES.LoginBg} style={styles.background} />
+      <Card style={styles.card}>
+        <View>
+          <CustomText style={styles.title}>Welcome Back !</CustomText>
+          <CustomText style={styles.subtitle}>Login to continue !</CustomText>
+          <TextBox
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={() => {}}
+            value=""
+            editable={true}
+            required={true}
+          />
+          <CustomText style={styles.infoText}>
+            We will send you one time
+          </CustomText>
+          <CustomText style={{ marginBottom: 50, ...styles.infoText }}>
+            password (OTP)
+          </CustomText>
+          <View style={styles.btnContainer}>
+            <Pressable
+              onPress={btnHandler}
+              android_ripple={{ color: 'rgba(0,0,0,0.1)', borderless: true }}
+              style={({ pressed }) => [
+                {
+                  position: 'absolute',
+                  left: '35%',
+                  top: -15,
+                  transform: [{ scale: pressed ? 0.9 : 1 }],
+                },
+              ]}
+            >
+              <RightArrowLoginButton />
+            </Pressable>
           </View>
-        </Card>
-      </View>
-    </SafeAreaView>
+        </View>
+      </Card>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   background: {
     justifyContent: 'center',
     width: 'auto',
