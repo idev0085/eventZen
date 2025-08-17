@@ -10,7 +10,7 @@ import TabSession from '../../assets/svg/svgComponents/TabSession';
 import TimerIcon from '../../assets/svg/svgComponents/TimerIcon';
 import TimerViewIcon from '../../assets/svg/svgComponents/TimerViewIcon';
 import WorkShopView from '../../assets/svg/svgComponents/WorkShopView';
-
+import GreenBadge from '../../assets/svg/svgComponents/GreenBadge';
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
@@ -128,4 +128,5 @@ export {
   TimerViewIcon,
   WorkShopView,
   OtpCenter,
+  GreenBadge
 };
