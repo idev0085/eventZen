@@ -27,7 +27,7 @@ const EnterLoginOTPScreen = () => {
 
   return (
     <View>
-      <Image source={PNG_IMAGES.LoginBg} style={styles.backgroundImage} />
+      <Image source={PNG_IMAGES.OtpBg} style={styles.backgroundImage} />
       <Card style={styles.card}>
         <View style={styles.contentContainer}>
           <View style={styles.contentImage}>
@@ -115,7 +115,8 @@ const EnterLoginOTPScreen = () => {
 
 const styles = StyleSheet.create({
   backgroundImage: {
-    justifyContent: 'center',
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
     width: 'auto',
     top: 10,
     position: 'relative',
