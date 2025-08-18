@@ -11,6 +11,7 @@ import {
 import CustomText from '../components/ui/text';
 import Button from '../components/ui/button';
 import { OtpInput } from 'react-native-otp-entry';
+import CustomHeader from '../components/customNavigation';
 
 const EnterLoginOTPScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,9 +26,17 @@ const EnterLoginOTPScreen = () => {
     console.log('OTP Resent');
   };
 
+  const handleBackPress = () => {
+    console.log('Back Pressed');
+  };
+
   return (
     <View>
       <Image source={PNG_IMAGES.OtpBg} style={styles.backgroundImage} />
+      <CustomHeader
+        title="Enter Verification Code"
+        onBackPress={() => handleBackPress()}
+      />
       <Card style={styles.card}>
         <View style={styles.contentContainer}>
           <View style={styles.contentImage}>
@@ -132,7 +141,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     padding: 20,
     borderRadius: 20,
-    top: '30%',
+    top: '50%',
   },
   contentContainer: {
     flex: 1,
