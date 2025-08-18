@@ -1,0 +1,25 @@
+import * as React from 'react';
+import Svg, { Path, Ellipse } from 'react-native-svg';
+
+const DrawerTermsCondition = ({ width = 22, height = 23, ...props }) => (
+  <Svg width={width} height={height} viewBox="0 0 22 23" fill="none" {...props}>
+    <Path
+      d="M12.8417 18.3584C11.7659 18.4133 9.16647 18.4902 7.37495 18.3584C5.13555 18.1938 3.73593 17.2717 3.22548 14.4889C2.81712 12.2627 3.05533 8.75318 3.22548 7.27672C3.29683 6.17349 4.05039 4.16827 7.17736 3.76943C10.4047 3.35777 12.8417 3.64094 13.8132 3.76943C15.3223 3.96901 17.6235 4.64213 17.7816 7.27672C17.9396 9.91131 17.8474 12.1097 17.7816 13.1196"
+      stroke="#7C7C7C"
+      strokeLinecap="round"
+    />
+    <Ellipse
+      cx="15.4598"
+      cy="15.9052"
+      rx="3.54023"
+      ry="3.54023"
+      stroke="#7C7C7C"
+    />
+    <Path d="M15.4001 13.8997V16.2997" stroke="#7C7C7C" strokeLinecap="round" />
+    <Ellipse cx="15.4" cy="17.4999" rx="0.4" ry="0.4" stroke="#7C7C7C" />
+    <Path d="M5.86023 7.77051H15.1471" stroke="#7C7C7C" strokeLinecap="round" />
+    <Path d="M5.86023 11.7227H11.8539" stroke="#7C7C7C" strokeLinecap="round" />
+  </Svg>
+);
+
+export default DrawerTermsCondition;

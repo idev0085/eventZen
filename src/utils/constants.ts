@@ -14,6 +14,20 @@ import WorkShopView from '../../assets/svg/svgComponents/WorkShopView';
 import GreenBadge from '../../assets/svg/svgComponents/GreenBadge';
 import EmailPadding from '../../assets/svg/svgComponents/EmailPadding';
 import PhonePadding from '../../assets/svg/svgComponents/PhonePadding';
+import DrawerProfile from '../../assets/svg/svgComponents/DrawerProfile';
+import DrawerArrow  from '../../assets/svg/svgComponents/DrawerArrow';
+import DrawerMyAgenda from '../../assets/svg/svgComponents/DrawerMyAgenda';
+import DrawerHeaderQr from '../../assets/svg/svgComponents/DrawerHeaderQr';
+import DrawerLogout from '../../assets/svg/svgComponents/DrawerLogout';
+import DrawerFavSession from '../../assets/svg/svgComponents/DrawerFavSession';
+import DrawerSpeaker from '../../assets/svg/svgComponents/DrawerSpeaker';
+import DrawerExhibitor from '../../assets/svg/svgComponents/DrawerExhibitor';
+import DrawerSponsor from '../../assets/svg/svgComponents/DrawerSponsor';
+import DrawerHelp from '../../assets/svg/svgComponents/DrawerHelp';
+import DrawerAbout from '../../assets/svg/svgComponents/DrawerAbout';
+import DrawerLocation from '../../assets/svg/svgComponents/DrawerLocation';
+import DrawerPrivacyPolicy from '../../assets/svg/svgComponents/DrawerPrivacy';
+import DrawerTermsCondition from '../../assets/svg/svgComponents/DrawerTermsCondition';
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
@@ -40,6 +54,7 @@ export const COLORS = {
   text: '#1F2937',
   textLight: '#9CA3AF',
   placeholder: '#D1D5DB',
+  qrBox: '#4d8bff',
 };
 
 export const TEXT_SIZES = {
@@ -116,6 +131,7 @@ export const API_ENDPOINTS = {
 
 export const PNG_IMAGES = {
   LoginBg: require('../../assets/images/background.png'),
+  ProfileBg: require('../../assets/images/profile_bg.png'),
 };
 
 // react-native svg components
@@ -135,5 +151,19 @@ export {
   OtpEdit,
   GreenBadge,
   EmailPadding,
-  PhonePadding
+  PhonePadding,
+  DrawerProfile,
+  DrawerArrow,
+  DrawerMyAgenda,
+  DrawerHeaderQr,
+  DrawerLogout,
+  DrawerFavSession,
+  DrawerSpeaker,
+  DrawerExhibitor,
+  DrawerSponsor,
+  DrawerHelp,
+  DrawerAbout,
+  DrawerLocation,
+  DrawerPrivacyPolicy,
+  DrawerTermsCondition
 };

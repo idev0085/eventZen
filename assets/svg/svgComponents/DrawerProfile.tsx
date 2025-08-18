@@ -1,0 +1,28 @@
+import * as React from 'react';
+import Svg, { SvgProps, Path } from 'react-native-svg';
+
+interface CustomSvgProps extends SvgProps {
+  xmlns?: string;
+}
+
+const DrawerProfile = ({
+  height = 32,
+  width = 32,
+  ...props
+}: CustomSvgProps) => (
+  <Svg width={width} height={height} viewBox="0 0 18 18" fill="none" {...props}>
+    <Path
+      d="M8.15659 2.68652H2.59035C2.16857 2.68652 1.76405 2.85408 1.4658 3.15233C1.16755 3.45058 1 3.85509 1 4.27688V15.4093C1 15.8311 1.16755 16.2356 1.4658 16.5339C1.76405 16.8321 2.16857 16.9997 2.59035 16.9997H13.7228C14.1446 16.9997 14.5491 16.8321 14.8474 16.5339C15.1456 16.2356 15.3132 15.8311 15.3132 15.4093V9.84311"
+      stroke="#7C7C7C"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M14.1205 1.49406C14.4368 1.17772 14.8659 1 15.3132 1C15.7606 1 16.1897 1.17772 16.506 1.49406C16.8223 1.8104 17.0001 2.23945 17.0001 2.68682C17.0001 3.1342 16.8223 3.56325 16.506 3.87959L8.95182 11.4338L5.77112 12.2289L6.56629 9.04824L14.1205 1.49406Z"
+      stroke="#7C7C7C"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+export default DrawerProfile;

@@ -1,0 +1,29 @@
+import * as React from 'react';
+import Svg, { Path, Circle } from 'react-native-svg';
+
+const DrawerMyAgenda = ({ width = 20, height = 20, ...props }) => (
+  <Svg width={width} height={height} viewBox="0 0 18 19" fill="none" {...props}>
+    <Path
+      d="M2.40043 9.56143C2.40043 8.80869 2.40043 6.70453 2.40043 5.01C2.40043 3.31547 3.75418 2.85683 4.51859 2.83932H14.5317C15.3662 2.81598 17 3.21744 17 5.01C17 6.80256 17 11.6387 17 13.8328C17 14.7956 16.6464 16.4061 14.5317 16.4061C12.4171 16.4061 10.0445 16.4061 9.21006 16.4061"
+      stroke="#7C7C7C"
+      strokeLinecap="round"
+    />
+    <Path d="M17 5.95508H2.41793" stroke="#7C7C7C" strokeLinecap="round" />
+    <Circle
+      cx="4.76149"
+      cy="4.76149"
+      r="4.76149"
+      transform="matrix(-1 0 0 1 10.5229 8.23096)"
+      stroke="#7C7C7C"
+    />
+    <Path
+      d="M5.76147 10.209V12.9223L4.20349 14.5153"
+      stroke="#7C7C7C"
+      strokeLinecap="round"
+    />
+    <Path d="M13.814 1.24609V4.39708" stroke="#7C7C7C" strokeLinecap="round" />
+    <Path d="M5.48132 1.24609V4.39708" stroke="#7C7C7C" strokeLinecap="round" />
+  </Svg>
+);
+
+export default DrawerMyAgenda;
