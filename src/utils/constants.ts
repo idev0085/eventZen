@@ -15,7 +15,7 @@ import GreenBadge from '../../assets/svg/svgComponents/GreenBadge';
 import EmailPadding from '../../assets/svg/svgComponents/EmailPadding';
 import PhonePadding from '../../assets/svg/svgComponents/PhonePadding';
 import DrawerProfile from '../../assets/svg/svgComponents/DrawerProfile';
-import DrawerArrow  from '../../assets/svg/svgComponents/DrawerArrow';
+import DrawerArrow from '../../assets/svg/svgComponents/DrawerArrow';
 import DrawerMyAgenda from '../../assets/svg/svgComponents/DrawerMyAgenda';
 import DrawerHeaderQr from '../../assets/svg/svgComponents/DrawerHeaderQr';
 import DrawerLogout from '../../assets/svg/svgComponents/DrawerLogout';
@@ -132,6 +132,7 @@ export const API_ENDPOINTS = {
 export const PNG_IMAGES = {
   LoginBg: require('../../assets/images/background.png'),
   ProfileBg: require('../../assets/images/profile_bg.png'),
+  OtpBg: require('../../assets/images/otp_bg.png'),
 };
 
 // react-native svg components
@@ -165,5 +166,5 @@ export {
   DrawerAbout,
   DrawerLocation,
   DrawerPrivacyPolicy,
-  DrawerTermsCondition
+  DrawerTermsCondition,
 };
