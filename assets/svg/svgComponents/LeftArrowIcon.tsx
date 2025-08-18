@@ -6,14 +6,14 @@ interface CustomSvgProps extends SvgProps {
 }
 
 const LeftArrowIcon = ({
-  height = 25,
-  width = 25,
+  height = 20,
+  width = 20,
   ...props
 }: CustomSvgProps) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
-    width={25}
-    height={24}
+    width={width}
+    height={height}
     fill="none"
     {...props}
   >
@@ -22,7 +22,7 @@ const LeftArrowIcon = ({
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}
-      d="M4.5 12h16M12.5 4l8 8-8 8"
+      d="M16 10H4M10 16l-6-6 6-6"
     />
   </Svg>
 );
