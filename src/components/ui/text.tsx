@@ -6,11 +6,13 @@ const CustomText = ({
   style,
   children,
   badge = false,
+  onPress,
   ...props
 }: {
   style?: any;
   children: React.ReactNode;
   badge?: boolean;
+  onPress?: () => void;
 }) => {
   if (badge) {
     return (
@@ -22,7 +24,7 @@ const CustomText = ({
     );
   }
   return (
-    <Text style={[styles.text, style]} {...props}>
+    <Text onPress={onPress} style={[styles.text, style]} {...props}>
       {children}
     </Text>
   );

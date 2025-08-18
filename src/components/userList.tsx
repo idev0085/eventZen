@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import Card from '../components/card';
-import CustomText from '../components/text';
+import CustomText from '../components/ui/text';
 import { GreenBadge, COLORS } from '../utils/constants';
 import Icon from '../components/icon';
 interface UserListProps {
