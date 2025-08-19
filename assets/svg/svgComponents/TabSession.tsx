@@ -4,33 +4,36 @@ import Svg, { SvgProps, Path, Circle } from 'react-native-svg';
 interface CustomSvgProps extends SvgProps {
   xmlns?: string;
 }
-
 const TabSession = ({ height = 28, width = 29, ...props }: CustomSvgProps) => (
   <Svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={width}
-    height={height}
+    width={29}
+    height={28}
+    viewBox="0 0 29 28"
     fill="none"
+    xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <Path
-      fill="#004FB8"
-      d="M8.898 5.674h12.517c1.043-.03 3.085.473 3.085 2.713v11.029c0 1.203-.442 3.216-3.085 3.216h-6.652L16 20c2-5.5-4-8-6.5-7.5-1.243.248-3.25 1.577-3.25 1.577v-5.69c0-2.118 1.693-2.691 2.648-2.713Z"
+      d="M6.25053 14.0766C6.25053 13.1357 6.25053 10.5055 6.25053 8.38735C6.25053 6.26919 7.94273 5.69588 8.89824 5.674H21.4147C22.4577 5.64482 24.5 6.14665 24.5 8.38735C24.5 10.6281 24.5 16.6733 24.5 19.4158C24.5 20.6193 24.058 22.6324 21.4147 22.6324C18.7713 22.6324 15.8056 22.6324 14.7626 22.6324"
+      stroke="#4E4E4E"
+      strokeLinecap="round"
     />
-    <Path stroke="#fff" strokeLinecap="round" d="M24.5 9.569H6.272" />
+    <Path d="M24.5 9.56892H6.27242" stroke="#4E4E4E" strokeLinecap="round" />
     <Circle
-      cx={5.952}
-      cy={5.952}
-      r={5.952}
-      fill="#004FB8"
-      stroke="#fff"
-      transform="matrix(-1 0 0 1 16.404 12.414)"
+      cx={5.95186}
+      cy={5.95186}
+      r={5.95186}
+      transform="matrix(-1 0 0 1 16.4037 12.4136)"
+      stroke="#4E4E4E"
     />
     <Path
-      stroke="#fff"
+      d="M10.4518 14.8862V18.2779L8.50436 20.2692"
+      stroke="#4E4E4E"
       strokeLinecap="round"
-      d="M10.452 14.886v3.392l-1.948 1.991M20.518 3.683V7.62M10.102 3.683V7.62"
     />
+    <Path d="M20.5175 3.68271V7.62144" stroke="#4E4E4E" strokeLinecap="round" />
+    <Path d="M10.1017 3.68271V7.62144" stroke="#4E4E4E" strokeLinecap="round" />
   </Svg>
 );
+
 export default TabSession;
