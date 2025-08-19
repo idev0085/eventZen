@@ -31,6 +31,7 @@ import DrawerTermsCondition from '../../assets/svg/svgComponents/DrawerTermsCond
 import LeftArrowIcon from '../../assets/svg/svgComponents/LeftArrowIcon';
 import Search from '../../assets/svg/svgComponents/Search';
 import SessionTimeOut from '../../assets/svg/svgComponents/SessionTimeOut';
+import Timer from '../../assets/svg/svgComponents/Timer';
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
@@ -172,5 +173,6 @@ export {
   DrawerTermsCondition,
   LeftArrowIcon,
   Search,
-  SessionTimeOut
+  SessionTimeOut,
+  Timer
 };
