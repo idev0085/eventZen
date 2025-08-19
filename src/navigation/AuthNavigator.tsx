@@ -10,6 +10,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
 import CompanyDetailsScreen from '../screens/CompanyDetails';
 import CustomSidebar from '../screens/CustomSidebar';
+import ConnectionsScreen from '../screens/ConnectionsScreen';
+import AlertModal from '../screens/AlertModal';
 // import EditorScreen from '../screens/EditorScreen';
 // import SettingsScreen from '../screens/SettingsScreen';
 // import FileManagerScreen from '../screens/FileManagerScreen';
@@ -78,7 +80,7 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="CustomSidebar" component={CustomSidebar} />
+        <Stack.Screen name="AlertModal" component={AlertModal} />
         {/* <Stack.Screen name="EditorScreen" component={EditorScreen} /> */}
         {/* <Stack.Screen name="ImportScreen" component={ImportScreen} /> */}
         {/* <Stack.Screen name="Splash" component={SplashScreen} />

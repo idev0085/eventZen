@@ -29,6 +29,8 @@ import DrawerLocation from '../../assets/svg/svgComponents/DrawerLocation';
 import DrawerPrivacyPolicy from '../../assets/svg/svgComponents/DrawerPrivacy';
 import DrawerTermsCondition from '../../assets/svg/svgComponents/DrawerTermsCondition';
 import LeftArrowIcon from '../../assets/svg/svgComponents/LeftArrowIcon';
+import Search from '../../assets/svg/svgComponents/Search';
+import SessionTimeOut from '../../assets/svg/svgComponents/SessionTimeOut';
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
@@ -169,4 +171,6 @@ export {
   DrawerPrivacyPolicy,
   DrawerTermsCondition,
   LeftArrowIcon,
+  Search,
+  SessionTimeOut
 };
