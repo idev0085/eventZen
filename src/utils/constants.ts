@@ -32,6 +32,10 @@ import LeftArrowIcon from '../../assets/svg/svgComponents/LeftArrowIcon';
 import Search from '../../assets/svg/svgComponents/Search';
 import SessionTimeOut from '../../assets/svg/svgComponents/SessionTimeOut';
 import Timer from '../../assets/svg/svgComponents/Timer';
+import TabConnection from '../../assets/svg/svgComponents/TabConnection';
+import TabHomeActive from '../../assets/svg/svgComponents/TabHomeActive';
+import TabSessionActive from '../../assets/svg/svgComponents/TabSessionActive';
+import TabConnectionActive from '../../assets/svg/svgComponents/TabConnectionActive';
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
@@ -174,5 +178,9 @@ export {
   LeftArrowIcon,
   Search,
   SessionTimeOut,
-  Timer
+  Timer,
+  TabConnection,
+  TabHomeActive,
+  TabSessionActive,
+  TabConnectionActive,
 };
