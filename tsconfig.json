@@ -1,3 +1,20 @@
 {
-  "extends": "@react-native/typescript-config"
+  "extends": "@react-native/typescript-config",
+  "compilerOptions": {
+    "jsx": "react-jsx", // 👈 Required for TSX
+    "strict": true, // Enable all strict type-checking options
+    "noImplicitAny": true, // Catch implicit any
+    "esModuleInterop": true, // Allow default imports from CJS
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true, // Allow importing JSON
+    "isolatedModules": true, // Needed for React Native + Metro bundler
+    "skipLibCheck": true, // Faster builds, skip lib type checking
+    "noEmit": true // Do not output compiled files
+  },
+  "include": [
+    "src",
+    "App.tsx",
+    "App.ts" // if you have plain TS entry
+  ],
+  "exclude": ["node_modules"]
 }
