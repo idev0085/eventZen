@@ -36,6 +36,13 @@ import TabConnection from '../../assets/svg/svgComponents/TabConnection';
 import TabHomeActive from '../../assets/svg/svgComponents/TabHomeActive';
 import TabSessionActive from '../../assets/svg/svgComponents/TabSessionActive';
 import TabConnectionActive from '../../assets/svg/svgComponents/TabConnectionActive';
+import TimerWait from '../../assets/svg/svgComponents/TimerWait';
+import Calander from '../../assets/svg/svgComponents/Calander';
+import Location from '../../assets/svg/svgComponents/Location';
+import Workshop from '../../assets/svg/svgComponents/Workshop';
+
+
+
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
@@ -183,4 +190,8 @@ export {
   TabHomeActive,
   TabSessionActive,
   TabConnectionActive,
+  TimerWait,
+  Calander,
+  Location,
+  Workshop
 };

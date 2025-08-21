@@ -1,0 +1,61 @@
+import * as React from 'react';
+import Svg, { SvgProps, Path } from 'react-native-svg';
+
+interface CustomSvgProps extends SvgProps {
+  xmlns?: string;
+}
+
+const Workshop = ({ height = 20, width = 20, ...props }: CustomSvgProps) => (
+  <Svg width={width} height={height} viewBox="0 0 20 20" fill="none" {...props}>
+    <Path
+      d="M10.8334 18.3334H4.16675C2.50008 18.3334 1.66675 17.5001 1.66675 15.8334V9.16675C1.66675 7.50008 2.50008 6.66675 4.16675 6.66675H8.33341V15.8334C8.33341 17.5001 9.16675 18.3334 10.8334 18.3334Z"
+      stroke="#4E4E4E"
+      strokeMiterlimit={10}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M8.42507 3.33325C8.3584 3.58325 8.33341 3.85825 8.33341 4.16659V6.66659H4.16675V4.99992C4.16675 4.08325 4.91675 3.33325 5.83341 3.33325H8.42507Z"
+      stroke="#4E4E4E"
+      strokeMiterlimit={10}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M11.6667 6.66675V10.8334"
+      stroke="#4E4E4E"
+      strokeMiterlimit={10}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M15 6.66675V10.8334"
+      stroke="#4E4E4E"
+      strokeMiterlimit={10}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M14.1667 14.1667H12.5001C12.0417 14.1667 11.6667 14.5417 11.6667 15.0001V18.3334H15.0001V15.0001C15.0001 14.5417 14.6251 14.1667 14.1667 14.1667Z"
+      stroke="#4E4E4E"
+      strokeMiterlimit={10}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M5 10.8333V14.1666"
+      stroke="#4E4E4E"
+      strokeMiterlimit={10}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M8.33325 15.8334V4.16675C8.33325 2.50008 9.16659 1.66675 10.8333 1.66675H15.8333C17.4999 1.66675 18.3333 2.50008 18.3333 4.16675V15.8334C18.3333 17.5001 17.4999 18.3334 15.8333 18.3334H10.8333C9.16659 18.3334 8.33325 17.5001 8.33325 15.8334Z"
+      stroke="#4E4E4E"
+      strokeMiterlimit={10}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+export default Workshop;

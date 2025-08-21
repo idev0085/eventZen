@@ -6,17 +6,22 @@ const CustomText = ({
   style,
   children,
   badge = false,
+  bgColor = COLORS.secondary,
   onPress,
+  icon,
   ...props
 }: {
   style?: any;
   children: React.ReactNode;
   badge?: boolean;
+  bgColor?: string;
+  icon?: React.ReactNode;
   onPress?: () => void;
 }) => {
   if (badge) {
     return (
-      <View style={styles.badge}>
+      <View style={[styles.badge, { backgroundColor: bgColor }]}>
+        {icon}
         <Text style={[styles.text, styles.badgeText, style]} {...props}>
           {children}
         </Text>
@@ -35,15 +40,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
   },
   badge: {
-    backgroundColor: COLORS.primary,
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    borderRadius: 8,
+    // paddingHorizontal: 5,
     alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
   },
   badgeText: {
-    color: '#fff',
+    color: COLORS.white,
     fontSize: 12,
+    marginLeft: 5,
   },
 });
 

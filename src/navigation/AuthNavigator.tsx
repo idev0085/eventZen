@@ -13,6 +13,8 @@ import CustomSidebar from '../screens/CustomSidebar';
 import ConnectionsScreen from '../screens/ConnectionsScreen';
 import AlertModal from '../screens/AlertModal';
 import SessionsScreen from '../screens/SessionsScreen';
+import SessionsDetailsScreen from '../screens/SessionsDetailsScreen';
+
 // import EditorScreen from '../screens/EditorScreen';
 // import SettingsScreen from '../screens/SettingsScreen';
 // import FileManagerScreen from '../screens/FileManagerScreen';
@@ -81,7 +83,10 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="SessionsScreen" component={SessionsScreen} />
+        <Stack.Screen
+          name="SessionsDetailsScreen"
+          component={SessionsDetailsScreen}
+        />
         {/* <Stack.Screen name="EditorScreen" component={EditorScreen} /> */}
         {/* <Stack.Screen name="ImportScreen" component={ImportScreen} /> */}
         {/* <Stack.Screen name="Splash" component={SplashScreen} />
