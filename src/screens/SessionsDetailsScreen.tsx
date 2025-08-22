@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Alert, StyleSheet, View, Button } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Search,
@@ -9,6 +9,8 @@ import {
   Calander,
   Location,
   Workshop,
+  SessionUpcoming,
+  SessionCompleted,
 } from '../utils/constants';
 import UserDetails from '../components/userDetails';
 import ContactDetails from '../components/contactDetails';
@@ -22,8 +24,8 @@ import SearchUI from '../components/Search';
 import CustomText from '../components/ui/text';
 import Icon from '../components/icon';
 import YoutubePlayer from 'react-native-youtube-iframe';
-
-const status = 'Ongoing';
+import Button from '../components/ui/button';
+const status = 'Completed';
 const ICON_SIZE = 20;
 const SESSION_META = [
   {
@@ -58,36 +60,58 @@ const SPEAKERS = [
   },
 ];
 const OverView = () => {
-  const [playing, setPlaying] = useState(false);
+  // const [playing, setPlaying] = useState(false);
 
-  const onStateChange = useCallback(state => {
-    if (state === 'ended') {
-      setPlaying(false);
-      Alert.alert('video has finished playing!');
-    }
-  }, []);
+  // const onStateChange = useCallback(state => {
+  //   if (state === 'ended') {
+  //     setPlaying(false);
+  //     Alert.alert('video has finished playing!');
+  //   }
+  // }, []);
 
-  const togglePlaying = useCallback(() => {
-    setPlaying(prev => !prev);
-  }, []);
+  // const togglePlaying = useCallback(() => {
+  //   setPlaying(prev => !prev);
+  // }, []);
+  const BADGE_BG_COLOR =
+    status === 'Completed'
+      ? COLORS.badgeGreen
+      : status === 'Upcoming'
+      ? COLORS.badgeYellow
+      : status === 'Ongoing'
+      ? COLORS.primary
+      : COLORS.primary;
+  const BADGE_ICON =
+    status === 'Completed' ? (
+      <SessionCompleted height={ICON_SIZE} width={ICON_SIZE} />
+    ) : status === 'Upcoming' ? (
+      <SessionUpcoming height={ICON_SIZE} width={ICON_SIZE} />
+    ) : status === 'Ongoing' ? (
+      <TimerWait height={ICON_SIZE} width={ICON_SIZE} />
+    ) : (
+      <TimerWait height={ICON_SIZE} width={ICON_SIZE} />
+    );
+  const STATUS_TEXT_COLOR =
+    status === 'Completed'
+      ? styles.statusTextGreen
+      : status === 'Upcoming'
+      ? styles.statusTextUpcoming
+      : status === 'Ongoing'
+      ? styles.statusText
+      : styles.statusText;
   return (
     <View style={{ marginTop: 10 }}>
-      <YoutubePlayer
+      {/* <YoutubePlayer
         height={300}
         play={playing}
         videoId={'iee2TATGMyI'}
         onChangeState={onStateChange}
-      />
+      /> */}
 
       <CustomText
-        style={{
-          fontSize: 14,
-          fontFamily: 'Roboto-Regular',
-          color: COLORS.white,
-        }}
+        style={STATUS_TEXT_COLOR}
         badge={true}
-        bgColor={COLORS.secondary}
-        icon={<TimerWait />}
+        bgColor={BADGE_BG_COLOR}
+        icon={BADGE_ICON}
       >
         {status}
       </CustomText>
@@ -120,7 +144,7 @@ const Details = ({ type, context }) => {
 };
 const Speakers = ({ type, list }) => {
   return (
-    <View style={{ marginTop: 10 }}>
+    <View style={{ marginTop: 20, marginBottom: 20 }}>
       {list?.map((item, index) => {
         return (
           <View key={index} style={styles.sessionMeta}>
@@ -141,6 +165,25 @@ const Speakers = ({ type, list }) => {
           </View>
         );
       })}
+    </View>
+  );
+};
+const FooterBtn = () => {
+  return (
+    <View style={styles.footerBtnWrapper}>
+      <Button
+        title="Add to Favorite"
+        variant={'primary'}
+        onPress={() => {}}
+        textStyle={styles.footerBtnText}
+      />
+
+      <Button
+        title="Create Agenda"
+        variant={'secondary'}
+        onPress={() => {}}
+        textStyle={styles.footerBtnText}
+      />
     </View>
   );
 };
@@ -166,6 +209,8 @@ export default function SessionsDetailsScreen() {
         />
 
         <Speakers type={'speakers'} list={SPEAKERS} />
+
+        {status !== 'Completed' && <FooterBtn />}
       </Card>
     </ScrollView>
   );
@@ -235,5 +280,31 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     color: COLORS.textPrimary,
     marginLeft: 10,
+  },
+  footerBtnWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  footerBtnText: {
+    color: COLORS.white,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    padding: 5,
+  },
+  statusText: {
+    fontSize: 14,
+    fontFamily: 'Roboto-Regular',
+    color: COLORS.white,
+  },
+  statusTextGreen: {
+    fontSize: 14,
+    fontFamily: 'Roboto-Regular',
+    color: COLORS.success,
+  },
+  statusTextUpcoming: {
+    fontSize: 14,
+    fontFamily: 'Roboto-Regular',
+    color: COLORS.warning,
   },
 });

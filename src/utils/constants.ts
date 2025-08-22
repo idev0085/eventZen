@@ -40,6 +40,8 @@ import TimerWait from '../../assets/svg/svgComponents/TimerWait';
 import Calander from '../../assets/svg/svgComponents/Calander';
 import Location from '../../assets/svg/svgComponents/Location';
 import Workshop from '../../assets/svg/svgComponents/Workshop';
+import SessionUpcoming from '../../assets/svg/svgComponents/SessionUpcoming';
+import SessionCompleted from '../../assets/svg/svgComponents/SessionCompleted';
 
 
 
@@ -70,6 +72,9 @@ export const COLORS = {
   textLight: '#9CA3AF',
   placeholder: '#D1D5DB',
   qrBox: '#4d8bff',
+  badgeGreen:'#e8f2ee',
+  badgeYellow:'#fef5e8'
+  
 };
 
 export const TEXT_SIZES = {
@@ -193,5 +198,7 @@ export {
   TimerWait,
   Calander,
   Location,
-  Workshop
+  Workshop,
+  SessionUpcoming,
+  SessionCompleted
 };
