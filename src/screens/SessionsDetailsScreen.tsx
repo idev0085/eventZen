@@ -1,4 +1,5 @@
-import { Alert, StyleSheet, View } from 'react-native';
+import React, { useState, useCallback, useRef } from 'react';
+import { Alert, StyleSheet, View, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Search,
@@ -20,6 +21,7 @@ import TextBox from '../components/ui/textBox';
 import SearchUI from '../components/Search';
 import CustomText from '../components/ui/text';
 import Icon from '../components/icon';
+import YoutubePlayer from 'react-native-youtube-iframe';
 
 const status = 'Ongoing';
 const ICON_SIZE = 20;
@@ -56,8 +58,27 @@ const SPEAKERS = [
   },
 ];
 const OverView = () => {
+  const [playing, setPlaying] = useState(false);
+
+  const onStateChange = useCallback(state => {
+    if (state === 'ended') {
+      setPlaying(false);
+      Alert.alert('video has finished playing!');
+    }
+  }, []);
+
+  const togglePlaying = useCallback(() => {
+    setPlaying(prev => !prev);
+  }, []);
   return (
     <View style={{ marginTop: 10 }}>
+      <YoutubePlayer
+        height={300}
+        play={playing}
+        videoId={'iee2TATGMyI'}
+        onChangeState={onStateChange}
+      />
+
       <CustomText
         style={{
           fontSize: 14,
