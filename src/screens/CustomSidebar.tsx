@@ -27,7 +27,7 @@ import {
 import CustomText from '../components/ui/text';
 import Icon from '../components/icon';
 import Card from '../components/card';
-import { ScrollView } from 'react-native-gesture-handler';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
 const ICON_SIZE = 30;
 const CustomSideBarMenus = [
   {
@@ -101,7 +101,7 @@ const CustomSideBarCMS = [
 ];
 export default function CustomSideBar() {
   return (
-    <ScrollView>
+    <DrawerContentScrollView>
       <View style={styles.container}>
         <ImageBackground
           source={PNG_IMAGES.ProfileBg}
@@ -182,7 +182,7 @@ export default function CustomSideBar() {
           </TouchableOpacity>
         </View>
       </View>
-    </ScrollView>
+    </DrawerContentScrollView>
   );
 }
 

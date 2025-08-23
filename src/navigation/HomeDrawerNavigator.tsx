@@ -1,11 +1,9 @@
-// src/navigation/HomeDrawerNavigator.tsx
 import React from 'react';
-import { Text, View, ViewBase } from 'react-native'; // View is not actually used here, can be removed
+import { Text, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomSideBar from '../screens/CustomSidebar';
 import { COLORS } from '../utils/constants';
-import DrawerMenuIcon from '../../assets/svg/svgComponents/DrawerMenuIcon';
-import { useNavigation } from '@react-navigation/native';
+import DrawerMenuButton from '../components/drawerMenuButton';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,8 +15,7 @@ const HomeScreen = () => {
   );
 };
 
-const HomeDrawerNavigator = () => {
-  const navigation = useNavigation();
+const HomeDrawerNavigator = (props: any) => {
   return (
     <Drawer.Navigator
       initialRouteName="HomeContent"
@@ -32,14 +29,7 @@ const HomeDrawerNavigator = () => {
           backgroundColor: COLORS.background,
           width: '95%',
         },
-        headerLeft: () => (
-          <DrawerMenuIcon
-            width={30}
-            height={30}
-            style={{ marginLeft: 15 }}
-            onPress={() => navigation.toggleDrawer()}
-          />
-        ),
+        headerLeft: () => <DrawerMenuButton />,
       }}
     >
       <Drawer.Screen
