@@ -1,14 +1,21 @@
 // src/navigation/HomeDrawerNavigator.tsx
 import React from 'react';
-import { View } from 'react-native'; // View is not actually used here, can be removed
+import { Text, View, ViewBase } from 'react-native'; // View is not actually used here, can be removed
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import HomeScreen from '../screens/HomeScreen';
 import CustomSideBar from '../screens/CustomSidebar';
 import { COLORS } from '../utils/constants';
 import DrawerMenuIcon from '../../assets/svg/svgComponents/DrawerMenuIcon';
 import { useNavigation } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
+
+const HomeScreen = () => {
+  return (
+    <View>
+      <Text>Hello</Text>
+    </View>
+  );
+};
 
 const HomeDrawerNavigator = () => {
   const navigation = useNavigation();
