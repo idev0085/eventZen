@@ -42,8 +42,7 @@ import Location from '../../assets/svg/svgComponents/Location';
 import Workshop from '../../assets/svg/svgComponents/Workshop';
 import SessionUpcoming from '../../assets/svg/svgComponents/SessionUpcoming';
 import SessionCompleted from '../../assets/svg/svgComponents/SessionCompleted';
-
-
+import DrawerMenuIcon from '../../assets/svg/svgComponents/DrawerMenuIcon';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -72,9 +71,8 @@ export const COLORS = {
   textLight: '#9CA3AF',
   placeholder: '#D1D5DB',
   qrBox: '#4d8bff',
-  badgeGreen:'#e8f2ee',
-  badgeYellow:'#fef5e8'
-  
+  badgeGreen: '#e8f2ee',
+  badgeYellow: '#fef5e8',
 };
 
 export const TEXT_SIZES = {
@@ -200,5 +198,6 @@ export {
   Location,
   Workshop,
   SessionUpcoming,
-  SessionCompleted
+  SessionCompleted,
+  DrawerMenuIcon,
 };
