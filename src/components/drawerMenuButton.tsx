@@ -17,7 +17,7 @@ const DrawerMenuButton = () => {
         navigation.dispatch(DrawerActions.toggleDrawer());
       }}
     >
-      <DrawerMenuIcon width={30} height={30} style={{ marginLeft: 15 }} />
+      <DrawerMenuIcon width={30} height={30} />
     </TouchableOpacity>
   );
 };
