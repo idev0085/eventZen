@@ -58,6 +58,7 @@ export const COLORS = {
   textInputPrimary: '#D8D8D8',
   surface: '#FFFFFF',
   error: '#EF4444',
+  logoutError: '#FF0000',
   warning: '#F59E0B',
   success: '#10B981',
   textPrimary: '#4E4E4E',
