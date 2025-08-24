@@ -2,9 +2,9 @@ import {
   Alert,
   StyleSheet,
   View,
-  Image,
   ImageBackground,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {
   DrawerProfile,
@@ -23,12 +23,13 @@ import {
   DrawerPrivacyPolicy,
   DrawerTermsCondition,
   PNG_IMAGES,
+  TEXT_SIZES,
 } from '../utils/constants';
 import CustomText from '../components/ui/text';
 import Icon from '../components/icon';
 import Card from '../components/card';
-import { DrawerContentScrollView } from '@react-navigation/drawer';
-const ICON_SIZE = 30;
+const ICON_SIZE = 22;
+const ARROW_ICON_SIZE = 22;
 const CustomSideBarMenus = [
   {
     name: 'Profile',
@@ -99,10 +100,11 @@ const CustomSideBarCMS = [
     arrow: DrawerArrow,
   },
 ];
-export default function CustomSideBar() {
+
+export default function CustomSideBar({ navigation }: any) {
   return (
-    <DrawerContentScrollView>
-      <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <View>
         <ImageBackground
           source={PNG_IMAGES.ProfileBg}
           style={styles.backgroundImage}
@@ -113,7 +115,7 @@ export default function CustomSideBar() {
               <View style={styles.imageBox}>
                 <Icon
                   source={{ uri: 'https://reactjs.org/logo-og.png' }}
-                  size={80}
+                  size={50}
                   backgroundColor={COLORS.placeholder}
                   borderRadius={50}
                 />
@@ -126,7 +128,7 @@ export default function CustomSideBar() {
               </CustomText>
             </View>
             <TouchableOpacity style={styles.qrBox}>
-              <DrawerHeaderQr />
+              <DrawerHeaderQr width={40} height={40} />
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -136,7 +138,7 @@ export default function CustomSideBar() {
             key={index}
             style={styles.card}
             onPress={() => {
-              Alert.alert(`Navigating to ${item.name}`);
+              navigation.navigate(`${item.name}`);
             }}
           >
             <View style={styles.menuWrapper}>
@@ -162,7 +164,7 @@ export default function CustomSideBar() {
                 <item.icon width={ICON_SIZE} height={ICON_SIZE} />
                 <CustomText style={styles.textMenu}>{item.name}</CustomText>
               </View>
-              <item.arrow width={ICON_SIZE} height={ICON_SIZE} />
+              <item.arrow width={ARROW_ICON_SIZE} height={ARROW_ICON_SIZE} />
             </TouchableOpacity>
           ))}
         </Card>
@@ -177,12 +179,12 @@ export default function CustomSideBar() {
             onPress={() => Alert.alert('Logout Pressed')}
             style={{ flexDirection: 'row', alignItems: 'center' }}
           >
-            <DrawerLogout />{' '}
+            <DrawerLogout width={ICON_SIZE} height={ICON_SIZE} />{' '}
             <CustomText style={styles.textLogout}>Logout</CustomText>
           </TouchableOpacity>
         </View>
       </View>
-    </DrawerContentScrollView>
+    </ScrollView>
   );
 }
 
@@ -216,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textMenu: {
-    fontSize: 18,
+    fontSize: TEXT_SIZES.xs,
     color: COLORS.black,
     fontFamily: 'Roboto-Regular',
     paddingLeft: 10,
@@ -248,32 +250,34 @@ const styles = StyleSheet.create({
   imageBox: {
     backgroundColor: COLORS.placeholder,
     borderRadius: 50,
-    height: 80,
-    width: 80,
+    height: 50,
+    width: 50,
   },
   textName: {
     color: COLORS.white,
-    fontSize: 20,
+    fontSize: TEXT_SIZES.md,
     fontFamily: 'Roboto-Bold',
+    fontWeight: '700',
   },
   textEmail: {
     color: COLORS.white,
-    fontSize: 16,
+    fontSize: TEXT_SIZES.xs,
     fontFamily: 'Roboto-Regular',
     marginTop: 5,
   },
   qrBox: {
-    width: 60,
-    height: 60,
-    marginRight: 20,
+    width: 50,
+    height: 50,
+    marginRight: 30,
     borderRadius: 10,
+    marginTop: 5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.qrBox,
   },
   textLogout: {
-    color: COLORS.error,
-    fontSize: 16,
+    color: COLORS.logoutError,
+    fontSize: TEXT_SIZES.xs,
     fontFamily: 'Roboto-Regular',
     paddingLeft: 10,
   },
