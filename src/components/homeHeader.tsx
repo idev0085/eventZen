@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+
 import DrawerMenuButton from './drawerMenuButton';
 import {
   COLORS,
@@ -23,8 +23,6 @@ const HomeHeader = ({
   profileImage,
   bellIcon,
 }: any) => {
-  const navigation = useNavigation();
-
   const handleNotification = () => {
     Alert.alert('Notification Bell Icon Clicked');
   };
@@ -36,16 +34,13 @@ const HomeHeader = ({
         <DrawerMenuButton />
         {/* Profile image and text */}
         <View style={styles.profileInfo}>
-          <Image
-            source={{ uri: 'https://reactjs.org/logo-og.png' }}
-            style={styles.profileImage}
-          />
+          <Image source={{ uri: profileImage }} style={styles.profileImage} />
           <View style={styles.textContainer}>
             <Text style={styles.username}>
               {username ? username : 'Arafat Alim'}
             </Text>
             <Text style={styles.welcomeMessage}>
-              {welcomeMessage ? welcomeMessage : 'Welcome'}
+              {welcomeMessage ? welcomeMessage : 'Welcome !'}
             </Text>
           </View>
         </View>
