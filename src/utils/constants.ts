@@ -43,6 +43,7 @@ import Workshop from '../../assets/svg/svgComponents/Workshop';
 import SessionUpcoming from '../../assets/svg/svgComponents/SessionUpcoming';
 import SessionCompleted from '../../assets/svg/svgComponents/SessionCompleted';
 import DrawerMenuIcon from '../../assets/svg/svgComponents/DrawerMenuIcon';
+import NotificationBellIcon from '../../assets/svg/svgComponents/NotificationBellIcon';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -155,6 +156,7 @@ export const PNG_IMAGES = {
 };
 
 // react-native svg components
+
 export {
   AddToCalendar,
   AlertWithCircle,
@@ -201,4 +203,5 @@ export {
   SessionUpcoming,
   SessionCompleted,
   DrawerMenuIcon,
+  NotificationBellIcon,
 };
