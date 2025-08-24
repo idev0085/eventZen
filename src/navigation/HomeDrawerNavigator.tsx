@@ -2,18 +2,12 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomSideBar from '../screens/CustomSidebar';
-import { COLORS } from '../utils/constants';
+import { COLORS, PNG_IMAGES } from '../utils/constants';
 import DrawerMenuButton from '../components/drawerMenuButton';
+import HomeHeader from '../components/homeHeader';
+import HomeScreen from '../screens/HomeScreen';
 
 const Drawer = createDrawerNavigator();
-
-const HomeScreen = () => {
-  return (
-    <View>
-      <Text>Hello</Text>
-    </View>
-  );
-};
 
 const HomeDrawerNavigator = (props: any) => {
   return (
@@ -21,7 +15,7 @@ const HomeDrawerNavigator = (props: any) => {
       initialRouteName="HomeContent"
       drawerContent={props => <CustomSideBar {...props} />}
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         headerTitleAlign: 'center',
         headerStyle: { backgroundColor: COLORS.primary },
         headerTintColor: COLORS.white,
