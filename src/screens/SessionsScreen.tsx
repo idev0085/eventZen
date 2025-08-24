@@ -1,15 +1,10 @@
 import { Alert, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Search, GreenBadge, COLORS } from '../utils/constants';
-import UserDetails from '../components/userDetails';
-import ContactDetails from '../components/contactDetails';
-import AddNote from '../components/addNote';
-import ListItem from '../components/listItem';
+import { COLORS } from '../utils/constants';
+
 import SessionListItem from '../components/sessionListItem';
 import { ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
-import TextBox from '../components/ui/textBox';
-import SearchUI from '../components/Search';
+
 import CustomText from '../components/ui/text';
 export default function SessionsScreen() {
   return (
