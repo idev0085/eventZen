@@ -1,8 +1,12 @@
 import React from 'react';
-import Svg, { Path, Circle } from 'react-native-svg';
+import Svg, { Path, Circle, SvgProps } from 'react-native-svg';
 
-const NotificationBellIcon = () => (
-  <Svg width="26" height="36" viewBox="0 0 26 36" fill="none">
+interface CustomSvgProps extends SvgProps {
+  xmlns?: string;
+}
+
+const NotificationBellIcon = ({ height = 36, width = 36 }: CustomSvgProps) => (
+  <Svg width={width} height={height} viewBox="0 0 26 36" fill="none">
     <Path
       fillRule="evenodd"
       clipRule="evenodd"
