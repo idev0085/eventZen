@@ -44,6 +44,10 @@ import SessionUpcoming from '../../assets/svg/svgComponents/SessionUpcoming';
 import SessionCompleted from '../../assets/svg/svgComponents/SessionCompleted';
 import DrawerMenuIcon from '../../assets/svg/svgComponents/DrawerMenuIcon';
 import NotificationBellIcon from '../../assets/svg/svgComponents/NotificationBellIcon';
+import AttendeeIcon from '../../assets/svg/svgComponents/AttendeeIcon';
+import ExhibitorsIcon from '../../assets/svg/svgComponents/ExhibitorsIcon';
+import SpeakersIcon from '../../assets/svg/svgComponents/SpeakersIcon';
+import SponsorsIcon from '../../assets/svg/svgComponents/SponsorsIcon';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -204,4 +208,8 @@ export {
   SessionCompleted,
   DrawerMenuIcon,
   NotificationBellIcon,
+  AttendeeIcon,
+  ExhibitorsIcon,
+  SpeakersIcon,
+  SponsorsIcon,
 };
