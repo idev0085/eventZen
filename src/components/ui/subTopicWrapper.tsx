@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 
 interface SubTopicWrapperProps {
   children: React.ReactNode;
-  // style?: object;
+  style?: StyleProp<ViewStyle>;
 }
 
-const SubTopicWrapper = ({ children }: SubTopicWrapperProps) => {
-  return <View style={styles.container}>{children}</View>;
+const SubTopicWrapper = ({ children, style }: SubTopicWrapperProps) => {
+  return <View style={[styles.container, style]}>{children}</View>;
 };
 
 export default SubTopicWrapper;
