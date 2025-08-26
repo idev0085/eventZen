@@ -1,38 +1,26 @@
-import * as React from 'react';
-import Svg, { SvgProps, Path, Circle } from 'react-native-svg';
+import React from 'react';
+import Svg, { Path, Circle } from 'react-native-svg';
 
-interface CustomSvgProps extends SvgProps {
-  xmlns?: string;
-}
-
-const NotificationBellIcon = ({
-  height = 26,
-  width = 26,
-  ...props
-}: CustomSvgProps) => (
-  <Svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={width}
-    height={height}
-    fill="none"
-    {...props}
-  >
+const NotificationBellIcon = () => (
+  <Svg width="26" height="36" viewBox="0 0 26 36" fill="none">
     <Path
-      stroke="#fff"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M13 19.335c6.11 0 8.935-.784 9.208-3.93 0-3.143-1.97-2.94-1.97-6.798 0-3.012-2.856-6.44-7.238-6.44-4.382 0-7.238 3.428-7.238 6.44 0 3.857-1.97 3.655-1.97 6.799.274 3.157 3.1 3.929 9.208 3.929Z"
+      fillRule="evenodd"
       clipRule="evenodd"
-    />
-    <Path
-      stroke="#fff"
+      d="M13 24.335C19.1091 24.335 21.9353 23.5513 22.2083 20.4056C22.2083 17.2621 20.2379 17.4643 20.2379 13.6073C20.2379 10.5946 17.3823 7.16675 13 7.16675C8.61763 7.16675 5.76204 10.5946 5.76204 13.6073C5.76204 17.4643 3.79163 17.2621 3.79163 20.4056C4.06566 23.5632 6.89188 24.335 13 24.335Z"
+      stroke="white"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth={2}
-      d="M15.588 22.595c-1.478 1.641-3.783 1.66-5.275 0"
     />
-    <Circle cx={19} cy={5} r={4} fill="#FE7101" />
+    <Path
+      d="M15.5879 27.5952C14.11 29.2362 11.8047 29.2556 10.3127 27.5952"
+      stroke="white"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Circle cx="19" cy="10" r="4" fill="#FE7101" />
   </Svg>
 );
+
 export default NotificationBellIcon;
