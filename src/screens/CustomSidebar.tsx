@@ -68,7 +68,7 @@ const CustomSideBarMenus = [
     arrow: DrawerArrow,
   },
   {
-    name: 'Help and support',
+    name: 'Help and Support',
     icon: DrawerHelp,
     route: 'Help and support',
     arrow: DrawerArrow,

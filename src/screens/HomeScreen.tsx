@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import HomeHeader from '../components/homeHeader';
+import QuickActionMenu from '../components/quickActionMenu';
 
 const HomeScreen = () => {
   return (
@@ -8,9 +9,10 @@ const HomeScreen = () => {
       <HomeHeader
         userName="Hello, Arafat"
         welcomeMessage="Welcome !"
-        profileImage="https://reactjs.org/logo-og.png" // Replace with a real image URL
+        profileImage="https://reactjs.org/logo-og.png"
         bellIcon="your_bell_icon_source"
       />
+      <QuickActionMenu />
     </View>
   );
 };

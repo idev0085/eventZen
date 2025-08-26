@@ -1,6 +1,5 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   COLORS,
   TabConnection,
@@ -12,30 +11,11 @@ import {
   TEXT_SIZES,
 } from '../utils/constants';
 
+import SessionsScreen from '../screens/SessionsScreen';
+import ConnectionsScreen from '../screens/ConnectionsScreen';
+import HomeDrawerNavigator from './HomeDrawerNavigator';
+
 const Tab = createBottomTabNavigator();
-
-const HomeScreen = () => {
-  return (
-    <View>
-      <Text>Home Screen</Text>
-    </View>
-  );
-};
-
-const SessionScreen = () => {
-  return (
-    <View>
-      <Text>Session</Text>
-    </View>
-  );
-};
-const ConnectionScreen = () => {
-  return (
-    <View>
-      <Text>Session</Text>
-    </View>
-  );
-};
 
 const BottomTabNavigator = () => {
   return (
@@ -89,9 +69,9 @@ const BottomTabNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Session" component={SessionScreen} />
-      <Tab.Screen name="Connection" component={ConnectionScreen} />
+      <Tab.Screen name="Home" component={HomeDrawerNavigator} />
+      <Tab.Screen name="Session" component={SessionsScreen} />
+      <Tab.Screen name="Connection" component={ConnectionsScreen} />
     </Tab.Navigator>
   );
 };

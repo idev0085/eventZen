@@ -1,36 +1,44 @@
+// src/navigation/HomeDrawerNavigator.tsx
 import React from 'react';
-import { Text, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomSideBar from '../screens/CustomSidebar';
-import { COLORS, PNG_IMAGES } from '../utils/constants';
-import DrawerMenuButton from '../components/drawerMenuButton';
-import HomeHeader from '../components/homeHeader';
+import { COLORS } from '../utils/constants';
+
 import HomeScreen from '../screens/HomeScreen';
+import ViewProfile from '../screens/ViewProfile';
+import FavouriteSessionScreen from '../screens/FavouriteSessionScreen';
+import SpeakersScreen from '../screens/SpeakersScreen';
+import ExhibitorsScreen from '../screens/ExhibitorsScreen';
+import SponsorsScreen from '../screens/SponsorsScreen';
+import HelpAndSupportScreen from '../screens/HelpAndSupportScreen';
+import MyAgendaScreen from '../screens/MyAgendaScreen';
 
 const Drawer = createDrawerNavigator();
 
-const HomeDrawerNavigator = (props: any) => {
+const HomeDrawerNavigator = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="HomeContent"
+      initialRouteName="HomeScreenContent"
       drawerContent={props => <CustomSideBar {...props} />}
       screenOptions={{
         headerShown: false,
-        headerTitleAlign: 'center',
-        headerStyle: { backgroundColor: COLORS.primary },
-        headerTintColor: COLORS.white,
         drawerStyle: {
           backgroundColor: COLORS.background,
           width: '95%',
         },
-        headerLeft: () => <DrawerMenuButton />,
       }}
     >
+      <Drawer.Screen name="HomeScreenContent" component={HomeScreen} />
+      <Drawer.Screen name="Profile" component={ViewProfile} />
+      <Drawer.Screen name="My Agenda" component={MyAgendaScreen} />
       <Drawer.Screen
-        name="HomeContent"
-        component={HomeScreen}
-        options={{ title: 'Home' }}
+        name="Favorite Session"
+        component={FavouriteSessionScreen}
       />
+      <Drawer.Screen name="Speakers" component={SpeakersScreen} />
+      <Drawer.Screen name="Exhibitors" component={ExhibitorsScreen} />
+      <Drawer.Screen name="Sponsors" component={SponsorsScreen} />
+      <Drawer.Screen name="Help and Support" component={HelpAndSupportScreen} />
     </Drawer.Navigator>
   );
 };
