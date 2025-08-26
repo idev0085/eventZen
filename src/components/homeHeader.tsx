@@ -46,7 +46,7 @@ const HomeHeader = ({
         </View>
         {/* Bell Icon */}
         <TouchableOpacity onPress={handleNotification}>
-          <NotificationBellIcon width={20} height={20} />
+          <NotificationBellIcon width={36} height={36} />
         </TouchableOpacity>
       </View>
     </ImageBackground>
