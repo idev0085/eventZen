@@ -212,5 +212,5 @@ export {
   ExhibitorsIcon,
   SpeakersIcon,
   SponsorsIcon,
-  EditProfileIcon
+  EditProfileIcon,
 };
