@@ -48,7 +48,7 @@ import AttendeeIcon from '../../assets/svg/svgComponents/AttendeeIcon';
 import ExhibitorsIcon from '../../assets/svg/svgComponents/ExhibitorsIcon';
 import SpeakersIcon from '../../assets/svg/svgComponents/SpeakersIcon';
 import SponsorsIcon from '../../assets/svg/svgComponents/SponsorsIcon';
-
+import EditProfileIcon from '../../assets/svg/svgComponents/EditProfile';
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
@@ -212,4 +212,5 @@ export {
   ExhibitorsIcon,
   SpeakersIcon,
   SponsorsIcon,
+  EditProfileIcon
 };

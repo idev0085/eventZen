@@ -9,12 +9,13 @@ import {
 import { COLORS } from '../../utils/constants';
 
 interface TextBoxProps {
-  value: string;
+  value?: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
   secureTextEntry?: boolean;
   style?: object;
   label?: string;
+  labelStyle?: object;
   required?: boolean;
   defaultValue?: string;
   editable?: boolean;
@@ -33,6 +34,7 @@ const TextBox: React.FC<TextBoxProps> = ({
   secureTextEntry,
   style,
   label,
+  labelStyle,
   required,
   defaultValue,
   editable = true,
@@ -45,7 +47,7 @@ const TextBox: React.FC<TextBoxProps> = ({
   return (
     <View style={styles.container}>
       {label && (
-        <Text style={styles.label}>
+        <Text style={labelStyle}>
           {label}
           {required && <Text style={styles.asterisk}> *</Text>}
         </Text>
