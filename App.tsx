@@ -1,5 +1,3 @@
-// App.tsx
-
 import React from 'react';
 import { StatusBar, Platform } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -14,7 +12,7 @@ import { useProfile } from './src/hooks/useProfile';
 
 import AppNavigator from './src/navigation/AppNavigator';
 import AuthNavigator from './src/navigation/AuthNavigator';
-import SplashScreen from './src/screens/SplashScreen'; // A simple component to show on startup
+import SplashScreen from './src/screens/SplashScreen';
 
 // Create the React Query client outside the component to prevent re-creation on renders
 const queryClient = new QueryClient({
