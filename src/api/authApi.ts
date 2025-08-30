@@ -35,7 +35,13 @@ export const verifyOtp = async (payload: OtpPayload): Promise<string> => {
 };
 
 export const getProfile = async (): Promise<TUser> => {
-  const { data } = await apiClient.get('/profile');
-  const validatedData = UserProfileResponseSchema.parse(data);
-  return validatedData.data.user;
+  try {
+    const { data } = await apiClient.get('/profile');
+    const validated = UserProfileResponseSchema.parse(data);
+    return validated.data.user;
+  } catch (error) {
+    // If getProfile fails for any reason (401, network error), we throw
+    // This will put the useQuery hook into an `isError` state.
+    throw new Error('Failed to fetch profile.');
+  }
 };
