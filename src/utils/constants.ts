@@ -53,6 +53,7 @@ export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
   buildNumber: 1,
+  DEBUG: false,
 };
 
 export const COLORS = {
@@ -151,7 +152,10 @@ export const API_ENDPOINTS = {
   BASE_URL: 'https://api.eventzen.com',
   AUTH: '/auth',
   USER: '/user',
+  REQUEST_TIMEOUT: 10000,
 };
+
+export const CONFIG = {};
 
 export const PNG_IMAGES = {
   LoginBg: require('../../assets/images/background.png'),

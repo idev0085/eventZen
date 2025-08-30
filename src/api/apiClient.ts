@@ -1,11 +1,12 @@
 import axios from 'axios';
 import Toast from 'react-native-simple-toast';
-import { BASE_URL, REQUEST_TIMEOUT } from '../config';
+import { BASE_URL } from '../config';
 import { useAuthStore } from '../stores/authStore';
+import { API_ENDPOINTS } from '../utils/constants';
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: REQUEST_TIMEOUT,
+  timeout: API_ENDPOINTS.REQUEST_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
   },
