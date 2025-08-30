@@ -1,5 +1,16 @@
 import { z } from 'zod';
 
+//! Schema for the login response
+export const RequestOtpResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  data: z.object({
+    email: z.string().email(),
+    otp: z.number(),
+    expired_at: z.string(),
+  }),
+});
+
 //! schema for the successful OTP verification response
 export const VerifyOtpResponseSchema = z.object({
   success: z.boolean(),
