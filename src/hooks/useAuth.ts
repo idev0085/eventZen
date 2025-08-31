@@ -22,7 +22,9 @@ export const useAuth = () => {
       mutationFn: requestOtp,
       onSuccess: email => {
         Toast.show('OTP sent to your email!', Toast.LONG);
-        navigation.navigate('EnterLoginOTPScreen', { email });
+        navigation.navigate('EnterLoginOTPScreen', {
+          email: email.toLowerCase(),
+        });
       },
     },
   );

@@ -55,6 +55,7 @@ export const APP_CONFIG = {
   buildNumber: 1,
   DEBUG: false,
   TOKEN: 'authToken',
+  RESEND_TIMER: 60,
 };
 
 export const COLORS = {

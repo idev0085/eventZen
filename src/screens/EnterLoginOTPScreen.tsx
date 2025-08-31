@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Card from '../components/card';
 import {
+  APP_CONFIG,
   COLORS,
   OtpCenter,
   OtpEdit,
@@ -12,23 +13,59 @@ import CustomText from '../components/ui/text';
 import Button from '../components/ui/button';
 import { OtpInput } from 'react-native-otp-entry';
 import CustomHeader from '../components/customNavigation';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { useAuth } from '../hooks/useAuth';
+import Toast from 'react-native-simple-toast';
 
-const EnterLoginOTPScreen = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const senderEmail = 'johnsebastian@gmail.com';
-  const resendTimer = '00:41';
+type AuthStackParamList = {
+  EnterLoginOTPScreen: { email: string };
+};
+type OTPScreenRouteProp = RouteProp<AuthStackParamList, 'EnterLoginOTPScreen'>;
 
-  const handleVerifyOTP = () => {
-    console.log('OTP CTA Called');
+const EnterLoginOTPScreen = (props: any) => {
+  const route = useRoute<OTPScreenRouteProp>();
+  const {
+    performRequestOtp,
+    isRequestingOtp,
+    isVerifyingOtp,
+    performVerifyOtp,
+  } = useAuth();
+
+  const { email: senderEmail } = route.params;
+  const [inputOTP, setInputOTP] = useState('');
+  const [timer, setTimer] = useState(APP_CONFIG.RESEND_TIMER);
+
+  useEffect(() => {
+    if (timer === 0) return;
+
+    const intervalId = setInterval(() => {
+      setTimer(prev => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [timer]);
+
+  const handleVerifyOTP = (otp: string) => {
+    if (otp.length !== 4) {
+      Toast.show('Invalid OTP', Toast.LONG);
+      return;
+    }
+    performVerifyOtp({ email: senderEmail, otp });
   };
 
   const handleResendOTP = () => {
-    console.log('OTP Resent');
+    if (timer === 0 && !isRequestingOtp) {
+      performRequestOtp({ email: senderEmail });
+      setTimer(APP_CONFIG.RESEND_TIMER);
+    }
   };
 
   const handleBackPress = () => {
-    console.log('Back Pressed');
+    props.navigation.goBack();
   };
+
+  // Format the timer for display (e.g., 00:41)
+  const formattedTimer = `00:${timer.toString().padStart(2, '0')}`;
 
   return (
     <View>
@@ -54,19 +91,19 @@ const EnterLoginOTPScreen = () => {
           {/* Add your OTP Input field */}
           <View style={{ marginTop: 20 }}>
             <OtpInput
-              numberOfDigits={5}
+              numberOfDigits={4}
               focusColor="black"
               autoFocus={false}
               hideStick={false}
               blurOnFilled={true}
-              disabled={isLoading}
+              disabled={isVerifyingOtp}
               type="numeric"
               secureTextEntry={false}
               focusStickBlinkingDuration={500}
-              onFocus={() => console.log('Focused')}
-              onBlur={() => console.log('Blurred')}
-              onTextChange={text => console.log(text)}
-              onFilled={text => console.log(`OTP is ${text}`)}
+              // onFocus={() => console.log('Focused')}
+              // onBlur={() => console.log('Blurred')}
+              // onTextChange={setInputOTP}
+              onFilled={text => handleVerifyOTP(text)}
               textInputProps={{
                 accessibilityLabel: 'One-Time Password',
               }}
@@ -78,7 +115,7 @@ const EnterLoginOTPScreen = () => {
               theme={{
                 containerStyle: styles.inputOtpContainer,
                 pinCodeContainerStyle: styles.inputOtpPincodeContainerStyle,
-                filledPinCodeContainerStyle: { backgroundColor: 'red' },
+                filledPinCodeContainerStyle: { backgroundColor: '#fff' },
                 pinCodeTextStyle: {},
                 focusStickStyle: {},
                 focusedPinCodeContainerStyle: {},
@@ -90,18 +127,19 @@ const EnterLoginOTPScreen = () => {
 
           <View style={styles.infoContainer}>
             <CustomText style={styles.infoText}>
-              Didn’t receive a OTP?
+              {`Didn’t receive a OTP?`}
             </CustomText>
 
-            {resendTimer ? (
-              <Text style={styles.infoLink}>{`Resent in ${resendTimer}`}</Text>
+            {isRequestingOtp ? (
+              <Text style={styles.infoLink}>Sending...</Text>
+            ) : timer > 0 ? (
+              <Text
+                style={styles.infoLink}
+              >{`Resend in ${formattedTimer}`}</Text>
             ) : (
               <TouchableOpacity onPress={handleResendOTP}>
                 <Text
-                  style={{
-                    ...styles.infoLink,
-                    textDecorationLine: 'underline',
-                  }}
+                  style={[styles.infoLink, { textDecorationLine: 'underline' }]}
                 >
                   Resend OTP
                 </Text>
@@ -112,9 +150,10 @@ const EnterLoginOTPScreen = () => {
           <Button
             onPress={handleVerifyOTP}
             title="Verify"
-            loading={isLoading}
+            loading={isVerifyingOtp}
             textStyle={styles.btnTextStyle}
             style={styles.btnStyle}
+            disabled={isVerifyingOtp}
           />
         </View>
       </Card>
@@ -123,6 +162,9 @@ const EnterLoginOTPScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   backgroundImage: {
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
@@ -144,7 +186,6 @@ const styles = StyleSheet.create({
     top: '50%',
   },
   contentContainer: {
-    flex: 1,
     alignItems: 'center',
   },
   contentImage: {
@@ -172,6 +213,7 @@ const styles = StyleSheet.create({
   infoLink: {
     fontSize: TEXT_SIZES.xs,
     fontWeight: '700',
+    color: COLORS.primary,
   },
   btnStyle: {
     width: '100%',
@@ -180,20 +222,12 @@ const styles = StyleSheet.create({
     fontSize: TEXT_SIZES.sm,
     fontWeight: '400',
   },
-  inputOtpContainer: {
-    // height: 10,
-  },
+  inputOtpContainer: {},
   inputOtpPincodeContainerStyle: {
     backgroundColor: COLORS.textBoxPrimary,
     height: 45,
+    width: 45,
   },
-  inputOtpFocusStickStyle: {},
-  inputOtpFocusedPinCodeContainerStyle: {},
-  inputOtpPlaceholderTextStyle: {},
-  inputOtpFilledPinCodeContainerStyle: {
-    color: 'red',
-  },
-  inputOtpDisabledPinCodeContainerStyle: {},
 });
 
 export default EnterLoginOTPScreen;
