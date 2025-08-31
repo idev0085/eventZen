@@ -7,12 +7,12 @@ interface AuthState {
   token: string | null;
   user: TUser | null;
   isAuthenticated: boolean;
-  isHydrated: boolean; // To track if we have loaded from storage
+  isHydrated: boolean;
   isSessionExpired: boolean;
-  setToken: (token: string) => void;
-  setUser: (user: TUser) => void;
-  logout: () => void;
-  hydrate: () => void;
+  setToken: (token: string) => Promise<void>;
+  setUser: (user: TUser) => Promise<void>;
+  logout: () => Promise<void>;
+  hydrate: () => Promise<void>;
   showSessionExpiredModal: () => void;
 }
 
@@ -23,13 +23,17 @@ export const useAuthStore = create<AuthState>(set => ({
   isHydrated: false,
   isSessionExpired: false,
 
-  setToken: async token => {
+  setToken: async (token: string) => {
     set({ token, isAuthenticated: true });
     await keychain.setGenericPassword('token', token);
   },
 
-  setUser: async user => {
-    set({ user });
+  setUser: async (user: TUser) => {
+    const currentUser = useAuthStore.getState().user;
+    if (JSON.stringify(currentUser) !== JSON.stringify(user)) {
+      set({ user });
+      await AsyncStorage.setItem('user', JSON.stringify(user));
+    }
   },
 
   logout: async () => {
@@ -39,7 +43,6 @@ export const useAuthStore = create<AuthState>(set => ({
       isAuthenticated: false,
       isSessionExpired: false,
     });
-
     await keychain.resetGenericPassword();
     await AsyncStorage.removeItem('user');
   },
@@ -47,6 +50,7 @@ export const useAuthStore = create<AuthState>(set => ({
   showSessionExpiredModal: () => set({ isSessionExpired: true }),
 
   hydrate: async () => {
+    console.log('Hydrate called');
     try {
       const credentials = await keychain.getGenericPassword();
       const userString = await AsyncStorage.getItem('user');

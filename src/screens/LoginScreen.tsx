@@ -5,17 +5,16 @@ import TextBox from '../components/ui/textBox';
 import { COLORS, PNG_IMAGES, TEXT_SIZES } from '../utils/constants';
 import RightArrowLoginButton from '../../assets/svg/svgComponents/RightArrowLoginButton';
 import { useState } from 'react';
-import { useRequestOtp } from '../hooks/useRequestOtp';
 import Toast from 'react-native-simple-toast';
+import { useAuth } from '../hooks/useAuth';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
-  const { performRequestOtp, isRequestingOtp } = useRequestOtp();
+  const { performRequestOtp, isRequestingOtp } = useAuth();
 
   const btnHandler = () => {
-    console.log('CAlled');
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.text(email)) {
+    if (!email || !emailRegex.test(email)) {
       Toast.show('Invalid Email', Toast.LONG);
       return;
     }
@@ -31,8 +30,8 @@ export default function LoginScreen() {
           <TextBox
             style={styles.input}
             placeholder="Email"
-            onChangeText={() => {}}
-            value=""
+            onChangeText={setEmail}
+            value={email}
             editable={true}
             required={true}
           />

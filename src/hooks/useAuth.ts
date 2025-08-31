@@ -1,25 +1,59 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { verifyOtp } from '../api/authApi';
-import { useAuthStore } from '../stores/authStore';
 import Toast from 'react-native-simple-toast';
+import { requestOtp, verifyOtp } from '../api/authApi';
+import { saveToken, removeToken } from '../utils/tokenManager';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+// Define types for navigation
+type AuthStackParamList = {
+  LoginScreen: undefined;
+  EnterLoginOTPScreen: { email: string };
+};
+type AuthNavigationProp = StackNavigationProp<AuthStackParamList>;
 
 export const useAuth = () => {
-  const { setToken } = useAuthStore();
   const queryClient = useQueryClient();
+  const navigation = useNavigation<AuthNavigationProp>();
 
-  const { mutate: performLogin, isPending: isLoggingIn } = useMutation({
-    mutationFn: verifyOtp,
-    onSuccess: token => {
-      // 1. Token received, store it immediately.
-      setToken(token);
-      Toast.show('Login successful!', Toast.SHORT);
-
-      // 2. Invalidate any old queries and prepare to fetch fresh data.
-      // This is good practice to clear out any stale data from a previous session.
-      queryClient.invalidateQueries();
+  // Mutation to request OTP
+  const { mutate: performRequestOtp, isPending: isRequestingOtp } = useMutation(
+    {
+      mutationFn: requestOtp,
+      onSuccess: email => {
+        Toast.show('OTP sent to your email!', Toast.LONG);
+        navigation.navigate('EnterLoginOTPScreen', { email });
+      },
     },
-    // Global onError in QueryClient will handle the toast message
+  );
+
+  // Mutation to verify OTP and log in
+  const { mutate: performVerifyOtp, isPending: isVerifyingOtp } = useMutation({
+    mutationFn: verifyOtp,
+    onSuccess: async token => {
+      // 1. Save the token securely
+      await saveToken(token);
+      // 2. Invalidate the 'profile' query. This is the magic key.
+      // It tells React Query to refetch the user's profile, which will
+      // now succeed with the new token, effectively logging the user in.
+      await queryClient.invalidateQueries({ queryKey: ['profile'] });
+      Toast.show('Login Successful!', Toast.SHORT);
+    },
   });
 
-  return { performLogin, isLoggingIn };
+  // Logout function
+  const logout = async () => {
+    await removeToken();
+    // Invalidate the profile to log the user out across the app
+    await queryClient.invalidateQueries({ queryKey: ['profile'] });
+    Toast.show('Logged out.', Toast.SHORT);
+  };
+
+  return {
+    performRequestOtp,
+    isRequestingOtp,
+    performVerifyOtp,
+    isVerifyingOtp,
+    logout,
+  };
 };

@@ -3,6 +3,8 @@ import Toast from 'react-native-simple-toast';
 import { BASE_URL } from '../config';
 import { useAuthStore } from '../stores/authStore';
 import { API_ENDPOINTS } from '../utils/constants';
+import { removeToken } from '../utils/tokenManager';
+import { queryClient } from '../../App';
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -34,8 +36,11 @@ apiClient.interceptors.request.use(
       console.log('Session is valid. Proceeding with original request.');
       return config; // Session is valid, proceed with the original request
     } catch (sessionError) {
-      console.error('Session check failed:', sessionError);
-      useAuthStore.getState().showSessionExpiredModal();
+      Toast.show('Session expired. Please log in again.', Toast.LONG);
+      // If session check fails, log out the user
+      await removeToken();
+      // Invalidate the profile query to signal logout across the app
+      await queryClient.invalidateQueries({ queryKey: ['profile'] });
       return Promise.reject(new axios.Cancel('Session validation failed.'));
     }
   },

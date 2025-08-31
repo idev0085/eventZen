@@ -54,6 +54,7 @@ export const APP_CONFIG = {
   version: '1.0.0',
   buildNumber: 1,
   DEBUG: false,
+  TOKEN: 'authToken',
 };
 
 export const COLORS = {
@@ -152,7 +153,7 @@ export const API_ENDPOINTS = {
   BASE_URL: 'https://api.eventzen.com',
   AUTH: '/auth',
   USER: '/user',
-  REQUEST_TIMEOUT: 10000,
+  REQUEST_TIMEOUT: 15000,
 };
 
 export const CONFIG = {};
