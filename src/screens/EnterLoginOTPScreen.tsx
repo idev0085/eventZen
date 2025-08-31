@@ -32,7 +32,6 @@ const EnterLoginOTPScreen = (props: any) => {
   } = useAuth();
 
   const { email: senderEmail } = route.params;
-  const [inputOTP, setInputOTP] = useState('');
   const [timer, setTimer] = useState(APP_CONFIG.RESEND_TIMER);
 
   useEffect(() => {

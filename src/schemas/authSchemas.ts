@@ -48,11 +48,26 @@ export const UserSchema = z.object({
 export const UserProfileResponseSchema = z.object({
   success: z.boolean(),
   message: z.string(),
-  data: z.object({
-    user: UserSchema,
-    image_url: z.string().nullable(),
-    roles: z.array(z.string()),
-  }),
+  id: z.number(),
+  first_name: z.string().nullable(),
+  lastname: z.string().nullable(),
+  name: z.string(),
+  email: z.string().email(),
+  phone: z.string().nullable(),
+  imageUrl: z.string().nullable(),
+  designation: z.string().nullable(),
+  bio: z.string().nullable(),
+  tags: z.string().nullable(),
+  my_qr_code: z.string().url(),
+  company_name: z.string().nullable(),
+  company_email: z.string().nullable(),
+  company_phone: z.string().nullable(),
+  image_url: z.string().nullable(),
+  roles: z.array(z.string()),
+  company_about_page: z.string().url(),
+  company_location_page: z.string().url(),
+  company_privacy_policy_page: z.string().url(),
+  company_terms_of_service_page: z.string().url(),
 });
 
 export type TUser = z.infer<typeof UserSchema>;

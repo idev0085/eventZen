@@ -28,6 +28,7 @@ import {
 import CustomText from '../components/ui/text';
 import Icon from '../components/icon';
 import Card from '../components/card';
+import { useAuth } from '../hooks/useAuth';
 const ICON_SIZE = 22;
 const ARROW_ICON_SIZE = 22;
 const CustomSideBarMenus = [
@@ -102,6 +103,10 @@ const CustomSideBarCMS = [
 ];
 
 export default function CustomSideBar({ navigation }: any) {
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    await logout();
+  };
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -176,7 +181,7 @@ export default function CustomSideBar({ navigation }: any) {
           }}
         >
           <TouchableOpacity
-            onPress={() => Alert.alert('Logout Pressed')}
+            onPress={handleLogout}
             style={{ flexDirection: 'row', alignItems: 'center' }}
           >
             <DrawerLogout width={ICON_SIZE} height={ICON_SIZE} />{' '}

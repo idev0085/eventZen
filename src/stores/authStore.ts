@@ -1,19 +1,19 @@
 import { create } from 'zustand';
 import * as keychain from 'react-native-keychain';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TUser } from '../schemas/authSchemas';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthState {
   token: string | null;
-  user: TUser | null;
-  isAuthenticated: boolean;
   isHydrated: boolean;
   isSessionExpired: boolean;
+  isAuthenticated: boolean;
+  user: TUser | null;
   setToken: (token: string) => Promise<void>;
-  setUser: (user: TUser) => Promise<void>;
-  logout: () => Promise<void>;
   hydrate: () => Promise<void>;
   showSessionExpiredModal: () => void;
+  logout: () => Promise<void>;
+  setUser: (user: TUser) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>(set => ({
@@ -36,6 +36,11 @@ export const useAuthStore = create<AuthState>(set => ({
     }
   },
 
+  clearToken: async () => {
+    set({ token: null });
+    await keychain.resetGenericPassword();
+  },
+
   logout: async () => {
     set({
       token: null,
@@ -48,16 +53,17 @@ export const useAuthStore = create<AuthState>(set => ({
   },
 
   showSessionExpiredModal: () => set({ isSessionExpired: true }),
+  hideSessionExpiredModal: () => set({ isSessionExpired: false }),
 
   hydrate: async () => {
     console.log('Hydrate called');
     try {
       const credentials = await keychain.getGenericPassword();
-      const userString = await AsyncStorage.getItem('user');
-      if (credentials && userString) {
+      // const userString = await AsyncStorage.getItem('user');
+      if (credentials) {
         const token = credentials.password;
-        const user = JSON.parse(userString);
-        set({ token, user, isAuthenticated: true });
+        // const user = JSON.parse(userString);
+        set({ token, isAuthenticated: true });
       }
     } catch (error) {
       console.error('Failed to hydrate auth state: ', error);
