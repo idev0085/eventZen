@@ -8,8 +8,13 @@ export const saveToken = async (token: string): Promise<void> => {
 };
 
 export const getToken = async (): Promise<string | null> => {
-  const credentials = await Keychain.getGenericPassword();
-  return credentials ? credentials.password : null;
+  try {
+    const credentials = await Keychain.getGenericPassword();
+    return credentials ? credentials.password : null;
+  } catch (error) {
+    console.error('Failed to get token:', error);
+    return null;
+  }
 };
 
 export const removeToken = async (): Promise<void> => {
