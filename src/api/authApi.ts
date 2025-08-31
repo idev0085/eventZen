@@ -1,4 +1,3 @@
-// src/api/authApi.ts
 import {
   VerifyOtpResponseSchema,
   UserProfileResponseSchema,
@@ -34,14 +33,23 @@ export const verifyOtp = async (payload: OtpPayload): Promise<string> => {
   return validatedData.token;
 };
 
+// authApi.ts - UPDATE getProfile FUNCTION
 export const getProfile = async (): Promise<TUser> => {
   try {
     const { data } = await apiClient.get('/api/profile');
+
+    // Directly validate the response since it's not nested
     const validated = UserProfileResponseSchema.parse(data);
-    return validated.data.user;
-  } catch (error) {
-    // If getProfile fails for any reason (401, network error), we throw
-    // This will put the useQuery hook into an `isError` state.
-    throw new Error('Failed to fetch profile.');
+    return validated;
+  } catch (error: any) {
+    console.error('getProfile error details:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+    });
+
+    throw new Error(
+      error.response?.data?.message || 'Failed to fetch profile.',
+    );
   }
 };
