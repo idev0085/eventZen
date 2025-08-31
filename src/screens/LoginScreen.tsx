@@ -18,6 +18,7 @@ export default function LoginScreen() {
       Toast.show('Invalid Email', Toast.LONG);
       return;
     }
+    Toast.show('Please wait...', Toast.LONG);
     performRequestOtp({ email });
   };
   return (
@@ -43,6 +44,7 @@ export default function LoginScreen() {
           </CustomText>
           <View style={styles.btnContainer}>
             <Pressable
+              disabled={isRequestingOtp}
               onPress={btnHandler}
               android_ripple={{ color: 'rgba(0,0,0,0.1)', borderless: true }}
               style={({ pressed }) => [
@@ -54,7 +56,7 @@ export default function LoginScreen() {
                 },
               ]}
             >
-              <RightArrowLoginButton />
+              <RightArrowLoginButton isDisabled={isRequestingOtp} />
             </Pressable>
           </View>
         </View>
