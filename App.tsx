@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, Platform } from 'react-native';
+import { StatusBar, Platform, View, Text } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,9 +9,15 @@ import Toast from 'react-native-simple-toast';
 import { ThemeService } from './src/services/ThemeService';
 import AppNavigator from './src/navigation/AppNavigator';
 import AuthNavigator from './src/navigation/AuthNavigator';
+import { useSession } from './src/hooks/useSession';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
+    queries: {
+      retry: false,
+      staleTime: 5 * 60 * 1000,
+      gcTime: 0,
+    },
     mutations: {
       onError: (error: any) => {
         const message =
@@ -22,9 +28,29 @@ export const queryClient = new QueryClient({
   },
 });
 
-const isAuthenticated = false;
-
 function AppContent() {
+  const { isAuthenticated, isLoading, token, isHydrated } = useSession();
+  console.log('🚀 ~ AppContent ~ token:', token);
+
+  // Debug info - remove after fixing
+  console.log('AppContent:', {
+    isAuthenticated,
+    isLoading,
+    hasToken: !!token,
+    isHydrated,
+  });
+
+  // Show loading screen until we know auth status -- Loader will added.
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading auth status...</Text>
+        <Text>Token: {token ? 'Exists' : 'None'}</Text>
+        <Text>Hydrated: {isHydrated ? 'Yes' : 'No'}</Text>
+      </View>
+    );
+  }
+
   return (
     <NavigationContainer>
       {isAuthenticated ? <AppNavigator /> : <AuthNavigator />}
