@@ -10,6 +10,7 @@ import { ThemeService } from './src/services/ThemeService';
 import AppNavigator from './src/navigation/AppNavigator';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import { useSession } from './src/hooks/useSession';
+import LoadingOverlay from './src/components/loadingOverlay';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,13 +43,7 @@ function AppContent() {
 
   // Show loading screen until we know auth status -- Loader will added.
   if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Loading auth status...</Text>
-        <Text>Token: {token ? 'Exists' : 'None'}</Text>
-        <Text>Hydrated: {isHydrated ? 'Yes' : 'No'}</Text>
-      </View>
-    );
+    return <LoadingOverlay visible={isLoading} />;
   }
 
   return (
