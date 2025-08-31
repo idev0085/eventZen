@@ -15,7 +15,7 @@ interface OtpPayload {
 export const requestOtp = async (payload: {
   email: string;
 }): Promise<string> => {
-  const { data } = await apiClient.post('/auth/login', payload);
+  const { data } = await apiClient.post('/api/auth/login', payload);
   const validateData = RequestOtpResponseSchema.parse(data);
 
   if (__DEV__) {
@@ -29,14 +29,14 @@ export const requestOtp = async (payload: {
 };
 
 export const verifyOtp = async (payload: OtpPayload): Promise<string> => {
-  const { data } = await apiClient.post('/auth/verify-otp', payload);
+  const { data } = await apiClient.post('/api/auth/verify-otp', payload);
   const validatedData = VerifyOtpResponseSchema.parse(data);
   return validatedData.token;
 };
 
 export const getProfile = async (): Promise<TUser> => {
   try {
-    const { data } = await apiClient.get('/profile');
+    const { data } = await apiClient.get('/api/profile');
     const validated = UserProfileResponseSchema.parse(data);
     return validated.data.user;
   } catch (error) {
