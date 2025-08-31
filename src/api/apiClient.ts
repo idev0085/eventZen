@@ -1,9 +1,8 @@
 import axios from 'axios';
 import Toast from 'react-native-simple-toast';
 import { BASE_URL } from '../config';
-import { useAuthStore } from '../stores/authStore';
 import { API_ENDPOINTS } from '../utils/constants';
-import { removeToken } from '../utils/tokenManager';
+import { getToken, removeToken } from '../utils/tokenManager';
 import { queryClient } from '../../App';
 
 export const apiClient = axios.create({
@@ -14,51 +13,68 @@ export const apiClient = axios.create({
   },
 });
 
-const PUBLIC_URLs = ['/auth/login', '/auth/verify-otp', '/auth/resend-otp'];
+const PUBLIC_URLs = [
+  '/auth/login',
+  '/auth/verify-otp',
+  '/auth/resend-otp',
+  '/auth/check-session',
+];
 
-// Request Interceptor: The gatekeeper for all authenticated calls
+// Request Interceptor
 apiClient.interceptors.request.use(
   async config => {
-    const { token } = useAuthStore.getState();
-    const isPublicUrl = PUBLIC_URLs.some(url => config.url?.startsWith(url));
-
-    if (isPublicUrl || !token) {
-      return config;
-    }
-
-    config.headers.Authorization = `Bearer ${token}`;
-
     try {
-      console.log('Checking session...');
-      await apiClient.get('/auth/check-session', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log('Session is valid. Proceeding with original request.');
-      return config; // Session is valid, proceed with the original request
-    } catch (sessionError) {
-      Toast.show('Session expired. Please log in again.', Toast.LONG);
-      // If session check fails, log out the user
-      await removeToken();
-      // Invalidate the profile query to signal logout across the app
-      await queryClient.invalidateQueries({ queryKey: ['profile'] });
-      return Promise.reject(new axios.Cancel('Session validation failed.'));
+      const token = await getToken();
+      const isPublicUrl = PUBLIC_URLs.some(url => config.url?.includes(url));
+
+      if (isPublicUrl || !token) {
+        return config;
+      }
+
+      config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    } catch (error) {
+      console.error('Request interceptor error:', error);
+      return Promise.reject(error);
     }
   },
-  error => Promise.reject(error),
+  error => {
+    console.error('Request interceptor setup error:', error);
+    return Promise.reject(error);
+  },
 );
 
+// Response Interceptor: FIXED PROPERLY
 apiClient.interceptors.response.use(
-  response => response,
-  error => {
-    // If the request was cancelled by our interceptor, don't show a generic error
-    if (axios.isCancel(error)) {
+  response => {
+    console.log('API Success:', response.config.url);
+    return response;
+  },
+  async error => {
+    console.log('API Error:', {
+      message: error.message,
+      code: error.code,
+      response: error.response?.status,
+      config: error.config?.url,
+    });
+
+    // Network error (no response)
+    if (!error.response) {
+      Toast.show('Network error. Please check your connection.', Toast.LONG);
       return Promise.reject(error);
     }
 
-    const { response } = error;
-    const errorMessage =
-      response?.data?.message || 'An unexpected error occurred.';
-    Toast.show(errorMessage, Toast.LONG);
+    // Session expired error
+    if (error.response.status === 401) {
+      Toast.show('Session expired. Please log in again.', Toast.LONG);
+      await removeToken();
+      await queryClient.invalidateQueries({ queryKey: ['profile'] });
+    } else {
+      // Other server errors
+      const errorMessage =
+        error.response.data?.message || 'An unexpected error occurred.';
+      Toast.show(errorMessage, Toast.LONG);
+    }
 
     return Promise.reject(error);
   },
