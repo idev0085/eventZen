@@ -14,7 +14,7 @@ export default SubTopicWrapper;
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 15,
+    marginVertical: 8,
     marginHorizontal: 12,
     padding: 8,
   },
