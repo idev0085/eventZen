@@ -172,7 +172,8 @@ const styles = StyleSheet.create({
   },
   liveContainer: {
     borderRadius: 14,
-    padding: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
