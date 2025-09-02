@@ -19,7 +19,7 @@ const HomeScreen = () => {
         profileImage="https://reactjs.org/logo-og.png"
         bellIcon="your_bell_icon_source"
       />
-      <UpcomingEvent eventDate={new Date(2025, 8, 3, 2, 31, 0)} />
+      <UpcomingEvent eventDate={new Date(2025, 8, 4, 2, 31, 0)} />
       <QuickActionMenu />
       <ConnectionsCard
         connections={GENERATED_CONNECTIONS}
