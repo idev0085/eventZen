@@ -5,13 +5,15 @@ import {
   View,
   ViewStyle,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import { COLORS, PartyPopperIcon, TEXT_SIZES } from '../utils/constants';
 import SubTopicWrapper from './ui/subTopicWrapper';
+import Toast from 'react-native-simple-toast';
 
 // --- Type Definitions ---
 interface UpcomingEventProps {
-  eventDate: Date; // make sure you pass this from parent
+  eventDate: Date;
   containerStyle?: ViewStyle;
 }
 
@@ -45,6 +47,10 @@ const calculateTimeLeft = (targetDate: Date): TimeLeft | null => {
   };
 };
 
+const handleEventLive = () => {
+  Toast.show('Event is Live.', Toast.LONG);
+};
+
 // --- UI Sub-components ---
 const TimeUnit: React.FC<TimeUnitProps> = ({ value, label }) => (
   <View style={styles.timeUnit}>
@@ -71,20 +77,22 @@ const CountdownView: React.FC<{ timeLeft: TimeLeft }> = ({ timeLeft }) => (
 );
 
 const EventLiveView: React.FC = () => (
-  <ImageBackground
-    source={require('../../assets/images/otp_bg.png')}
-    style={styles.liveContainer}
-    imageStyle={{ borderRadius: 16 }}
-  >
-    <PartyPopperIcon style={styles.partyPopper} />
-    <View style={styles.liveTextContainer}>
-      <Text style={styles.liveTitle}>Event Now Live !!</Text>
-      <Text style={styles.liveSubtitle}>
-        The event has officially started—join live sessions and stay updated in
-        real time.
-      </Text>
-    </View>
-  </ImageBackground>
+  <TouchableOpacity onPress={handleEventLive}>
+    <ImageBackground
+      source={require('../../assets/images/otp_bg.png')}
+      style={styles.liveContainer}
+      imageStyle={{ borderRadius: 16 }}
+    >
+      <PartyPopperIcon style={styles.partyPopper} />
+      <View style={styles.liveTextContainer}>
+        <Text style={styles.liveTitle}>Event Now Live !!</Text>
+        <Text style={styles.liveSubtitle}>
+          The event has officially started—join live sessions and stay updated
+          in real time.
+        </Text>
+      </View>
+    </ImageBackground>
+  </TouchableOpacity>
 );
 
 // --- Main Component ---
