@@ -49,11 +49,13 @@ import ExhibitorsIcon from '../../assets/svg/svgComponents/ExhibitorsIcon';
 import SpeakersIcon from '../../assets/svg/svgComponents/SpeakersIcon';
 import SponsorsIcon from '../../assets/svg/svgComponents/SponsorsIcon';
 import EditProfileIcon from '../../assets/svg/svgComponents/EditProfile';
+import PartyPopperIcon from '../../assets/svg/svgComponents/PartyPopperIcon';
+
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
   buildNumber: 1,
-  DEBUG: false,
+  DEBUG: true,
   TOKEN: 'authToken',
   RESEND_TIMER: 60,
 };
@@ -80,6 +82,7 @@ export const COLORS = {
   textLight: '#9CA3AF',
   placeholder: '#D1D5DB',
   qrBox: '#4d8bff',
+  eventTimeBox: '#1261CC',
   badgeGreen: '#e8f2ee',
   badgeYellow: '#fef5e8',
 };
@@ -219,4 +222,5 @@ export {
   SpeakersIcon,
   SponsorsIcon,
   EditProfileIcon,
+  PartyPopperIcon,
 };
