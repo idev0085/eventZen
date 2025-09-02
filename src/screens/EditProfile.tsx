@@ -148,15 +148,7 @@ const EditProfile = () => {
           />
         </Card>
       </ScrollView>
-      <View
-        style={{
-          height: 80,
-          width: '100%',
-          backgroundColor: COLORS.white,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <View style={styles.btnContainer}>
         <Button
           title={'Save'}
           onPress={() => {}}
@@ -268,5 +260,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Roboto-Regular',
     color: COLORS.white,
+  },
+  btnContainer: {
+    height: 80,
+    width: '100%',
+    backgroundColor: COLORS.white,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

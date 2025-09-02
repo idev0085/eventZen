@@ -85,7 +85,9 @@ const EnterLoginOTPScreen = (props: any) => {
             <CustomText style={{ ...styles.subTitle, color: COLORS.primary }}>
               {senderEmail}
             </CustomText>
-            <OtpEdit />
+            <TouchableOpacity onPress={handleBackPress}>
+              <OtpEdit />
+            </TouchableOpacity>
           </View>
           {/* Add your OTP Input field */}
           <View style={{ marginTop: 20 }}>
