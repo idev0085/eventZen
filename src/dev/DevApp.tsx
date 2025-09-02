@@ -1,21 +1,17 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import EnterLoginOTPScreen from '../screens/EnterLoginOTPScreen';
 import HomeDrawerNavigator from '../navigation/HomeDrawerNavigator';
+import HomeScreen from '../screens/HomeScreen';
 
 const Stack = createStackNavigator();
 
 const TestScreen = ({ navigation }: any) => (
   <View style={{ flex: 1 }}>
-    <Button
-      title="Go to Main App"
-      onPress={() => navigation.navigate('LoginScreen')}
-    />
-    {/* Your test components */}
-    <HomeDrawerNavigator />
+    <HomeScreen />
   </View>
 );
 
