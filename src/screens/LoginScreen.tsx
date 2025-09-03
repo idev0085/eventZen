@@ -7,11 +7,12 @@ import RightArrowLoginButton from '../../assets/svg/svgComponents/RightArrowLogi
 import { useState } from 'react';
 import Toast from 'react-native-simple-toast';
 import { useAuth } from '../hooks/useAuth';
+import Checkbox from '@react-native-community/checkbox';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const { performRequestOtp, isRequestingOtp } = useAuth();
-
+  const [isChecked, setChecked] = useState(false);
   const btnHandler = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
@@ -37,11 +38,19 @@ export default function LoginScreen() {
             required={true}
           />
           <CustomText style={styles.infoText}>
-            We will send you one time
+            We will send you one time password (OTP)
           </CustomText>
-          <CustomText style={{ marginBottom: 50, ...styles.infoText }}>
+          <View style={styles.termsConditionWrapper}>
+            <Checkbox value={isChecked} onValueChange={setChecked} />
+            <CustomText style={styles.infoTextCheck}>
+              I have read and aggree to the{' '}
+              <Text style={styles.textUnderLine}>Terms and conditions</Text> ,{' '}
+              <Text style={styles.textUnderLine}>privacy policy</Text>
+            </CustomText>
+          </View>
+          {/* <CustomText style={{ marginBottom: 50, ...styles.infoText }}>
             password (OTP)
-          </CustomText>
+          </CustomText> */}
           <View style={styles.btnContainer}>
             <Pressable
               disabled={isRequestingOtp}
@@ -50,8 +59,9 @@ export default function LoginScreen() {
               style={({ pressed }) => [
                 {
                   position: 'absolute',
-                  left: '35%',
-                  top: -15,
+                  // left: '40%',
+                  //top: -15,
+                  alignSelf: 'center',
                   transform: [{ scale: pressed ? 0.9 : 1 }],
                 },
               ]}
@@ -84,9 +94,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     padding: 20,
     borderRadius: 20,
+    paddingBottom: 30,
   },
   title: {
     alignSelf: 'center',
@@ -107,15 +118,36 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    //marginBottom: 10,
     fontSize: TEXT_SIZES.xs,
   },
   infoText: {
     textAlign: 'center',
     fontSize: TEXT_SIZES.xs,
     color: COLORS.textPrimary,
+    fontFamily: 'Roboto-Reguler',
+    marginBottom: 10,
+  },
+  infoTextCheck: {
+    // textAlign: 'center',
+    fontSize: TEXT_SIZES.sm,
+    color: COLORS.textPrimary,
+    fontFamily: 'Roboto-Reguler',
+    paddingLeft: 5,
+    paddingRight: 10,
+    lineHeight: 20,
   },
   btnContainer: {
     position: 'relative',
+    // marginTop: 20,
+  },
+  termsConditionWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  textUnderLine: {
+    fontFamily: 'Roboto-Bold',
+    textDecorationLine: 'underline',
   },
 });

@@ -2,12 +2,14 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ScannerActionIcon } from '../utils/constants';
+import Toast from 'react-native-simple-toast';
 
 const FloatingScannerCTA = () => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate('ScannerScreen' as never);
+    // navigation.navigate('ScannerScreen' as never);
+    Toast.show('Feature is in development stage', Toast.LONG);
   };
 
   return (
