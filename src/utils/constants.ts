@@ -53,6 +53,7 @@ import PartyPopperIcon from '../../assets/svg/svgComponents/PartyPopperIcon';
 import NetworkFilledIcon from '../../assets/svg/svgComponents/NetworkFilledIcon';
 import CalendarFilledIcon from '../../assets/svg/svgComponents/CalendarFilledIcon';
 import FavoriteFilledIcon from '../../assets/svg/svgComponents/FavoriteFilledIcon';
+import ScannerActionIcon from '../../assets/svg/svgComponents/ScannerActionIcon';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -267,4 +268,5 @@ export {
   NetworkFilledIcon,
   CalendarFilledIcon,
   FavoriteFilledIcon,
+  ScannerActionIcon,
 };
