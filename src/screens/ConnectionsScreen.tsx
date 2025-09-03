@@ -1,89 +1,88 @@
-import { Alert, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Search, GreenBadge, COLORS } from '../utils/constants';
-import UserDetails from '../components/userDetails';
-import ContactDetails from '../components/contactDetails';
-import AddNote from '../components/addNote';
+import { StyleSheet, View } from 'react-native';
+import { COLORS } from '../utils/constants';
 import ListItem from '../components/listItem';
 import { ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
-import TextBox from '../components/ui/textBox';
 import SearchUI from '../components/Search';
+import BackHeader from '../components/BackHeader';
 
 export default function ConnectionScreen() {
   return (
-    <ScrollView style={styles.container}>
-      <SearchUI
-        value=""
-        placeholder="Search Connections..."
-        onChangeText={() => {}}
-      />
+    <>
+      <BackHeader title="Connection" showBtn={false} />
+      <ScrollView style={styles.container}>
+        <SearchUI
+          value=""
+          placeholder="Search Connections..."
+          onChangeText={() => {}}
+        />
 
-      <Card style={styles.card}>
-        <ListItem
-          title="Alex Morgan"
-          designation="Creative Strategy Experts"
-          companyName="Innovatech Solutions"
-          avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
-        />
-      </Card>
-      <Card style={styles.card}>
-        <ListItem
-          title="Alex Morgan"
-          designation="Creative Strategy Experts"
-          companyName="Innovatech Solutions"
-          avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
-        />
-      </Card>
-      <Card style={styles.card}>
-        <ListItem
-          title="Alex Morgan"
-          designation="Creative Strategy Experts"
-          companyName="Innovatech Solutions"
-          avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
-        />
-      </Card>
-      <Card style={styles.card}>
-        <ListItem
-          title="Alex Morgan"
-          designation="Creative Strategy Experts"
-          companyName="Innovatech Solutions"
-          avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
-        />
-      </Card>
-      <Card style={styles.card}>
-        <ListItem
-          title="Alex Morgan"
-          designation="Creative Strategy Experts"
-          companyName="Innovatech Solutions"
-          avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
-        />
-      </Card>
-      <Card style={styles.card}>
-        <ListItem
-          title="Alex Morgan"
-          designation="Creative Strategy Experts"
-          companyName="Innovatech Solutions"
-          avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
-        />
-      </Card>
-      <Card style={styles.card}>
-        <ListItem
-          title="Alex Morgan"
-          designation="Creative Strategy Experts"
-          companyName="Innovatech Solutions"
-          avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
-        />
-      </Card>
-      <Card style={styles.card}>
-        <ListItem
-          title="Alex Morgan"
-          designation="Creative Strategy Experts"
-          companyName="Innovatech Solutions"
-          avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
-        />
-      </Card>
-    </ScrollView>
+        <Card style={styles.card}>
+          <ListItem
+            title="Alex Morgan"
+            designation="Creative Strategy Experts"
+            companyName="Innovatech Solutions"
+            avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
+          />
+        </Card>
+        <Card style={styles.card}>
+          <ListItem
+            title="Alex Morgan"
+            designation="Creative Strategy Experts"
+            companyName="Innovatech Solutions"
+            avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
+          />
+        </Card>
+        <Card style={styles.card}>
+          <ListItem
+            title="Alex Morgan"
+            designation="Creative Strategy Experts"
+            companyName="Innovatech Solutions"
+            avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
+          />
+        </Card>
+        <Card style={styles.card}>
+          <ListItem
+            title="Alex Morgan"
+            designation="Creative Strategy Experts"
+            companyName="Innovatech Solutions"
+            avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
+          />
+        </Card>
+        <Card style={styles.card}>
+          <ListItem
+            title="Alex Morgan"
+            designation="Creative Strategy Experts"
+            companyName="Innovatech Solutions"
+            avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
+          />
+        </Card>
+        <Card style={styles.card}>
+          <ListItem
+            title="Alex Morgan"
+            designation="Creative Strategy Experts"
+            companyName="Innovatech Solutions"
+            avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
+          />
+        </Card>
+        <Card style={styles.card}>
+          <ListItem
+            title="Alex Morgan"
+            designation="Creative Strategy Experts"
+            companyName="Innovatech Solutions"
+            avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
+          />
+        </Card>
+        <Card style={styles.card}>
+          <ListItem
+            title="Alex Morgan"
+            designation="Creative Strategy Experts"
+            companyName="Innovatech Solutions"
+            avatar={{ uri: 'https://reactjs.org/logo-og.png' }}
+          />
+        </Card>
+      </ScrollView>
+    </>
   );
 }
 

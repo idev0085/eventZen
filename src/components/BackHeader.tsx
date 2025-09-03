@@ -7,12 +7,14 @@ interface BackHeaderProps {
   title: string;
   onBack?: () => void;
   routeName?: string;
+  showBtn?: boolean;
 }
 
 const BackHeader: React.FC<BackHeaderProps> = ({
   title,
   onBack,
   routeName,
+  showBtn = true,
 }) => {
   const navigation = useNavigation();
 
@@ -28,9 +30,11 @@ const BackHeader: React.FC<BackHeaderProps> = ({
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-        <ArrowLeftIcon />
-      </TouchableOpacity>
+      {showBtn ? (
+        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+          <ArrowLeftIcon />
+        </TouchableOpacity>
+      ) : null}
       <Text style={styles.title}>{title}</Text>
     </View>
   );

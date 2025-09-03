@@ -6,63 +6,67 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
 
 import CustomText from '../components/ui/text';
+import BackHeader from '../components/BackHeader';
 export default function SessionsScreen() {
   return (
-    <ScrollView style={styles.container}>
-      <CustomText style={{ fontSize: 24, fontWeight: 'bold', margin: 10 }}>
-        28 Apr, 2025
-      </CustomText>
+    <>
+      <BackHeader title="Session" showBtn={false} />
+      <ScrollView style={styles.container}>
+        <CustomText style={{ fontSize: 24, fontWeight: 'bold', margin: 10 }}>
+          28 Apr, 2025
+        </CustomText>
 
-      <Card style={styles.cardDisable}>
-        <SessionListItem
-          title="Opening Keynote: The Future of Innovation"
-          time="10:00 AM - 11:00 AM"
-          onPress={() => Alert.alert('Item Pressed')}
-          speakers={[
-            {
-              name: 'Dr. A',
-              designation: 'Chief Innovation Officer',
-              company: 'Innovatech Solutions',
-            },
-          ]}
-          workshopNo="Workshop NO : 01"
-          status="Completed"
-        />
-      </Card>
+        <Card style={styles.cardDisable}>
+          <SessionListItem
+            title="Opening Keynote: The Future of Innovation"
+            time="10:00 AM - 11:00 AM"
+            onPress={() => Alert.alert('Item Pressed')}
+            speakers={[
+              {
+                name: 'Dr. A',
+                designation: 'Chief Innovation Officer',
+                company: 'Innovatech Solutions',
+              },
+            ]}
+            workshopNo="Workshop NO : 01"
+            status="Completed"
+          />
+        </Card>
 
-      <Card style={styles.cardOngoing}>
-        <SessionListItem
-          title="Opening Keynote: The Future of Innovation"
-          time="10:00 AM - 11:00 AM"
-          onPress={() => Alert.alert('Item Pressed')}
-          speakers={[
-            {
-              name: 'Dr. A',
-              designation: 'Chief Innovation Officer',
-              company: 'Innovatech Solutions',
-            },
-          ]}
-          workshopNo="Workshop NO : 01"
-          status="Ongoing"
-        />
-      </Card>
-      <Card style={styles.card}>
-        <SessionListItem
-          title="Opening Keynote: The Future of Innovation"
-          time="10:00 AM - 11:00 AM"
-          onPress={() => Alert.alert('Item Pressed')}
-          speakers={[
-            {
-              name: 'Dr. A',
-              designation: 'Chief Innovation Officer',
-              company: 'Innovatech Solutions',
-            },
-          ]}
-          workshopNo="Workshop NO : 01"
-          status="Ongoing"
-        />
-      </Card>
-    </ScrollView>
+        <Card style={styles.cardOngoing}>
+          <SessionListItem
+            title="Opening Keynote: The Future of Innovation"
+            time="10:00 AM - 11:00 AM"
+            onPress={() => Alert.alert('Item Pressed')}
+            speakers={[
+              {
+                name: 'Dr. A',
+                designation: 'Chief Innovation Officer',
+                company: 'Innovatech Solutions',
+              },
+            ]}
+            workshopNo="Workshop NO : 01"
+            status="Ongoing"
+          />
+        </Card>
+        <Card style={styles.card}>
+          <SessionListItem
+            title="Opening Keynote: The Future of Innovation"
+            time="10:00 AM - 11:00 AM"
+            onPress={() => Alert.alert('Item Pressed')}
+            speakers={[
+              {
+                name: 'Dr. A',
+                designation: 'Chief Innovation Officer',
+                company: 'Innovatech Solutions',
+              },
+            ]}
+            workshopNo="Workshop NO : 01"
+            status="Ongoing"
+          />
+        </Card>
+      </ScrollView>
+    </>
   );
 }
 
