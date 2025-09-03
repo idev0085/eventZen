@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-community/checkbox": "^0.5.20",
     "@react-native-community/netinfo": "^11.4.1",
     "@react-native-vector-icons/fontawesome5": "^12.2.0",
     "@react-native/new-app-screen": "0.80.2",
@@ -23,6 +24,7 @@
     "axios": "^1.11.0",
     "react": "19.1.0",
     "react-native": "0.80.2",
+    "react-native-bootsplash": "^6.3.10",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.28.0",
     "react-native-get-random-values": "^1.11.0",
