@@ -36,7 +36,7 @@ const HomeScreen = () => {
           bellIcon="your_bell_icon_source"
         />
         <YoutubePlayer
-          height={300}
+          height={200}
           play={playing}
           videoId={'iee2TATGMyI'}
           onChangeState={onStateChange}
