@@ -1,17 +1,16 @@
 import { useState } from 'react';
-import { Alert, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { EditProfileIcon, COLORS } from '../utils/constants';
-import UserDetails from '../components/userDetails';
-import ContactDetails from '../components/contactDetails';
-import AddNote from '../components/addNote';
+import { COLORS } from '../utils/constants';
 import Icon from '../components/icon';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import TextBox from '../components/ui/textBox';
 import Button from '../components/ui/button';
 import { ScrollView } from 'react-native-gesture-handler';
+import BackHeader from '../components/BackHeader';
 const TAGS = ['IT services', 'Digital', 'Technology'];
+
 const ViewProfile = ({ ...props }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const selectTags = index => {
@@ -22,73 +21,76 @@ const ViewProfile = ({ ...props }) => {
     }
   };
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Card style={styles.card}>
-          <TouchableOpacity style={styles.imageBox}>
-            <Icon
-              source={{ uri: 'https://reactjs.org/logo-og.png' }}
-              size={100}
-              backgroundColor={COLORS.placeholder}
-              borderRadius={50}
-            />
-          </TouchableOpacity>
+    <>
+      <BackHeader title="View Profile" />
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <Card style={styles.card}>
+            <TouchableOpacity style={styles.imageBox}>
+              <Icon
+                source={{ uri: 'https://reactjs.org/logo-og.png' }}
+                size={100}
+                backgroundColor={COLORS.placeholder}
+                borderRadius={50}
+              />
+            </TouchableOpacity>
 
-          <CustomText style={styles.textLabel}>Name</CustomText>
-          <CustomText style={styles.textMeta}>Tylor Black</CustomText>
+            <CustomText style={styles.textLabel}>Name</CustomText>
+            <CustomText style={styles.textMeta}>Tylor Black</CustomText>
 
-          <CustomText style={styles.textLabel}>Designation</CustomText>
-          <CustomText style={styles.textMeta}>
-            Chief Technology Officer
-          </CustomText>
+            <CustomText style={styles.textLabel}>Designation</CustomText>
+            <CustomText style={styles.textMeta}>
+              Chief Technology Officer
+            </CustomText>
 
-          <CustomText style={styles.textLabel}>Company Name</CustomText>
-          <CustomText style={styles.textMeta}>
-            InnovateTech Solutions
-          </CustomText>
+            <CustomText style={styles.textLabel}>Company Name</CustomText>
+            <CustomText style={styles.textMeta}>
+              InnovateTech Solutions
+            </CustomText>
 
-          <View style={styles.tagContainer}>
-            <CustomText style={styles.textLabel}>Tags</CustomText>
-            <View style={styles.tagsWrapper}>
-              {TAGS.map((tag, index) => (
-                <View key={index} style={styles.tagsBox}>
-                  <CustomText style={styles.textMeta}>{tag}</CustomText>
-                </View>
-              ))}
+            <View style={styles.tagContainer}>
+              <CustomText style={styles.textLabel}>Tags</CustomText>
+              <View style={styles.tagsWrapper}>
+                {TAGS.map((tag, index) => (
+                  <View key={index} style={styles.tagsBox}>
+                    <CustomText style={styles.textMeta}>{tag}</CustomText>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
 
-          <CustomText style={styles.textLabel}>Email Id</CustomText>
-          <CustomText style={styles.textMeta}>
-            digitalaptech@gmail.com
-          </CustomText>
+            <CustomText style={styles.textLabel}>Email Id</CustomText>
+            <CustomText style={styles.textMeta}>
+              digitalaptech@gmail.com
+            </CustomText>
 
-          <CustomText style={styles.textLabel}>Phone No.</CustomText>
-          <CustomText style={styles.textMeta}>+1 7346274598</CustomText>
+            <CustomText style={styles.textLabel}>Phone No.</CustomText>
+            <CustomText style={styles.textMeta}>+1 7346274598</CustomText>
 
-          <CustomText style={styles.textLabel}>Bio</CustomText>
-          <TextBox
-            value={`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`}
-            label={''}
-            labelStyle={styles.textMeta}
-            placeholder={''}
-            onChangeText={() => {}}
-            required={true}
-            style={styles.textAreaStyle}
-            multiline={true}
-            numberOfLines={4}
+            <CustomText style={styles.textLabel}>Bio</CustomText>
+            <TextBox
+              value={`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`}
+              label={''}
+              labelStyle={styles.textMeta}
+              placeholder={''}
+              onChangeText={() => {}}
+              required={true}
+              style={styles.textAreaStyle}
+              multiline={true}
+              numberOfLines={4}
+            />
+          </Card>
+        </ScrollView>
+        <View style={styles.btnContainer}>
+          <Button
+            title={'Edit'}
+            onPress={() => props.navigation.navigate('EditProfile')}
+            style={{ width: '80%' }}
+            textStyle={styles.btnTextStyle}
           />
-        </Card>
-      </ScrollView>
-      <View style={styles.btnContainer}>
-        <Button
-          title={'Edit'}
-          onPress={() => props.navigation.navigate('EditProfile')}
-          style={{ width: '80%' }}
-          textStyle={styles.btnTextStyle}
-        />
-      </View>
-    </SafeAreaView>
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 

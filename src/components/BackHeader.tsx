@@ -1,18 +1,25 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { RightArrowButton } from '../utils/constants';
+import { ArrowLeftIcon, COLORS, TEXT_SIZES } from '../utils/constants';
 
 interface BackHeaderProps {
   title: string;
   onBack?: () => void;
+  routeName?: string;
 }
 
-const BackHeader: React.FC<BackHeaderProps> = ({ title, onBack }) => {
+const BackHeader: React.FC<BackHeaderProps> = ({
+  title,
+  onBack,
+  routeName,
+}) => {
   const navigation = useNavigation();
 
   const handleBack = () => {
-    if (onBack) {
+    if (routeName) {
+      navigation.navigate(routeName as never);
+    } else if (onBack) {
       onBack();
     } else {
       navigation.goBack();
@@ -22,7 +29,7 @@ const BackHeader: React.FC<BackHeaderProps> = ({ title, onBack }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-        <RightArrowButton />
+        <ArrowLeftIcon />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
     </View>
@@ -37,7 +44,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#ddd',
   },
@@ -45,8 +52,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   title: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#333',
+    fontSize: TEXT_SIZES.md,
+    fontWeight: '400',
   },
 });
