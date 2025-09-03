@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ImageSourcePropType,
-} from 'react-native';
-import { GreenBadge, Timer, COLORS } from '../utils/constants';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { GreenBadge, Timer, COLORS, TEXT_SIZES } from '../utils/constants';
 
 interface ListItemProps {
   onPress?: () => void;
@@ -75,7 +68,7 @@ const SessionListItem: React.FC<ListItemProps> = ({
       </View>
       <View style={styles.rightWrapper}>
         <Text style={styles.textWorkshop}>{title}</Text>
-        {speakers?.length > 0 && (
+        {Array.isArray(speakers) && speakers?.length > 0 && (
           <Text
             style={
               status === 'Completed'
@@ -118,8 +111,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeDot: {
-    width: 10,
-    height: 10,
+    width: 7,
+    height: 7,
     borderRadius: 5,
     backgroundColor: COLORS.primary,
   },
@@ -149,25 +142,25 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   textWorkshop: {
-    fontSize: 16,
+    fontSize: TEXT_SIZES.sm,
     color: COLORS.textPrimary,
     fontFamily: 'Roboto-Bold',
-    paddingRight: 10,
+    paddingRight: 4,
   },
   textWorkshopBlack: {
-    fontSize: 16,
+    fontSize: TEXT_SIZES.sm,
     color: COLORS.black,
     fontFamily: 'Roboto-Bold',
-    paddingRight: 10,
+    paddingRight: 4,
   },
   textTimeFrame: {
-    fontSize: 14,
+    fontSize: TEXT_SIZES.xxs,
     color: COLORS.textPrimary,
     marginLeft: 2,
     fontFamily: 'Roboto-Regular',
   },
   textTimeFrameBlue: {
-    fontSize: 14,
+    fontSize: TEXT_SIZES.xxs,
     color: COLORS.primary,
     marginLeft: 2,
     fontFamily: 'Roboto-Regular',

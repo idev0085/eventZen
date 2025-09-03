@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import TextBox from '../components/ui/textBox';
@@ -41,11 +41,26 @@ export default function LoginScreen() {
             We will send you one time password (OTP)
           </CustomText>
           <View style={styles.termsConditionWrapper}>
-            <Checkbox value={isChecked} onValueChange={setChecked} />
+            <Checkbox
+              value={isChecked}
+              onValueChange={setChecked}
+              tintColors={{ true: COLORS.primary }}
+            />
             <CustomText style={styles.infoTextCheck}>
               I have read and aggree to the{' '}
-              <Text style={styles.textUnderLine}>Terms and conditions</Text> ,{' '}
-              <Text style={styles.textUnderLine}>privacy policy</Text>
+              <Text
+                style={styles.textUnderLine}
+                onPress={() => Alert.alert('Terms and conditions')}
+              >
+                Terms and conditions
+              </Text>{' '}
+              ,{' '}
+              <Text
+                style={styles.textUnderLine}
+                onPress={() => Alert.alert('Privacy policy')}
+              >
+                privacy policy
+              </Text>
             </CustomText>
           </View>
           {/* <CustomText style={{ marginBottom: 50, ...styles.infoText }}>
@@ -53,7 +68,7 @@ export default function LoginScreen() {
           </CustomText> */}
           <View style={styles.btnContainer}>
             <Pressable
-              disabled={isRequestingOtp}
+              disabled={!isChecked || isRequestingOtp}
               onPress={btnHandler}
               android_ripple={{ color: 'rgba(0,0,0,0.1)', borderless: true }}
               style={({ pressed }) => [
@@ -63,6 +78,7 @@ export default function LoginScreen() {
                   //top: -15,
                   alignSelf: 'center',
                   transform: [{ scale: pressed ? 0.9 : 1 }],
+                  opacity: !isChecked || isRequestingOtp ? 0.5 : 1,
                 },
               ]}
             >

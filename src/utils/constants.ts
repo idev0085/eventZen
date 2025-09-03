@@ -92,6 +92,7 @@ export const COLORS = {
 };
 
 export const TEXT_SIZES = {
+  xxs: 10, // extra extra small
   xs: 12, // Extra Small
   sm: 14, // Small
   md: 16, // Medium (often a good default for body text)
