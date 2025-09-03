@@ -54,6 +54,7 @@ import NetworkFilledIcon from '../../assets/svg/svgComponents/NetworkFilledIcon'
 import CalendarFilledIcon from '../../assets/svg/svgComponents/CalendarFilledIcon';
 import FavoriteFilledIcon from '../../assets/svg/svgComponents/FavoriteFilledIcon';
 import ScannerActionIcon from '../../assets/svg/svgComponents/ScannerActionIcon';
+import RightArrowButton from '../../assets/svg/svgComponents/RightArrowLoginButton';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -270,4 +271,5 @@ export {
   CalendarFilledIcon,
   FavoriteFilledIcon,
   ScannerActionIcon,
+  RightArrowButton,
 };
