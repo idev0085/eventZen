@@ -6,6 +6,7 @@ import UpcomingEvent from '../components/upcomingEvent';
 import ConnectionsCard from '../components/connectionCard';
 import { GENERATED_CONNECTIONS } from '../utils/constants';
 import Toast from 'react-native-simple-toast';
+import MyStats from '../components/myStats';
 
 const HomeScreen = () => {
   const handleOnStartNetworking = () => {
@@ -25,6 +26,7 @@ const HomeScreen = () => {
         connections={GENERATED_CONNECTIONS}
         onStartNetworking={handleOnStartNetworking}
       />
+      <MyStats />
     </ScrollView>
   );
 };
