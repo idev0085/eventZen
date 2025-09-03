@@ -8,6 +8,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import { COLORS, TEXT_SIZES } from '../utils/constants';
+import CustomText from './ui/text';
+import SubTopicWrapper from './ui/subTopicWrapper';
 
 // --- Type Definitions ---
 
@@ -30,38 +32,40 @@ const ConnectionsCard: React.FC<ConnectionsCardProps> = ({
   containerStyle,
 }) => {
   return (
-    <View style={[styles.wrapper, containerStyle]}>
-      <Text style={styles.headerTitle}>Connections</Text>
-      <View style={styles.cardContainer}>
-        {/* Profile Pictures Section */}
-        <View style={styles.profilesContainer}>
-          {connections.map((connection, index) => (
-            <Image
-              key={connection.id}
-              source={{ uri: connection.imageUrl }}
-              style={[
-                styles.profileImage,
-                index > 0 ? styles.overlappingImage : {},
-              ]}
-            />
-          ))}
+    <SubTopicWrapper style={[styles.wrapper, containerStyle]}>
+      <View>
+        <CustomText style={styles.headerTitle}>Connections</CustomText>
+        <View style={styles.cardContainer}>
+          {/* Profile Pictures Section */}
+          <View style={styles.profilesContainer}>
+            {connections.map((connection, index) => (
+              <Image
+                key={connection.id}
+                source={{ uri: connection.imageUrl }}
+                style={[
+                  styles.profileImage,
+                  index > 0 ? styles.overlappingImage : {},
+                ]}
+              />
+            ))}
+          </View>
+
+          {/* Description Text */}
+          <Text style={styles.descriptionText}>
+            Connect and start networking with people
+          </Text>
+
+          {/* Action Button */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={onStartNetworking}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.buttonText}>Start Networking</Text>
+          </TouchableOpacity>
         </View>
-
-        {/* Description Text */}
-        <Text style={styles.descriptionText}>
-          Connect and start networking with people
-        </Text>
-
-        {/* Action Button */}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={onStartNetworking}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.buttonText}>Start Networking</Text>
-        </TouchableOpacity>
       </View>
-    </View>
+    </SubTopicWrapper>
   );
 };
 
@@ -70,18 +74,18 @@ const ConnectionsCard: React.FC<ConnectionsCardProps> = ({
 const styles = StyleSheet.create({
   wrapper: {
     margin: 16,
-    width: '90%',
+    width: '92%',
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: TEXT_SIZES.md,
+    marginBottom: 15,
     fontWeight: 'bold',
-    color: '#1c1c1e',
-    marginBottom: 12,
   },
   cardContainer: {
-    backgroundColor: '#ffffff',
-    borderRadius: 16,
-    padding: 24,
+    backgroundColor: COLORS.white,
+    width: '100%',
+    borderRadius: 10,
+    padding: 15,
     alignItems: 'flex-start',
     shadowColor: '#000',
     shadowOffset: {
@@ -108,9 +112,8 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: TEXT_SIZES.xs,
-    color: '#6c6c6e',
-    // textAlign: '',
-    marginBottom: 24,
+    color: COLORS.textPrimary,
+    marginBottom: 14,
   },
   button: {
     backgroundColor: COLORS.primary,
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: COLORS.white,
-    fontSize: 14,
+    fontSize: TEXT_SIZES.sm,
   },
 });
 
