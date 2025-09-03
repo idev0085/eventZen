@@ -50,6 +50,9 @@ import SpeakersIcon from '../../assets/svg/svgComponents/SpeakersIcon';
 import SponsorsIcon from '../../assets/svg/svgComponents/SponsorsIcon';
 import EditProfileIcon from '../../assets/svg/svgComponents/EditProfile';
 import PartyPopperIcon from '../../assets/svg/svgComponents/PartyPopperIcon';
+import NetworkFilledIcon from '../../assets/svg/svgComponents/NetworkFilledIcon';
+import CalendarFilledIcon from '../../assets/svg/svgComponents/CalendarFilledIcon';
+import FavoriteFilledIcon from '../../assets/svg/svgComponents/FavoriteFilledIcon';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -261,4 +264,7 @@ export {
   SponsorsIcon,
   EditProfileIcon,
   PartyPopperIcon,
+  NetworkFilledIcon,
+  CalendarFilledIcon,
+  FavoriteFilledIcon,
 };
