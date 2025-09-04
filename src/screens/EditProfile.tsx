@@ -9,21 +9,57 @@ import TextBox from '../components/ui/textBox';
 import Button from '../components/ui/button';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
-const TAGS = ['IT services', 'Digital', 'Technology'];
 import Toast from 'react-native-simple-toast';
 
+const MOCK_DATA_TAGS = ['Blockchain & FinTech', 'CloudTrends'];
+
+const MOCK_DATA = {
+  success: true,
+  message: 'successful',
+  id: 27,
+  first_name: 'Henry',
+  lastname: 'Roy',
+  name: 'Henry Roy',
+  email: 'henry.roy@example.com',
+  phone: '5132150156',
+  imageUrl: 'https://sme.nodejsdapldevelopments.com/images/default.png',
+  designation: 'Computer',
+  bio: 'apple, river, mountain, happy, blue, book, chair, quickly, beautiful, through, jungle, whisper, dance, thunder, ocean, flower, star, imagine, quiet, forever, journey, sunshine, mystery, gentle, sudden, curious, vibrant, ancient, explore, delicious, melody, freedom, courage, shimmer, distant, hopeful, dream, fragile, navigate, creation, embrace, echo, crimson, horizon, luminous, velvet, symphony, twilight, navigate, bloom, ascend',
+  tags: ['CloudTrend'],
+  my_qr_code:
+    'https://sme.nodejsdapldevelopments.com/qrcodes/user_1756983539.png',
+  company_name: 'Orn Inc',
+  company_email: 'rubye.effertz@block.com',
+  company_phone: '+17545917756',
+  image_url: 'https://sme.nodejsdapldevelopments.com/images/default.png',
+  roles: ['Admin', 'Sponsors', 'Attendee', 'Speaker'],
+  company_about_page: 'http://sme.nodejsdapldevelopments.com/app/page/about',
+  company_location_page:
+    'http://sme.nodejsdapldevelopments.com/app/page/location',
+  company_privacy_policy_page:
+    'http://sme.nodejsdapldevelopments.com/app/page/privacy',
+  company_terms_of_service_page:
+    'http://sme.nodejsdapldevelopments.com/app/page/terms',
+};
+
 const EditProfile = () => {
-  const [selectedTags, setSelectedTags] = useState([]);
-  const selectTags = index => {
-    if (selectedTags.includes(index)) {
-      setSelectedTags(selectedTags.filter(tag => tag !== index));
-    } else {
-      setSelectedTags([...selectedTags, index]);
-    }
+  const [profileData, setProfileData] = useState(MOCK_DATA);
+
+  const handleInputChange = (field: string, value: any) => {
+    setProfileData(prevData => ({ ...prevData, [field]: value }));
+  };
+
+  const selectTag = (tag: string) => {
+    const currentTags = profileData.tags || [];
+    const newTags = currentTags.includes(tag)
+      ? currentTags.filter(t => t !== tag)
+      : [...currentTags, tag];
+    handleInputChange('tags', newTags);
   };
 
   const handleSave = () => {
-    Toast.show('Feature not implemented', Toast.LONG);
+    console.log('Saving profile data:', profileData);
+    Toast.show('Profile saved!', Toast.LONG);
   };
 
   return (
@@ -33,7 +69,7 @@ const EditProfile = () => {
         <Card style={styles.card}>
           <TouchableOpacity style={styles.imageBox}>
             <Icon
-              source={{ uri: 'https://reactjs.org/logo-og.png' }}
+              source={{ uri: profileData?.imageUrl }}
               size={100}
               backgroundColor={COLORS.placeholder}
               borderRadius={50}
@@ -44,72 +80,72 @@ const EditProfile = () => {
           </TouchableOpacity>
 
           <TextBox
-            value={'Taylor'}
+            value={profileData?.first_name}
             label={'First Name'}
             labelStyle={styles.labelStyle}
             placeholder={''}
-            onChangeText={() => {}}
+            onChangeText={text => handleInputChange('first_name', text)}
             required={true}
             style={styles.textBoxStyle}
           />
 
           <TextBox
-            value={'Black'}
+            value={profileData?.lastname}
             label={'Last Name'}
             labelStyle={styles.labelStyle}
             placeholder={''}
-            onChangeText={() => {}}
+            onChangeText={text => handleInputChange('lastname', text)}
             required={true}
             style={styles.textBoxStyle}
           />
 
           <TextBox
-            value={'IT Engeener'}
+            value={profileData?.designation}
             label={'Designation'}
             labelStyle={styles.labelStyle}
             placeholder={''}
-            onChangeText={() => {}}
+            onChangeText={text => handleInputChange('designation', text)}
             required={true}
             style={styles.textBoxStyle}
           />
 
           <TextBox
-            value={'Cognizant'}
+            value={profileData?.company_name}
             label={'Company Name'}
             labelStyle={styles.labelStyle}
             placeholder={''}
-            onChangeText={() => {}}
+            onChangeText={text => handleInputChange('company_name', text)}
             required={true}
             style={styles.textBoxStyle}
           />
 
-          <TextBox
-            value={'www.cognizant.com'}
+          {/* <TextBox
+            value={profileData?.company_website}
             label={'Company Website'}
             labelStyle={styles.labelStyle}
             placeholder={''}
-            onChangeText={() => {}}
+            onChangeText={text => handleInputChange('company_website', text)}
             required={true}
             style={styles.textBoxStyle}
-          />
+          /> */}
           <View style={styles.tagContainer}>
             <Text style={styles.labelStyle}>
               Tags <Text style={styles.asterisk}> *</Text>
             </Text>
             <View style={styles.tagsWrapper}>
-              {TAGS.map((tag, index) => (
+              {MOCK_DATA_TAGS?.map((tag, index) => (
                 <TouchableOpacity
                   key={index}
+                  onPress={() => selectTag(tag)}
                   style={
-                    selectedTags.includes(index)
+                    profileData.tags.includes(tag)
                       ? styles.tagsBoxActive
                       : styles.tagsBox
                   }
-                  onPress={() => selectTags(index)}
                 >
                   <CustomText
                     style={
-                      selectedTags.includes(index)
+                      profileData.tags.includes(tag)
                         ? styles.labelStyleActive
                         : styles.labelStyle
                     }
@@ -122,35 +158,35 @@ const EditProfile = () => {
           </View>
 
           <TextBox
-            value={'taylor.black@gmail.com'}
+            value={profileData?.email}
             label={'Email Address'}
             labelStyle={styles.labelStyle}
             placeholder={''}
-            onChangeText={() => {}}
+            onChangeText={text => handleInputChange('email', text)}
             required={true}
             style={styles.textBoxStyle}
           />
 
           <TextBox
-            value={'+91 7596842521'}
+            value={profileData?.phone}
             label={'Phone Number'}
             labelStyle={styles.labelStyle}
             placeholder={''}
-            onChangeText={() => {}}
+            onChangeText={text => handleInputChange('phone', text)}
             required={true}
             style={styles.textBoxStyle}
           />
 
           <TextBox
-            value={`Lorem Ipsum is simply dummy text of the printing and typesetting industry.`}
+            value={profileData?.bio}
             label={'Bio'}
             labelStyle={styles.labelStyle}
             placeholder={''}
-            onChangeText={() => {}}
+            onChangeText={text => handleInputChange('bio', text)}
             required={true}
             style={styles.textAreaStyle}
             multiline={true}
-            numberOfLines={4}
+            numberOfLines={10}
           />
         </Card>
       </ScrollView>

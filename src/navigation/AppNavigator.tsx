@@ -10,6 +10,7 @@ import AboutScreen from '../screens/AboutScreen';
 import LocationScreen from '../screens/LocationScreen';
 import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
 import TermsConditionsScreen from '../screens/TermsConditionsScreen';
+import SessionsDetailsScreen from '../screens/SessionsDetailsScreen';
 const AppStack = createStackNavigator();
 function AppNavigator() {
   return (
@@ -32,6 +33,10 @@ function AppNavigator() {
       <AppStack.Screen
         name="TermsConditionsScreen"
         component={TermsConditionsScreen}
+      />
+      <AppStack.Screen
+        name="SessionsDetailsScreen"
+        component={SessionsDetailsScreen}
       />
     </AppStack.Navigator>
   );

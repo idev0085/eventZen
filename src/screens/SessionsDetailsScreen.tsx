@@ -25,6 +25,7 @@ import CustomText from '../components/ui/text';
 import Icon from '../components/icon';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import Button from '../components/ui/button';
+import BackHeader from '../components/BackHeader';
 const status = 'Completed';
 const ICON_SIZE = 20;
 const SESSION_META = [
@@ -189,30 +190,33 @@ const FooterBtn = () => {
 };
 export default function SessionsDetailsScreen() {
   return (
-    <ScrollView style={styles.container}>
-      <Card style={styles.card}>
-        <OverView />
+    <>
+      <BackHeader title="Session Details" />
+      <ScrollView style={styles.container}>
+        <Card style={styles.card}>
+          <OverView />
 
-        <Details
-          type={'desciption'}
-          context={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.`}
-        />
+          <Details
+            type={'desciption'}
+            context={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.`}
+          />
 
-        <Details
-          type={'demos'}
-          context={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC.`}
-        />
+          <Details
+            type={'demos'}
+            context={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC.`}
+          />
 
-        <Details
-          type={'panels'}
-          context={`Contrary to popular belief, Lorem Ipsum is not simply random text.`}
-        />
+          <Details
+            type={'panels'}
+            context={`Contrary to popular belief, Lorem Ipsum is not simply random text.`}
+          />
 
-        <Speakers type={'speakers'} list={SPEAKERS} />
+          <Speakers type={'speakers'} list={SPEAKERS} />
 
-        {status !== 'Completed' && <FooterBtn />}
-      </Card>
-    </ScrollView>
+          {status !== 'Completed' && <FooterBtn />}
+        </Card>
+      </ScrollView>
+    </>
   );
 }
 

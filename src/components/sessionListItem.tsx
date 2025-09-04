@@ -93,11 +93,11 @@ const styles = StyleSheet.create({
   sessionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 150,
+    //height: 150,
   },
   leftWrapper: {
     width: '40%',
-    height: '100%',
+    //  height: '100%',
     justifyContent: 'center',
   },
   leftTimesWrapper: {
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   rightWrapper: {
     width: '60%',
-    height: '100%',
+    //  height: '100%',
     justifyContent: 'center',
     paddingRight: 10,
   },

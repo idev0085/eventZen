@@ -7,7 +7,7 @@ import Card from '../components/card';
 
 import CustomText from '../components/ui/text';
 import BackHeader from '../components/BackHeader';
-export default function SessionsScreen() {
+export default function SessionsScreen({ ...props }) {
   return (
     <>
       <BackHeader title="Session" showBtn={false} />
@@ -20,7 +20,7 @@ export default function SessionsScreen() {
           <SessionListItem
             title="Opening Keynote: The Future of Innovation"
             time="10:00 AM - 11:00 AM"
-            onPress={() => Alert.alert('Item Pressed')}
+            onPress={() => props.navigation.navigate('SessionsDetailsScreen')}
             speakers={[
               {
                 name: 'Dr. A',
@@ -37,7 +37,7 @@ export default function SessionsScreen() {
           <SessionListItem
             title="Opening Keynote: The Future of Innovation"
             time="10:00 AM - 11:00 AM"
-            onPress={() => Alert.alert('Item Pressed')}
+            onPress={() => props.navigation.navigate('SessionsDetailsScreen')}
             speakers={[
               {
                 name: 'Dr. A',
@@ -53,7 +53,7 @@ export default function SessionsScreen() {
           <SessionListItem
             title="Opening Keynote: The Future of Innovation"
             time="10:00 AM - 11:00 AM"
-            onPress={() => Alert.alert('Item Pressed')}
+            onPress={() => props.navigation.navigate('SessionsDetailsScreen')}
             speakers={[
               {
                 name: 'Dr. A',
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    padding: 10,
+    paddingLeft: 30,
     borderRadius: 10,
     backgroundColor: COLORS.background,
   },
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     backgroundColor: '#fff',
-    padding: 10,
+    paddingLeft: 30,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: COLORS.primary,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     backgroundColor: COLORS.background,
-    padding: 10,
+    paddingLeft: 30,
     borderRadius: 10,
   },
 });

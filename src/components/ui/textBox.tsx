@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     paddingRight: 36, // space for icon
   },
   textArea: {
-    height: 100,
+    height: 'auto',
     textAlignVertical: 'top',
   },
   iconWrapper: {

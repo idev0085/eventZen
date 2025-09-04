@@ -11,6 +11,35 @@ import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
 const TAGS = ['IT services', 'Digital', 'Technology'];
 
+const MOCK_DATA = {
+  success: true,
+  message: 'successful',
+  id: 27,
+  first_name: 'Henry',
+  lastname: 'Roy',
+  name: 'Henry Roy',
+  email: 'henry.roy@example.com',
+  phone: '5132150156',
+  imageUrl: 'https://sme.nodejsdapldevelopments.com/images/default.png',
+  designation: 'Computer',
+  bio: 'apple, river, mountain, happy, blue, book, chair, quickly, beautiful, through, jungle, whisper, dance, thunder, ocean, flower, star, imagine, quiet, forever, journey, sunshine, mystery, gentle, sudden, curious, vibrant, ancient, explore, delicious, melody, freedom, courage, shimmer, distant, hopeful, dream, fragile, navigate, creation, embrace, echo, crimson, horizon, luminous, velvet, symphony, twilight, navigate, bloom, ascend',
+  tags: ['Event', 'CloudTrends', 'Dataseecurity'],
+  my_qr_code:
+    'https://sme.nodejsdapldevelopments.com/qrcodes/user_1756983539.png',
+  company_name: 'Orn Inc',
+  company_email: 'rubye.effertz@block.com',
+  company_phone: '+17545917756',
+  image_url: 'https://sme.nodejsdapldevelopments.com/images/default.png',
+  roles: ['Admin', 'Sponsors', 'Attendee', 'Speaker'],
+  company_about_page: 'http://sme.nodejsdapldevelopments.com/app/page/about',
+  company_location_page:
+    'http://sme.nodejsdapldevelopments.com/app/page/location',
+  company_privacy_policy_page:
+    'http://sme.nodejsdapldevelopments.com/app/page/privacy',
+  company_terms_of_service_page:
+    'http://sme.nodejsdapldevelopments.com/app/page/terms',
+};
+
 const ViewProfile = ({ ...props }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const selectTags = index => {
@@ -28,7 +57,7 @@ const ViewProfile = ({ ...props }) => {
         <Card style={styles.card}>
           <TouchableOpacity style={styles.imageBox}>
             <Icon
-              source={{ uri: 'https://reactjs.org/logo-og.png' }}
+              source={{ uri: MOCK_DATA?.imageUrl }}
               size={100}
               backgroundColor={COLORS.placeholder}
               borderRadius={50}
@@ -36,22 +65,22 @@ const ViewProfile = ({ ...props }) => {
           </TouchableOpacity>
 
           <CustomText style={styles.textLabel}>Name</CustomText>
-          <CustomText style={styles.textMeta}>Tylor Black</CustomText>
+          <CustomText style={styles.textMeta}>{MOCK_DATA?.name}</CustomText>
 
           <CustomText style={styles.textLabel}>Designation</CustomText>
           <CustomText style={styles.textMeta}>
-            Chief Technology Officer
+            {MOCK_DATA?.designation}
           </CustomText>
 
           <CustomText style={styles.textLabel}>Company Name</CustomText>
           <CustomText style={styles.textMeta}>
-            InnovateTech Solutions
+            {MOCK_DATA?.company_name}
           </CustomText>
 
           <View style={styles.tagContainer}>
             <CustomText style={styles.textLabel}>Tags</CustomText>
             <View style={styles.tagsWrapper}>
-              {TAGS.map((tag, index) => (
+              {MOCK_DATA?.tags?.map((tag, index) => (
                 <View key={index} style={styles.tagsBox}>
                   <CustomText style={styles.textMeta}>{tag}</CustomText>
                 </View>
@@ -60,16 +89,14 @@ const ViewProfile = ({ ...props }) => {
           </View>
 
           <CustomText style={styles.textLabel}>Email Id</CustomText>
-          <CustomText style={styles.textMeta}>
-            digitalaptech@gmail.com
-          </CustomText>
+          <CustomText style={styles.textMeta}>{MOCK_DATA?.email}</CustomText>
 
           <CustomText style={styles.textLabel}>Phone No.</CustomText>
-          <CustomText style={styles.textMeta}>+1 7346274598</CustomText>
+          <CustomText style={styles.textMeta}>{MOCK_DATA?.phone}</CustomText>
 
           <CustomText style={styles.textLabel}>Bio</CustomText>
           <TextBox
-            value={`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum.`}
+            value={MOCK_DATA?.bio}
             label={''}
             labelStyle={styles.textMeta}
             placeholder={''}
@@ -77,8 +104,8 @@ const ViewProfile = ({ ...props }) => {
             required={true}
             style={styles.textAreaStyle}
             multiline={true}
-            numberOfLines={4}
-            disabled={true}
+            numberOfLines={10}
+            // disabled={true}
           />
         </Card>
       </ScrollView>
