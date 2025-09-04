@@ -13,6 +13,7 @@ import TermsConditionsScreen from '../screens/TermsConditionsScreen';
 import SessionsDetailsScreen from '../screens/SessionsDetailsScreen';
 import FavouriteSessionScreen from '../screens/FavouriteSessionScreen';
 import LoginScreen from '../screens/LoginScreen';
+import EnterLoginOTPScreen from '../screens/EnterLoginOTPScreen';
 const AppStack = createStackNavigator();
 
 function AppNavigator() {
@@ -46,6 +47,10 @@ function AppNavigator() {
         component={FavouriteSessionScreen}
       />
       <AppStack.Screen name="LoginScreen" component={LoginScreen} />
+      <AppStack.Screen
+        name="EnterLoginOTPScreen"
+        component={EnterLoginOTPScreen}
+      />
     </AppStack.Navigator>
   );
 }

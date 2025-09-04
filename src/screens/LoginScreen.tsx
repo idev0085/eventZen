@@ -1,4 +1,4 @@
-import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import TextBox from '../components/ui/textBox';
@@ -13,6 +13,7 @@ export default function LoginScreen({ ...props }) {
   const [email, setEmail] = useState('');
   const { performRequestOtp, isRequestingOtp } = useAuth();
   const [isChecked, setChecked] = useState(false);
+
   const btnHandler = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
@@ -22,6 +23,11 @@ export default function LoginScreen({ ...props }) {
     Toast.show('Please wait...', Toast.LONG);
     performRequestOtp({ email });
   };
+
+  //! form validation
+  const isFilled = !!isChecked && !!email;
+  const isCTAInActive = !isFilled || isRequestingOtp;
+
   return (
     <View>
       <Image source={PNG_IMAGES.LoginBg} style={styles.background} />
@@ -70,7 +76,7 @@ export default function LoginScreen({ ...props }) {
           </CustomText> */}
           <View style={styles.btnContainer}>
             <Pressable
-              disabled={!isChecked || isRequestingOtp}
+              disabled={isCTAInActive}
               onPress={btnHandler}
               android_ripple={{ color: 'rgba(0,0,0,0.1)', borderless: true }}
               style={({ pressed }) => [
@@ -80,11 +86,14 @@ export default function LoginScreen({ ...props }) {
                   //top: -15,
                   alignSelf: 'center',
                   transform: [{ scale: pressed ? 0.9 : 1 }],
-                  opacity: !isChecked || isRequestingOtp ? 0.5 : 1,
+                  opacity: !isFilled ? 0.5 : 1,
                 },
               ]}
             >
-              <RightArrowLoginButton isDisabled={isRequestingOtp} />
+              <RightArrowLoginButton
+                // isDisabled={!isRequestingOtp || !isFilled}
+                isDisabled={!isFilled}
+              />
             </Pressable>
           </View>
         </View>
@@ -148,7 +157,7 @@ const styles = StyleSheet.create({
   },
   infoTextCheck: {
     // textAlign: 'center',
-    fontSize: TEXT_SIZES.sm,
+    fontSize: TEXT_SIZES.xs,
     color: COLORS.textPrimary,
     fontFamily: 'Roboto-Reguler',
     paddingLeft: 5,
