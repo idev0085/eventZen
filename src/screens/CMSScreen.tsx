@@ -7,23 +7,47 @@ import Button from '../components/ui/button';
 import { EditProfileIcon, COLORS } from '../utils/constants';
 import { WebView } from 'react-native-webview';
 
-const CMSScreen = () => {
+const CMSScreen = ({ ...props }) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <WebView
-        source={{ uri: 'https://reactnative.dev/' }}
-        style={{ flex: 1 }}
-      />
-
-      <View style={styles.btnContainer}>
-        <Button
-          title={'Accept'}
-          onPress={() => {}}
-          style={{ width: '80%' }}
-          textStyle={styles.btnTextStyle}
+    <>
+      {props?.page === 'about' && (
+        <WebView
+          source={{ uri: 'https://reactnative.dev/' }}
+          style={{ flex: 1 }}
         />
-      </View>
-    </SafeAreaView>
+      )}
+
+      {props?.page === 'location' && (
+        <WebView
+          source={{ uri: 'https://reactnative.dev/' }}
+          style={{ flex: 1 }}
+        />
+      )}
+
+      {props?.page === 'privacy-policy' && (
+        <WebView
+          source={{ uri: 'https://reactnative.dev/' }}
+          style={{ flex: 1 }}
+        />
+      )}
+
+      {props?.page === 'terms-conditions' && (
+        <WebView
+          source={{ uri: 'https://reactnative.dev/' }}
+          style={{ flex: 1 }}
+        />
+      )}
+      {props?.authPage && (
+        <View style={styles.btnContainer}>
+          <Button
+            title={'Accept'}
+            onPress={() => {}}
+            style={{ width: '80%' }}
+            textStyle={styles.btnTextStyle}
+          />
+        </View>
+      )}
+    </>
   );
 };
 

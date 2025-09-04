@@ -5,16 +5,16 @@ import BackHeader from '../components/BackHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../utils/constants';
 
-const PrivacyPolicyScreen = () => {
+const LocationScreen = () => {
   return (
     <>
-      <BackHeader title="Privacy Policy" />
-      <CMSScreen page="privacy-policy" />
+      <BackHeader title="Location" />
+      <CMSScreen page="location" />
     </>
   );
 };
 
-export default PrivacyPolicyScreen;
+export default LocationScreen;
 
 const styles = StyleSheet.create({
   container: {

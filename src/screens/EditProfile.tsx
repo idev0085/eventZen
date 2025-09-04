@@ -29,141 +29,139 @@ const EditProfile = () => {
   return (
     <>
       <BackHeader title="Edit Profile" />
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <Card style={styles.card}>
-            <TouchableOpacity style={styles.imageBox}>
-              <Icon
-                source={{ uri: 'https://reactjs.org/logo-og.png' }}
-                size={100}
-                backgroundColor={COLORS.placeholder}
-                borderRadius={50}
-              />
-              <View style={styles.imageBoxEdit}>
-                <EditProfileIcon />
-              </View>
-            </TouchableOpacity>
-
-            <TextBox
-              value={'Taylor'}
-              label={'First Name'}
-              labelStyle={styles.labelStyle}
-              placeholder={''}
-              onChangeText={() => {}}
-              required={true}
-              style={styles.textBoxStyle}
+      <ScrollView>
+        <Card style={styles.card}>
+          <TouchableOpacity style={styles.imageBox}>
+            <Icon
+              source={{ uri: 'https://reactjs.org/logo-og.png' }}
+              size={100}
+              backgroundColor={COLORS.placeholder}
+              borderRadius={50}
             />
+            <View style={styles.imageBoxEdit}>
+              <EditProfileIcon />
+            </View>
+          </TouchableOpacity>
 
-            <TextBox
-              value={'Black'}
-              label={'Last Name'}
-              labelStyle={styles.labelStyle}
-              placeholder={''}
-              onChangeText={() => {}}
-              required={true}
-              style={styles.textBoxStyle}
-            />
+          <TextBox
+            value={'Taylor'}
+            label={'First Name'}
+            labelStyle={styles.labelStyle}
+            placeholder={''}
+            onChangeText={() => {}}
+            required={true}
+            style={styles.textBoxStyle}
+          />
 
-            <TextBox
-              value={'IT Engeener'}
-              label={'Designation'}
-              labelStyle={styles.labelStyle}
-              placeholder={''}
-              onChangeText={() => {}}
-              required={true}
-              style={styles.textBoxStyle}
-            />
+          <TextBox
+            value={'Black'}
+            label={'Last Name'}
+            labelStyle={styles.labelStyle}
+            placeholder={''}
+            onChangeText={() => {}}
+            required={true}
+            style={styles.textBoxStyle}
+          />
 
-            <TextBox
-              value={'Cognizant'}
-              label={'Company Name'}
-              labelStyle={styles.labelStyle}
-              placeholder={''}
-              onChangeText={() => {}}
-              required={true}
-              style={styles.textBoxStyle}
-            />
+          <TextBox
+            value={'IT Engeener'}
+            label={'Designation'}
+            labelStyle={styles.labelStyle}
+            placeholder={''}
+            onChangeText={() => {}}
+            required={true}
+            style={styles.textBoxStyle}
+          />
 
-            <TextBox
-              value={'www.cognizant.com'}
-              label={'Company Website'}
-              labelStyle={styles.labelStyle}
-              placeholder={''}
-              onChangeText={() => {}}
-              required={true}
-              style={styles.textBoxStyle}
-            />
-            <View style={styles.tagContainer}>
-              <Text style={styles.labelStyle}>
-                Tags <Text style={styles.asterisk}> *</Text>
-              </Text>
-              <View style={styles.tagsWrapper}>
-                {TAGS.map((tag, index) => (
-                  <TouchableOpacity
-                    key={index}
+          <TextBox
+            value={'Cognizant'}
+            label={'Company Name'}
+            labelStyle={styles.labelStyle}
+            placeholder={''}
+            onChangeText={() => {}}
+            required={true}
+            style={styles.textBoxStyle}
+          />
+
+          <TextBox
+            value={'www.cognizant.com'}
+            label={'Company Website'}
+            labelStyle={styles.labelStyle}
+            placeholder={''}
+            onChangeText={() => {}}
+            required={true}
+            style={styles.textBoxStyle}
+          />
+          <View style={styles.tagContainer}>
+            <Text style={styles.labelStyle}>
+              Tags <Text style={styles.asterisk}> *</Text>
+            </Text>
+            <View style={styles.tagsWrapper}>
+              {TAGS.map((tag, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={
+                    selectedTags.includes(index)
+                      ? styles.tagsBoxActive
+                      : styles.tagsBox
+                  }
+                  onPress={() => selectTags(index)}
+                >
+                  <CustomText
                     style={
                       selectedTags.includes(index)
-                        ? styles.tagsBoxActive
-                        : styles.tagsBox
+                        ? styles.labelStyleActive
+                        : styles.labelStyle
                     }
-                    onPress={() => selectTags(index)}
                   >
-                    <CustomText
-                      style={
-                        selectedTags.includes(index)
-                          ? styles.labelStyleActive
-                          : styles.labelStyle
-                      }
-                    >
-                      {tag}
-                    </CustomText>
-                  </TouchableOpacity>
-                ))}
-              </View>
+                    {tag}
+                  </CustomText>
+                </TouchableOpacity>
+              ))}
             </View>
+          </View>
 
-            <TextBox
-              value={'taylor.black@gmail.com'}
-              label={'Email Address'}
-              labelStyle={styles.labelStyle}
-              placeholder={''}
-              onChangeText={() => {}}
-              required={true}
-              style={styles.textBoxStyle}
-            />
-
-            <TextBox
-              value={'+91 7596842521'}
-              label={'Phone Number'}
-              labelStyle={styles.labelStyle}
-              placeholder={''}
-              onChangeText={() => {}}
-              required={true}
-              style={styles.textBoxStyle}
-            />
-
-            <TextBox
-              value={`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`}
-              label={'Bio'}
-              labelStyle={styles.labelStyle}
-              placeholder={''}
-              onChangeText={() => {}}
-              required={true}
-              style={styles.textAreaStyle}
-              multiline={true}
-              numberOfLines={4}
-            />
-          </Card>
-        </ScrollView>
-        <View style={styles.btnContainer}>
-          <Button
-            title={'Save'}
-            onPress={handleSave}
-            style={{ width: '80%' }}
-            textStyle={styles.btnTextStyle}
+          <TextBox
+            value={'taylor.black@gmail.com'}
+            label={'Email Address'}
+            labelStyle={styles.labelStyle}
+            placeholder={''}
+            onChangeText={() => {}}
+            required={true}
+            style={styles.textBoxStyle}
           />
-        </View>
-      </SafeAreaView>
+
+          <TextBox
+            value={'+91 7596842521'}
+            label={'Phone Number'}
+            labelStyle={styles.labelStyle}
+            placeholder={''}
+            onChangeText={() => {}}
+            required={true}
+            style={styles.textBoxStyle}
+          />
+
+          <TextBox
+            value={`Lorem Ipsum is simply dummy text of the printing and typesetting industry.`}
+            label={'Bio'}
+            labelStyle={styles.labelStyle}
+            placeholder={''}
+            onChangeText={() => {}}
+            required={true}
+            style={styles.textAreaStyle}
+            multiline={true}
+            numberOfLines={4}
+          />
+        </Card>
+      </ScrollView>
+      <View style={styles.btnContainer}>
+        <Button
+          title={'Save'}
+          onPress={handleSave}
+          style={{ width: '80%' }}
+          textStyle={styles.btnTextStyle}
+        />
+      </View>
     </>
   );
 };

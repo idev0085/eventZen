@@ -79,25 +79,25 @@ const CustomSideBarCMS = [
   {
     name: 'About',
     icon: DrawerAbout,
-    route: 'About',
+    route: 'AboutScreen',
     arrow: DrawerArrow,
   },
   {
     name: 'Location',
     icon: DrawerLocation,
-    route: 'Location',
+    route: 'LocationScreen',
     arrow: DrawerArrow,
   },
   {
     name: 'Privacy Policy',
     icon: DrawerPrivacyPolicy,
-    route: 'PrivacyPolicy',
+    route: 'PrivacyPolicyScreen',
     arrow: DrawerArrow,
   },
   {
     name: 'Terms & Conditions',
     icon: DrawerTermsCondition,
-    route: 'TermsConditions',
+    route: 'TermsConditionsScreen',
     arrow: DrawerArrow,
   },
 ];
@@ -107,6 +107,7 @@ export default function CustomSideBar({ navigation }: any) {
   const handleLogout = async () => {
     await logout();
   };
+
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -143,7 +144,9 @@ export default function CustomSideBar({ navigation }: any) {
             key={index}
             style={styles.card}
             onPress={() => {
-              navigation.navigate(`${item.name}`);
+              item.route === 'Profile'
+                ? navigation.navigate(`${item.route}`)
+                : Alert.alert(`Navigating to ${item.route} Work in progress`);
             }}
           >
             <View style={styles.menuWrapper}>
@@ -162,7 +165,7 @@ export default function CustomSideBar({ navigation }: any) {
               key={index}
               style={[styles.menuWrapper, { marginTop: 10 }]}
               onPress={() => {
-                Alert.alert(`Navigating to ${item.name}`);
+                navigation.navigate(`${item.route}`);
               }}
             >
               <View style={styles.menuItem}>

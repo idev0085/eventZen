@@ -23,73 +23,73 @@ const ViewProfile = ({ ...props }) => {
   return (
     <>
       <BackHeader title="View Profile" />
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <Card style={styles.card}>
-            <TouchableOpacity style={styles.imageBox}>
-              <Icon
-                source={{ uri: 'https://reactjs.org/logo-og.png' }}
-                size={100}
-                backgroundColor={COLORS.placeholder}
-                borderRadius={50}
-              />
-            </TouchableOpacity>
 
-            <CustomText style={styles.textLabel}>Name</CustomText>
-            <CustomText style={styles.textMeta}>Tylor Black</CustomText>
-
-            <CustomText style={styles.textLabel}>Designation</CustomText>
-            <CustomText style={styles.textMeta}>
-              Chief Technology Officer
-            </CustomText>
-
-            <CustomText style={styles.textLabel}>Company Name</CustomText>
-            <CustomText style={styles.textMeta}>
-              InnovateTech Solutions
-            </CustomText>
-
-            <View style={styles.tagContainer}>
-              <CustomText style={styles.textLabel}>Tags</CustomText>
-              <View style={styles.tagsWrapper}>
-                {TAGS.map((tag, index) => (
-                  <View key={index} style={styles.tagsBox}>
-                    <CustomText style={styles.textMeta}>{tag}</CustomText>
-                  </View>
-                ))}
-              </View>
-            </View>
-
-            <CustomText style={styles.textLabel}>Email Id</CustomText>
-            <CustomText style={styles.textMeta}>
-              digitalaptech@gmail.com
-            </CustomText>
-
-            <CustomText style={styles.textLabel}>Phone No.</CustomText>
-            <CustomText style={styles.textMeta}>+1 7346274598</CustomText>
-
-            <CustomText style={styles.textLabel}>Bio</CustomText>
-            <TextBox
-              value={`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`}
-              label={''}
-              labelStyle={styles.textMeta}
-              placeholder={''}
-              onChangeText={() => {}}
-              required={true}
-              style={styles.textAreaStyle}
-              multiline={true}
-              numberOfLines={4}
+      <ScrollView>
+        <Card style={styles.card}>
+          <TouchableOpacity style={styles.imageBox}>
+            <Icon
+              source={{ uri: 'https://reactjs.org/logo-og.png' }}
+              size={100}
+              backgroundColor={COLORS.placeholder}
+              borderRadius={50}
             />
-          </Card>
-        </ScrollView>
-        <View style={styles.btnContainer}>
-          <Button
-            title={'Edit'}
-            onPress={() => props.navigation.navigate('EditProfile')}
-            style={{ width: '80%' }}
-            textStyle={styles.btnTextStyle}
+          </TouchableOpacity>
+
+          <CustomText style={styles.textLabel}>Name</CustomText>
+          <CustomText style={styles.textMeta}>Tylor Black</CustomText>
+
+          <CustomText style={styles.textLabel}>Designation</CustomText>
+          <CustomText style={styles.textMeta}>
+            Chief Technology Officer
+          </CustomText>
+
+          <CustomText style={styles.textLabel}>Company Name</CustomText>
+          <CustomText style={styles.textMeta}>
+            InnovateTech Solutions
+          </CustomText>
+
+          <View style={styles.tagContainer}>
+            <CustomText style={styles.textLabel}>Tags</CustomText>
+            <View style={styles.tagsWrapper}>
+              {TAGS.map((tag, index) => (
+                <View key={index} style={styles.tagsBox}>
+                  <CustomText style={styles.textMeta}>{tag}</CustomText>
+                </View>
+              ))}
+            </View>
+          </View>
+
+          <CustomText style={styles.textLabel}>Email Id</CustomText>
+          <CustomText style={styles.textMeta}>
+            digitalaptech@gmail.com
+          </CustomText>
+
+          <CustomText style={styles.textLabel}>Phone No.</CustomText>
+          <CustomText style={styles.textMeta}>+1 7346274598</CustomText>
+
+          <CustomText style={styles.textLabel}>Bio</CustomText>
+          <TextBox
+            value={`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum.`}
+            label={''}
+            labelStyle={styles.textMeta}
+            placeholder={''}
+            onChangeText={() => {}}
+            required={true}
+            style={styles.textAreaStyle}
+            multiline={true}
+            numberOfLines={4}
+            disabled={true}
           />
-        </View>
-      </SafeAreaView>
+        </Card>
+      </ScrollView>
+      <View style={styles.btnContainer}>
+        <Button
+          title={'Edit'}
+          onPress={() => props.navigation.navigate('EditProfile')}
+          style={{ width: '80%' }}
+          textStyle={styles.btnTextStyle}
+        />
+      </View>
     </>
   );
 };
