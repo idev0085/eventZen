@@ -12,7 +12,9 @@ import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
 import TermsConditionsScreen from '../screens/TermsConditionsScreen';
 import SessionsDetailsScreen from '../screens/SessionsDetailsScreen';
 import FavouriteSessionScreen from '../screens/FavouriteSessionScreen';
+import LoginScreen from '../screens/LoginScreen';
 const AppStack = createStackNavigator();
+
 function AppNavigator() {
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
@@ -43,6 +45,7 @@ function AppNavigator() {
         name="FavouriteSessionScreen"
         component={FavouriteSessionScreen}
       />
+      <AppStack.Screen name="LoginScreen" component={LoginScreen} />
     </AppStack.Navigator>
   );
 }
