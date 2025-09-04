@@ -18,10 +18,11 @@ import {
 } from '../utils/constants';
 
 const HomeHeader = ({
-  username,
+  userName,
   welcomeMessage,
   profileImage,
   bellIcon,
+  hasNewNotification,
 }: any) => {
   const handleNotification = () => {
     Alert.alert('Notification Bell Icon Clicked');
@@ -36,9 +37,7 @@ const HomeHeader = ({
         <View style={styles.profileInfo}>
           <Image source={{ uri: profileImage }} style={styles.profileImage} />
           <View style={styles.textContainer}>
-            <Text style={styles.username}>
-              {username ? username : 'Arafat Alim'}
-            </Text>
+            <Text style={styles.username}>{userName && userName}</Text>
             <Text style={styles.welcomeMessage}>
               {welcomeMessage ? welcomeMessage : 'Welcome !'}
             </Text>
@@ -46,7 +45,11 @@ const HomeHeader = ({
         </View>
         {/* Bell Icon */}
         <TouchableOpacity onPress={handleNotification}>
-          <NotificationBellIcon width={36} height={36} />
+          <NotificationBellIcon
+            width={36}
+            height={36}
+            hasNewNotification={hasNewNotification}
+          />
         </TouchableOpacity>
       </View>
     </ImageBackground>

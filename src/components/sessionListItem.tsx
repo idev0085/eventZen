@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   sessionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 100,
+    height: 150,
   },
   leftWrapper: {
     width: '40%',

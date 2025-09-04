@@ -39,19 +39,34 @@ export const statsData: Stat[] = [
   },
 ];
 
-const MyStats = () => {
+const MyStats = ({ ...props }) => {
   return (
     <SubTopicWrapper>
       <CustomText style={styles.headerTitle}>My Stats</CustomText>
       <View style={styles.cardsWrapper}>
-        {statsData.map(stat => (
+        {/* {statsData.map(stat => (
           <InfoCard
             key={stat.id}
             icon={stat.icon}
             count={stat.count}
             label={stat.label}
           />
-        ))}
+        ))} */}
+        <InfoCard
+          icon={<CalendarFilledIcon />}
+          count={props?.data?.totalAgents}
+          label={'My Agenda'}
+        />
+        <InfoCard
+          icon={<NetworkFilledIcon />}
+          count={props?.data?.totalConnections}
+          label={'Connections'}
+        />
+        <InfoCard
+          icon={<FavoriteFilledIcon />}
+          count={props?.data?.totalSessionAttendee}
+          label={'Sessions Attendees'}
+        />
       </View>
     </SubTopicWrapper>
   );

@@ -141,3 +141,49 @@ export const removeSession = async (key: string) => {
     console.error('Error removing session:', error);
   }
 };    
+
+export const getVideoId = (value: string) => {
+  const parts = value?.split('/');
+  console.log('parts', parts);
+  console.log('parts[parts.length - 1]', parts[parts.length - 1]);
+  return parts[parts.length - 1];
+};    
+
+export const parseISODateString = (
+  isoString: string | undefined | null,
+): Date | null => {
+  if (!isoString) {
+    return null;
+  }
+
+  const date = new Date(isoString);
+
+  if (isNaN(date.getTime())) {
+    console.warn(`Attempted to parse an invalid date string: ${isoString}`);
+    return null;
+  }
+
+  return date;
+};
+
+
+export const formatTimeRange = (
+  startTimeISO: string | undefined | null,
+  endTimeISO: string | undefined | null,
+): string => {
+  if (!startTimeISO || !endTimeISO) {
+    return '';
+  }
+
+  const startTime = parseISODateString(startTimeISO);
+  const endTime = parseISODateString(endTimeISO);
+
+  if (!startTime || !endTime) {
+    return '';
+  }
+
+  const timeFormat: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
+
+  return `${startTime.toLocaleTimeString('en-US', timeFormat)} - ${endTime.toLocaleTimeString('en-US', timeFormat)}`;
+};
+

@@ -3,9 +3,14 @@ import Svg, { Path, Circle, SvgProps } from 'react-native-svg';
 
 interface CustomSvgProps extends SvgProps {
   xmlns?: string;
+  hasNewNotification?: boolean;
 }
 
-const NotificationBellIcon = ({ height = 36, width = 36 }: CustomSvgProps) => (
+const NotificationBellIcon = ({
+  height = 36,
+  width = 36,
+  hasNewNotification = false,
+}: CustomSvgProps) => (
   <Svg width={width} height={height} viewBox="0 0 26 36" fill="none">
     <Path
       fillRule="evenodd"
@@ -23,7 +28,7 @@ const NotificationBellIcon = ({ height = 36, width = 36 }: CustomSvgProps) => (
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <Circle cx="19" cy="10" r="4" fill="#FE7101" />
+    {hasNewNotification && <Circle cx="19" cy="10" r="4" fill="#FE7101" />}
   </Svg>
 );
 

@@ -6,6 +6,7 @@ import {
   StyleProp,
   ViewStyle,
   Text,
+  Alert,
 } from 'react-native';
 import {
   AttendeeIcon,
@@ -75,7 +76,8 @@ const QuickActionMenu: React.FC<QuickActionMenuProps> = ({
   const handleMenuItemPress = (screenName: string) => {
     console.log('Navigating to:', screenName);
     onMenuItemPress?.(screenName);
-    navigation.navigate(`${screenName}`);
+    //navigation.navigate(`${screenName}`);
+    Alert.alert('Work in Progress');
   };
 
   return (

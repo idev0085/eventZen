@@ -15,7 +15,7 @@ import SubTopicWrapper from './ui/subTopicWrapper';
 
 interface Connection {
   id: string;
-  imageUrl: string;
+  avatarUrl: string;
 }
 
 interface ConnectionsCardProps {
@@ -41,7 +41,7 @@ const ConnectionsCard: React.FC<ConnectionsCardProps> = ({
             {connections.map((connection, index) => (
               <Image
                 key={connection.id}
-                source={{ uri: connection.imageUrl }}
+                source={{ uri: connection?.avatarUrl }}
                 style={[
                   styles.profileImage,
                   index > 0 ? styles.overlappingImage : {},
