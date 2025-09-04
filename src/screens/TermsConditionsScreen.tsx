@@ -9,7 +9,7 @@ const TermsConditionsScreen = () => {
   return (
     <>
       <BackHeader title="Terms & Conditions" />
-      <CMSScreen page="terms-conditions" />
+      <CMSScreen page="terms-condition" />
     </>
   );
 };
