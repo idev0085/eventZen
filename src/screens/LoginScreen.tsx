@@ -9,7 +9,7 @@ import Toast from 'react-native-simple-toast';
 import { useAuth } from '../hooks/useAuth';
 import Checkbox from '@react-native-community/checkbox';
 
-export default function LoginScreen() {
+export default function LoginScreen({ ...props }) {
   const [email, setEmail] = useState('');
   const { performRequestOtp, isRequestingOtp } = useAuth();
   const [isChecked, setChecked] = useState(false);
@@ -50,14 +50,16 @@ export default function LoginScreen() {
               I have read and aggree to the{' '}
               <Text
                 style={styles.textUnderLine}
-                onPress={() => Alert.alert('Terms and conditions')}
+                onPress={() =>
+                  props.navigation.navigate('TermsConditionsScreen')
+                }
               >
                 Terms and conditions
               </Text>{' '}
               ,{' '}
               <Text
                 style={styles.textUnderLine}
-                onPress={() => Alert.alert('Privacy policy')}
+                onPress={() => props.navigation.navigate('PrivacyPolicyScreen')}
               >
                 privacy policy
               </Text>
