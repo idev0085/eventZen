@@ -3,7 +3,7 @@ import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { COLORS } from '../utils/constants';
 
 import SessionListItem from '../components/sessionListItem';
-import { ScrollView } from 'react-native-gesture-handler';
+import { DrawerLayoutAndroid, ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
 
 import CustomText from '../components/ui/text';
@@ -11,9 +11,12 @@ import BackHeader from '../components/BackHeader';
 import { BASE_URL } from '../config';
 import { apiCall, formatTimeRange } from '../utils/helpers';
 import { getToken } from '../utils/tokenManager';
+import LoadingOverlay from '../components/loadingOverlay';
+
 export default function SessionsScreen({ ...props }) {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -40,7 +43,7 @@ export default function SessionsScreen({ ...props }) {
       <BackHeader title="Session" showBtn={false} />
       <ScrollView style={styles.container}>
         {loading ? (
-          <ActivityIndicator size="large" color={COLORS.primary} />
+          <LoadingOverlay visible={loading} />
         ) : (
           apiData?.map((day, index) => (
             <View key={day.date || index}>

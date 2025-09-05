@@ -24,6 +24,7 @@ import BackHeader from '../components/BackHeader';
 import { BASE_URL } from '../config';
 import { apiCall, formatTimeRange } from '../utils/helpers';
 import { getToken } from '../utils/tokenManager';
+import LoadingOverlay from '../components/loadingOverlay';
 
 const ICON_SIZE = 20;
 
@@ -181,6 +182,7 @@ export default function SessionsDetailsScreen() {
         return;
       }
       try {
+        setLoading(true);
         const token = await getToken();
         // Assuming the API endpoint for a single session is /api/sessions/{id}
         const response = await apiCall(
@@ -207,7 +209,7 @@ export default function SessionsDetailsScreen() {
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <LoadingOverlay visible={loading} />
       </View>
     );
   }

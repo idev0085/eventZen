@@ -10,6 +10,7 @@ import { BASE_URL } from '../config';
 import { apiCall, formatTimeRange } from '../utils/helpers';
 import { getToken } from '../utils/tokenManager';
 import CustomText from '../components/ui/text';
+import LoadingOverlay from '../components/loadingOverlay';
 
 export default function ConnectionScreen({ ...props }) {
   const [apiData, setApiData] = useState([]);
@@ -53,7 +54,7 @@ export default function ConnectionScreen({ ...props }) {
       />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {loading ? (
-          <ActivityIndicator size="large" color={COLORS.primary} />
+          <LoadingOverlay visible={loading} />
         ) : filteredData.length > 0 ? (
           filteredData.map(item => (
             <Card key={item.id} style={styles.card}>
