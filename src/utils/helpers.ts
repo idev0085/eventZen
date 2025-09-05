@@ -83,7 +83,7 @@ export const apiCall = async (
   endpoint: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   data?: any,
-  token?: string
+  token?: string | null,
 ) => {
   try {
     const headers: Record<string, string> = {
@@ -143,6 +143,9 @@ export const removeSession = async (key: string) => {
 };    
 
 export const getVideoId = (value: string) => {
+  if(!value){
+    return '';
+  }
   const parts = value?.split('/');
   console.log('parts', parts);
   console.log('parts[parts.length - 1]', parts[parts.length - 1]);

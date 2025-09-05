@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import {
   Search,
   TimerWait,
@@ -12,11 +12,6 @@ import {
   SessionUpcoming,
   SessionCompleted,
 } from '../utils/constants';
-import UserDetails from '../components/userDetails';
-import ContactDetails from '../components/contactDetails';
-import AddNote from '../components/addNote';
-import ListItem from '../components/listItem';
-import SessionListItem from '../components/sessionListItem';
 import { ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
 import TextBox from '../components/ui/textBox';
@@ -26,79 +21,62 @@ import Icon from '../components/icon';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import Button from '../components/ui/button';
 import BackHeader from '../components/BackHeader';
-const status = 'Completed';
+import { BASE_URL } from '../config';
+import { apiCall, formatTimeRange } from '../utils/helpers';
+import { getToken } from '../utils/tokenManager';
+
 const ICON_SIZE = 20;
-const SESSION_META = [
-  {
-    icon: <Calander width={ICON_SIZE} height={ICON_SIZE} />,
-    text: 'Fri, Aug 08, 2025',
-  },
-  {
-    icon: <Timer width={ICON_SIZE} height={ICON_SIZE} />,
-    text: '11:00 AM - 01:00 PM',
-  },
-  {
-    icon: <Location width={ICON_SIZE} height={ICON_SIZE} />,
-    text: 'Manhattan Club',
-  },
-  {
-    icon: <Workshop width={ICON_SIZE} height={ICON_SIZE} />,
-    text: 'Workshop NO 02',
-  },
-];
-const SPEAKERS = [
-  {
-    name: 'Ashton Parter',
-    designation: 'CEO',
-    company: 'Innovatech Solutions',
-    image: 'https://reactjs.org/logo-og.png',
-  },
-  {
-    name: 'Ashton Parter',
-    designation: 'CEO',
-    company: 'Innovatech Solutions',
-    image: 'https://reactjs.org/logo-og.png',
-  },
-];
-const OverView = () => {
-  // const [playing, setPlaying] = useState(false);
 
-  // const onStateChange = useCallback(state => {
-  //   if (state === 'ended') {
-  //     setPlaying(false);
-  //     Alert.alert('video has finished playing!');
-  //   }
-  // }, []);
-
-  // const togglePlaying = useCallback(() => {
-  //   setPlaying(prev => !prev);
-  // }, []);
+const OverView = ({ session }) => {
   const BADGE_BG_COLOR =
-    status === 'Completed'
+    session?.status === 'Completed'
       ? COLORS.badgeGreen
-      : status === 'Upcoming'
+      : session?.status === 'Upcoming'
       ? COLORS.badgeYellow
-      : status === 'Ongoing'
+      : session?.status === 'Ongoing'
       ? COLORS.primary
       : COLORS.primary;
   const BADGE_ICON =
-    status === 'Completed' ? (
+    session?.status === 'Completed' ? (
       <SessionCompleted height={ICON_SIZE} width={ICON_SIZE} />
-    ) : status === 'Upcoming' ? (
+    ) : session?.status === 'Upcoming' ? (
       <SessionUpcoming height={ICON_SIZE} width={ICON_SIZE} />
-    ) : status === 'Ongoing' ? (
+    ) : session?.status === 'Ongoing' ? (
       <TimerWait height={ICON_SIZE} width={ICON_SIZE} />
     ) : (
       <TimerWait height={ICON_SIZE} width={ICON_SIZE} />
     );
   const STATUS_TEXT_COLOR =
-    status === 'Completed'
+    session?.status === 'Completed'
       ? styles.statusTextGreen
-      : status === 'Upcoming'
+      : session?.status === 'Upcoming'
       ? styles.statusTextUpcoming
-      : status === 'Ongoing'
+      : session?.status === 'Ongoing'
       ? styles.statusText
       : styles.statusText;
+
+  const sessionMeta = [
+    {
+      icon: <Calander width={ICON_SIZE} height={ICON_SIZE} />,
+      // Assuming start_time is an ISO string. You might need a date formatting utility.
+      text: session?.start_time
+        ? new Date(session.start_time).toLocaleDateString()
+        : 'N/A',
+    },
+    {
+      icon: <Timer width={ICON_SIZE} height={ICON_SIZE} />,
+      text: formatTimeRange(session?.start_time, session?.end_time),
+    },
+    {
+      icon: <Location width={ICON_SIZE} height={ICON_SIZE} />,
+      text: session?.location || 'N/A',
+    },
+    {
+      icon: <Workshop width={ICON_SIZE} height={ICON_SIZE} />,
+      text: session?.workshop_no || 'N/A',
+    },
+  ];
+
   return (
     <View style={{ marginTop: 10 }}>
       {/* <YoutubePlayer
@@ -114,13 +92,13 @@ const OverView = () => {
         bgColor={BADGE_BG_COLOR}
         icon={BADGE_ICON}
       >
-        {status}
+        {session?.status}
       </CustomText>
       <CustomText style={styles.textOverviewHeading}>
-        Women in business conference
+        {session?.title}
       </CustomText>
 
-      {SESSION_META?.map((item, index) => {
+      {sessionMeta?.map((item, index) => {
         return (
           <View key={index} style={styles.sessionMeta}>
             {item.icon}
@@ -175,45 +153,92 @@ const FooterBtn = () => {
       <Button
         title="Add to Favorite"
         variant={'primary'}
-        onPress={() => {}}
+        onPress={() => Alert.alert('Development Work in progress')}
         textStyle={styles.footerBtnText}
       />
 
       <Button
         title="Create Agenda"
         variant={'secondary'}
-        onPress={() => {}}
+        onPress={() => Alert.alert('Development Work in progress')}
         textStyle={styles.footerBtnText}
       />
     </View>
   );
 };
+
 export default function SessionsDetailsScreen() {
+  const route = useRoute();
+  const { sessionId } = route.params;
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSessionDetails = async () => {
+      if (!sessionId) {
+        Alert.alert('Error', 'Session ID is missing.');
+        setLoading(false);
+        return;
+      }
+      try {
+        const token = await getToken();
+        // Assuming the API endpoint for a single session is /api/sessions/{id}
+        const response = await apiCall(
+          `${BASE_URL}/api/sessions/${sessionId}`,
+          'GET',
+          undefined,
+          token,
+        );
+        // NOTE: The session data might be directly in `response` or `response.data`
+        // depending on your API structure. Adjust if necessary.
+        console.log(`${BASE_URL}/api/sessions/${sessionId}`);
+        setSession(response);
+      } catch (error) {
+        console.log('error fetching session details', error);
+        Alert.alert('Error', 'Could not fetch session details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSessionDetails();
+  }, [sessionId]);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    );
+  }
+
+  // if (!session) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <CustomText>Session details not available.</CustomText>
+  //     </View>
+  //   );
+  // }
+
   return (
     <>
       <BackHeader title="Session Details" />
       <ScrollView style={styles.container}>
         <Card style={styles.card}>
-          <OverView />
-
-          <Details
-            type={'desciption'}
-            context={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.`}
-          />
-
-          <Details
-            type={'demos'}
-            context={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC.`}
-          />
-
-          <Details
-            type={'panels'}
-            context={`Contrary to popular belief, Lorem Ipsum is not simply random text.`}
-          />
-
-          <Speakers type={'speakers'} list={SPEAKERS} />
-
-          {status !== 'Completed' && <FooterBtn />}
+          <OverView session={session} />
+          {session.description && (
+            <Details type={'description'} context={session.description} />
+          )}
+          {session.demoes && (
+            <Details type={'demos'} context={session.demoes} />
+          )}
+          {session.panels && (
+            <Details type={'panels'} context={session.panels} />
+          )}
+          {session.speakers?.length > 0 && (
+            <Speakers type={'speakers'} list={session.speakers} />
+          )}
+          {session.status !== 'Completed' && <FooterBtn />}
         </Card>
       </ScrollView>
     </>

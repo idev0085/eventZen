@@ -1,4 +1,5 @@
-import { Alert, StyleSheet, View } from 'react-native';
+import React, { use, useEffect, useState } from 'react';
+import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { COLORS } from '../utils/constants';
 
 import SessionListItem from '../components/sessionListItem';
@@ -7,64 +8,78 @@ import Card from '../components/card';
 
 import CustomText from '../components/ui/text';
 import BackHeader from '../components/BackHeader';
+import { BASE_URL } from '../config';
+import { apiCall, formatTimeRange } from '../utils/helpers';
+import { getToken } from '../utils/tokenManager';
 export default function SessionsScreen({ ...props }) {
+  const [apiData, setApiData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const token = await getToken();
+      try {
+        const response = await apiCall(
+          BASE_URL + '/api/sessions',
+          'GET',
+          undefined,
+          token,
+        );
+        setApiData(response);
+      } catch (error) {
+        console.log('error', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+  //console.log('apiData', apiData, getToken());
   return (
     <>
       <BackHeader title="Session" showBtn={false} />
       <ScrollView style={styles.container}>
-        <CustomText style={{ fontSize: 24, fontWeight: 'bold', margin: 10 }}>
-          28 Apr, 2025
-        </CustomText>
-
-        <Card style={styles.cardDisable}>
-          <SessionListItem
-            title="Opening Keynote: The Future of Innovation"
-            time="10:00 AM - 11:00 AM"
-            onPress={() => props.navigation.navigate('SessionsDetailsScreen')}
-            speakers={[
-              {
-                name: 'Dr. A',
-                designation: 'Chief Innovation Officer',
-                company: 'Innovatech Solutions',
-              },
-            ]}
-            workshopNo="Workshop NO : 01"
-            status="Completed"
-          />
-        </Card>
-
-        <Card style={styles.cardOngoing}>
-          <SessionListItem
-            title="Opening Keynote: The Future of Innovation"
-            time="10:00 AM - 11:00 AM"
-            onPress={() => props.navigation.navigate('SessionsDetailsScreen')}
-            speakers={[
-              {
-                name: 'Dr. A',
-                designation: 'Chief Innovation Officer',
-                company: 'Innovatech Solutions',
-              },
-            ]}
-            workshopNo="Workshop NO : 01"
-            status="Ongoing"
-          />
-        </Card>
-        <Card style={styles.card}>
-          <SessionListItem
-            title="Opening Keynote: The Future of Innovation"
-            time="10:00 AM - 11:00 AM"
-            onPress={() => props.navigation.navigate('SessionsDetailsScreen')}
-            speakers={[
-              {
-                name: 'Dr. A',
-                designation: 'Chief Innovation Officer',
-                company: 'Innovatech Solutions',
-              },
-            ]}
-            workshopNo="Workshop NO : 01"
-            status="Ongoing"
-          />
-        </Card>
+        {loading ? (
+          <ActivityIndicator size="large" color={COLORS.primary} />
+        ) : (
+          apiData?.map((day, index) => (
+            <View key={day.date || index}>
+              <CustomText
+                style={{ fontSize: 24, fontWeight: 'bold', margin: 10 }}
+              >
+                {day?.date}
+              </CustomText>
+              {day?.session_list?.map(session => (
+                <Card
+                  key={session.id}
+                  style={
+                    session?.status === 'Ongoing'
+                      ? styles.cardOngoing
+                      : session?.status === 'Completed'
+                      ? styles.cardDisable
+                      : styles.card
+                  }
+                >
+                  <SessionListItem
+                    title={session?.title}
+                    time={formatTimeRange(
+                      session?.start_time,
+                      session?.end_time,
+                    )}
+                    onPress={() =>
+                      props.navigation.navigate('SessionsDetailsScreen', {
+                        sessionId: session.id,
+                      })
+                    }
+                    speakers={session?.speakers}
+                    workshopNo={session?.workshop_no}
+                    status={session?.status}
+                  />
+                </Card>
+              ))}
+            </View>
+          ))
+        )}
       </ScrollView>
     </>
   );
