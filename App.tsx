@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar, Platform, View, Text } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -31,7 +31,12 @@ export const queryClient = new QueryClient({
 
 function AppContent() {
   const { isAuthenticated, isLoading, token, isHydrated } = useSession();
-  console.log('🚀 ~ AppContent ~ token:', token);
+  const [showSplash, setShowSplash] = useState(true);
+
+  // Show splash screen until app is initialized
+  // if (showSplash) {
+  //   return <CustomSplashScreen onHide={() => setShowSplash(false)} />;
+  // }
 
   // Debug info - remove after fixing
   console.log('AppContent:', {

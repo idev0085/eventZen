@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ScrollView, StyleSheet, Alert, View, Text } from 'react-native';
 import HomeHeader from '../components/homeHeader';
 import QuickActionMenu from '../components/quickActionMenu';
@@ -16,6 +16,7 @@ import FloatingScannerCTA from '../components/floatingScannerCTA';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
+import { getToken } from '../utils/tokenManager';
 
 const MOCK_DATA_HOME = {
   banner: {
@@ -90,6 +91,7 @@ const MOCK_DATA_HOME = {
       isFavorite: true,
     },
   ],
+
   home_connections: [
     {
       id: 16,
@@ -177,6 +179,7 @@ const HomeSessions = () => {
 
 const HomeScreen = () => {
   const [playing, setPlaying] = useState(false);
+
   const onStateChange = useCallback(state => {
     if (state === 'ended') {
       setPlaying(false);
@@ -200,6 +203,15 @@ const HomeScreen = () => {
     MOCK_DATA_HOME?.banner?.videoUrl,
   );
   console.log('VIDEO', VIDEO);
+
+  async function findToken() {
+    const token = await getToken();
+    console.log('🚀 ~ findToken ~ token:', token);
+  }
+
+  useEffect(() => {
+    findToken();
+  }, []);
 
   return (
     <View style={styles.container}>
