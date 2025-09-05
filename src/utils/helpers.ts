@@ -1,7 +1,6 @@
 import { Platform, Alert, Linking } from 'react-native';
 import { COLORS } from './constants';
 
-
 export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const now = new Date();
@@ -14,7 +13,6 @@ export const formatDate = (dateString: string): string => {
 
   return date.toLocaleDateString();
 };
-
 
 export const getFileExtension = (filename: string): string => {
   return filename.split('.').pop()?.toLowerCase() || '';
@@ -46,7 +44,6 @@ export const openURL = async (url: string) => {
   }
 };
 
-
 export const debounce = (func: Function, wait: number) => {
   let timeout: NodeJS.Timeout;
   return function executedFunction(...args: any[]) {
@@ -58,7 +55,6 @@ export const debounce = (func: Function, wait: number) => {
     timeout = setTimeout(later, wait);
   };
 };
-
 
 export const isIOS = Platform.OS === 'ios';
 export const isAndroid = Platform.OS === 'android';
@@ -140,17 +136,17 @@ export const removeSession = async (key: string) => {
   } catch (error) {
     console.error('Error removing session:', error);
   }
-};    
+};
 
 export const getVideoId = (value: string) => {
-  if(!value){
+  if (!value) {
     return '';
   }
   const parts = value?.split('/');
   console.log('parts', parts);
   console.log('parts[parts.length - 1]', parts[parts.length - 1]);
   return parts[parts.length - 1];
-};    
+};
 
 export const parseISODateString = (
   isoString: string | undefined | null,
@@ -169,7 +165,6 @@ export const parseISODateString = (
   return date;
 };
 
-
 export const formatTimeRange = (
   startTimeISO: string | undefined | null,
   endTimeISO: string | undefined | null,
@@ -185,8 +180,14 @@ export const formatTimeRange = (
     return '';
   }
 
-  const timeFormat: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
+  const timeFormat: Intl.DateTimeFormatOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  };
 
-  return `${startTime.toLocaleTimeString('en-US', timeFormat)} - ${endTime.toLocaleTimeString('en-US', timeFormat)}`;
+  return `${startTime.toLocaleTimeString(
+    'en-US',
+    timeFormat,
+  )} - ${endTime.toLocaleTimeString('en-US', timeFormat)}`;
 };
-
