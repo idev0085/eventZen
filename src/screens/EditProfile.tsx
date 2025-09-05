@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EditProfileIcon, COLORS } from '../utils/constants';
@@ -10,40 +10,35 @@ import Button from '../components/ui/button';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
 import Toast from 'react-native-simple-toast';
-
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getToken } from '../utils/tokenManager';
 const MOCK_DATA_TAGS = ['Blockchain & FinTech', 'CloudTrends'];
-
-const MOCK_DATA = {
-  success: true,
-  message: 'successful',
-  id: 27,
-  first_name: 'Henry',
-  lastname: 'Roy',
-  name: 'Henry Roy',
-  email: 'henry.roy@example.com',
-  phone: '5132150156',
-  imageUrl: 'https://sme.nodejsdapldevelopments.com/images/default.png',
-  designation: 'Computer',
-  bio: 'apple, river, mountain, happy, blue, book, chair, quickly, beautiful, through, jungle, whisper, dance, thunder, ocean, flower, star, imagine, quiet, forever, journey, sunshine, mystery, gentle, sudden, curious, vibrant, ancient, explore, delicious, melody, freedom, courage, shimmer, distant, hopeful, dream, fragile, navigate, creation, embrace, echo, crimson, horizon, luminous, velvet, symphony, twilight, navigate, bloom, ascend',
-  tags: ['CloudTrend'],
-  my_qr_code:
-    'https://sme.nodejsdapldevelopments.com/qrcodes/user_1756983539.png',
-  company_name: 'Orn Inc',
-  company_email: 'rubye.effertz@block.com',
-  company_phone: '+17545917756',
-  image_url: 'https://sme.nodejsdapldevelopments.com/images/default.png',
-  roles: ['Admin', 'Sponsors', 'Attendee', 'Speaker'],
-  company_about_page: 'http://sme.nodejsdapldevelopments.com/app/page/about',
-  company_location_page:
-    'http://sme.nodejsdapldevelopments.com/app/page/location',
-  company_privacy_policy_page:
-    'http://sme.nodejsdapldevelopments.com/app/page/privacy',
-  company_terms_of_service_page:
-    'http://sme.nodejsdapldevelopments.com/app/page/terms',
-};
-
+import { BASE_URL } from '../config';
+import { apiCall, formatTimeRange } from '../utils/helpers';
 const EditProfile = () => {
-  const [profileData, setProfileData] = useState(MOCK_DATA);
+  const route = useRoute();
+  const navigation = useNavigation();
+  const [tags, setTags] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = await getToken();
+      try {
+        const response = await apiCall(
+          BASE_URL + '/api/tags',
+          'GET',
+          undefined,
+          token,
+        );
+        // Assuming the API returns an object with a 'data' array
+        setTags(response);
+      } catch (error) {
+        console.log('error fetching connections', error);
+      } finally {
+      }
+    };
+    fetchData();
+  }, []);
+  const [profileData, setProfileData] = useState(route?.params?.data);
 
   const handleInputChange = (field: string, value: any) => {
     setProfileData(prevData => ({ ...prevData, [field]: value }));
@@ -57,9 +52,17 @@ const EditProfile = () => {
     handleInputChange('tags', newTags);
   };
 
-  const handleSave = () => {
-    console.log('Saving profile data:', profileData);
-    Toast.show('Profile saved!', Toast.LONG);
+  const handleSave = async () => {
+    const token = await getToken();
+    console.log('profileData', profileData);
+    try {
+      await apiCall(BASE_URL + '/api/profile', 'PUT', profileData, token);
+      Toast.show('Profile updated successfully!', Toast.LONG);
+      navigation.goBack();
+    } catch (error) {
+      console.log('error updating profile', error);
+      Toast.show('Failed to update profile. Please try again.', Toast.LONG);
+    }
   };
 
   return (
@@ -133,7 +136,7 @@ const EditProfile = () => {
               Tags <Text style={styles.asterisk}> *</Text>
             </Text>
             <View style={styles.tagsWrapper}>
-              {MOCK_DATA_TAGS?.map((tag, index) => (
+              {tags?.map((tag, index) => (
                 <TouchableOpacity
                   key={index}
                   onPress={() => selectTag(tag)}
@@ -278,6 +281,7 @@ const styles = StyleSheet.create({
   },
   tagsWrapper: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 10,
@@ -285,6 +289,7 @@ const styles = StyleSheet.create({
   tagsBox: {
     backgroundColor: COLORS.background,
     padding: 10,
+    marginBottom: 10,
     marginRight: 10,
     borderRadius: 10,
     justifyContent: 'center',
@@ -293,6 +298,7 @@ const styles = StyleSheet.create({
   tagsBoxActive: {
     backgroundColor: COLORS.primary,
     padding: 10,
+    marginBottom: 10,
     marginRight: 10,
     borderRadius: 10,
     justifyContent: 'center',
