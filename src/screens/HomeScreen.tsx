@@ -26,6 +26,7 @@ import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
 import { BASE_URL } from '../config';
 import { getToken } from '../utils/tokenManager';
+import LoadingOverlay from '../components/loadingOverlay';
 
 const HomeSessions = ({ ...props }) => {
   return (
@@ -59,6 +60,7 @@ const HomeScreen = ({ ...props }) => {
   const [apiDataHome, setApiDataHome] = useState({});
   const [apiDataProfile, setApiDataProfile] = useState({});
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -126,7 +128,7 @@ const HomeScreen = ({ ...props }) => {
     <View style={styles.container}>
       <ScrollView style={styles.homeScreenContainer}>
         {loading ? (
-          <ActivityIndicator size="large" color={COLORS.primary} />
+          <LoadingOverlay visible={loading} />
         ) : (
           <>
             <HomeHeader
