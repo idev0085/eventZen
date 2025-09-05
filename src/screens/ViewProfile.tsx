@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useState, useCallback } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../utils/constants';
 import Icon from '../components/icon';
 import Card from '../components/card';
@@ -10,41 +9,52 @@ import Button from '../components/ui/button';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
 import { BASE_URL } from '../config';
-import { apiCall, formatTimeRange } from '../utils/helpers';
+import { apiCall } from '../utils/helpers';
 import { getToken } from '../utils/tokenManager';
-const ViewProfile = ({ ...props }) => {
-  const [apiData, setApiData] = useState({});
-  const [selectedTags, setSelectedTags] = useState([]);
-  const selectTags = index => {
-    if (selectedTags.includes(index)) {
-      setSelectedTags(selectedTags.filter(tag => tag !== index));
-    } else {
-      setSelectedTags([...selectedTags, index]);
-    }
-  };
+import LoadingOverlay from '../components/loadingOverlay';
+import { useFocusEffect } from '@react-navigation/native';
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = await getToken();
-      try {
-        const response = await apiCall(
-          BASE_URL + '/api/profile',
-          'GET',
-          undefined,
-          token,
-        );
-        // Assuming the API returns an object with a 'data' array
-        setApiData(response);
-      } catch (error) {
-        console.log('error fetching connections', error);
-      } finally {
-      }
-    };
-    fetchData();
+const ViewProfile = ({ navigation }) => {
+  const [apiData, setApiData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch profile data
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    const token = await getToken();
+    try {
+      const response = await apiCall(
+        BASE_URL + '/api/profile',
+        'GET',
+        undefined,
+        token,
+      );
+
+      // Normalize tags to array
+      setApiData({
+        ...response,
+        tags: response?.tags
+          ? Array.isArray(response.tags)
+            ? response.tags
+            : response.tags.split(',')
+          : [],
+      });
+    } catch (error) {
+      console.log('error fetching profile', error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [fetchData]),
+  );
 
   return (
     <>
+      {isLoading ? <LoadingOverlay visible={isLoading} /> : null}
       <BackHeader title="View Profile" />
 
       <ScrollView>
@@ -59,7 +69,9 @@ const ViewProfile = ({ ...props }) => {
           </TouchableOpacity>
 
           <CustomText style={styles.textLabel}>Name</CustomText>
-          <CustomText style={styles.textMeta}>{apiData?.name}</CustomText>
+          <CustomText style={styles.textMeta}>
+            {apiData?.first_name} {apiData?.last_name}
+          </CustomText>
 
           <CustomText style={styles.textLabel}>Designation</CustomText>
           <CustomText style={styles.textMeta}>
@@ -74,11 +86,13 @@ const ViewProfile = ({ ...props }) => {
           <View style={styles.tagContainer}>
             <CustomText style={styles.textLabel}>Tags</CustomText>
             <View style={styles.tagsWrapper}>
-              {apiData?.tags?.map((tag, index) => (
-                <View key={index} style={styles.tagsBox}>
-                  <CustomText style={styles.textMeta}>{tag}</CustomText>
-                </View>
-              ))}
+              {apiData?.tags?.length
+                ? apiData.tags.map((tag, index) => (
+                    <View key={index} style={styles.tagsBox}>
+                      <CustomText style={styles.textMeta}>{tag}</CustomText>
+                    </View>
+                  ))
+                : null}
             </View>
           </View>
 
@@ -95,11 +109,10 @@ const ViewProfile = ({ ...props }) => {
             labelStyle={styles.textMeta}
             placeholder={''}
             onChangeText={() => {}}
-            required={true}
             style={styles.textAreaStyle}
             multiline={true}
             numberOfLines={10}
-            // disabled={true}
+            editable={false} // make it read-only
           />
         </Card>
       </ScrollView>
@@ -107,7 +120,7 @@ const ViewProfile = ({ ...props }) => {
         <Button
           title={'Edit'}
           onPress={() =>
-            props.navigation.navigate('EditProfile', {
+            navigation.navigate('EditProfile', {
               data: apiData,
             })
           }
@@ -159,19 +172,20 @@ const styles = StyleSheet.create({
     color: COLORS.text,
   },
   tagContainer: {
-    // marginTop: 10,
-    // marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 10,
   },
   tagsWrapper: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     marginTop: 10,
-    // marginBottom: 10,
   },
   tagsBox: {
     backgroundColor: COLORS.background,
     padding: 10,
     marginRight: 10,
+    marginBottom: 10,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -179,11 +193,11 @@ const styles = StyleSheet.create({
   textAreaStyle: {
     marginTop: 10,
     marginBottom: 10,
-    //height: 40,
     fontSize: 15,
     fontFamily: 'Roboto-Regular',
     color: COLORS.text,
     paddingRight: 20,
+    minHeight: 100,
   },
   btnContainer: {
     height: 80,
