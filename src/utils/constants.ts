@@ -1,6 +1,5 @@
 import AddToCalendar from '../../assets/svg/svgComponents/AddToCalendar';
 import AlertWithCircle from '../../assets/svg/svgComponents/AlertWithCircle';
-import OtpCenter from '../../assets/svg/svgComponents/OtpCenter';
 import OtpEdit from '../../assets/svg/svgComponents/OtpEdit';
 import SocialFacebook from '../../assets/svg/svgComponents/SocialFacebook';
 import SocialInstagram from '../../assets/svg/svgComponents/SocialIntagram';
@@ -55,6 +54,7 @@ import CalendarFilledIcon from '../../assets/svg/svgComponents/CalendarFilledIco
 import FavoriteFilledIcon from '../../assets/svg/svgComponents/FavoriteFilledIcon';
 import ScannerActionIcon from '../../assets/svg/svgComponents/ScannerActionIcon';
 import ArrowLeftIcon from '../../assets/svg/svgComponents/ArrowLeftIcon';
+import OtpImageBackground from '../../assets/svg/svgComponents/OtpImageBackground';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -226,7 +226,6 @@ export {
   TimerIcon,
   TimerViewIcon,
   WorkShopView,
-  OtpCenter,
   OtpEdit,
   GreenBadge,
   EmailPadding,
@@ -272,4 +271,5 @@ export {
   FavoriteFilledIcon,
   ScannerActionIcon,
   ArrowLeftIcon,
+  OtpImageBackground,
 };
