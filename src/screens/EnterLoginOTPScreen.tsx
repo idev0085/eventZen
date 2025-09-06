@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
     width: 'auto',
-    top: 10,
+    top: 0,
     position: 'relative',
   },
   card: {
