@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar, Platform, View, Text } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -9,8 +9,12 @@ import Toast from 'react-native-simple-toast';
 import { ThemeService } from './src/services/ThemeService';
 import AppNavigator from './src/navigation/AppNavigator';
 import AuthNavigator from './src/navigation/AuthNavigator';
-import { useSession } from './src/hooks/useSession';
 import LoadingOverlay from './src/components/loadingOverlay';
+import {
+  useAuthIsReady,
+  useAuthStore,
+  useIsAuthenticated,
+} from './src/stores/authStore';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,20 +34,16 @@ export const queryClient = new QueryClient({
 });
 
 function AppContent() {
-  const { isAuthenticated, isLoading, token, isHydrated } = useSession();
-  console.log('🚀 ~ AppContent ~ token:', token);
+  const isAuthenticated = useIsAuthenticated();
+  const isAuthReady = useAuthIsReady();
 
-  // Debug info - remove after fixing
   console.log('AppContent:', {
     isAuthenticated,
-    isLoading,
-    hasToken: !!token,
-    isHydrated,
   });
 
   // Show loading screen until we know auth status -- Loader will added.
-  if (isLoading) {
-    return <LoadingOverlay visible={isLoading} />;
+  if (!isAuthReady) {
+    return <LoadingOverlay visible={true} />;
   }
 
   return (
@@ -54,6 +54,10 @@ function AppContent() {
 }
 
 export default function App() {
+  useEffect(() => {
+    useAuthStore.persist.rehydrate();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>

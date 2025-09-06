@@ -5,15 +5,13 @@ import CompanyDetailsScreen from '../screens/CompanyDetails';
 import CMSScreen from '../screens/CMSScreen';
 import ViewProfile from '../screens/ViewProfile';
 import EditProfile from '../screens/EditProfile';
-
 import AboutScreen from '../screens/AboutScreen';
 import LocationScreen from '../screens/LocationScreen';
 import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
 import TermsConditionsScreen from '../screens/TermsConditionsScreen';
 import SessionsDetailsScreen from '../screens/SessionsDetailsScreen';
 import FavouriteSessionScreen from '../screens/FavouriteSessionScreen';
-import LoginScreen from '../screens/LoginScreen';
-import EnterLoginOTPScreen from '../screens/EnterLoginOTPScreen';
+
 const AppStack = createStackNavigator();
 
 function AppNavigator() {
@@ -28,7 +26,6 @@ function AppNavigator() {
       <AppStack.Screen name="Profile" component={ViewProfile} />
       <AppStack.Screen name="EditProfile" component={EditProfile} />
       <AppStack.Screen name="AboutScreen" component={AboutScreen} />
-
       <AppStack.Screen name="LocationScreen" component={LocationScreen} />
       <AppStack.Screen
         name="PrivacyPolicyScreen"
@@ -45,11 +42,6 @@ function AppNavigator() {
       <AppStack.Screen
         name="FavouriteSessionScreen"
         component={FavouriteSessionScreen}
-      />
-      <AppStack.Screen name="LoginScreen" component={LoginScreen} />
-      <AppStack.Screen
-        name="EnterLoginOTPScreen"
-        component={EnterLoginOTPScreen}
       />
     </AppStack.Navigator>
   );

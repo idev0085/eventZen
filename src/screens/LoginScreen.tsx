@@ -30,7 +30,13 @@ export default function LoginScreen({ ...props }) {
 
   return (
     <View>
-      <Image source={PNG_IMAGES.LoginBg} style={styles.background} />
+      <Image
+        source={PNG_IMAGES.LoginBg}
+        style={styles.background}
+        width={100}
+        height={100}
+      />
+      {/* <LoginImageBackground /> */}
       <Card style={styles.card}>
         <View>
           <CustomText style={styles.title}>Welcome Back !</CustomText>
@@ -104,7 +110,7 @@ export default function LoginScreen({ ...props }) {
 
 const styles = StyleSheet.create({
   background: {
-    justifyContent: 'center',
+    alignSelf: 'center',
     width: 'auto',
     position: 'relative',
     minWidth: 375,
@@ -112,7 +118,7 @@ const styles = StyleSheet.create({
   },
   card: {
     position: 'absolute',
-    top: '72%',
+    top: '300%',
     alignSelf: 'center',
     width: '85%',
     justifyContent: 'center',

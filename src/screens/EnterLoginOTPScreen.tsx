@@ -4,8 +4,8 @@ import Card from '../components/card';
 import {
   APP_CONFIG,
   COLORS,
-  OtpCenter,
   OtpEdit,
+  OtpImageBackground,
   PNG_IMAGES,
   TEXT_SIZES,
 } from '../utils/constants';
@@ -76,7 +76,8 @@ const EnterLoginOTPScreen = (props: any) => {
       <Card style={styles.card}>
         <View style={styles.contentContainer}>
           <View style={styles.contentImage}>
-            <OtpCenter />
+            {/* <OtpCenter /> */}
+            <OtpImageBackground />
           </View>
           <CustomText style={styles.subTitle}>
             We have sent OTP to email address
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
     width: 'auto',
-    top: 10,
+    top: 0,
     position: 'relative',
   },
   card: {

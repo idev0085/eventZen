@@ -2,8 +2,8 @@ import axios from 'axios';
 import Toast from 'react-native-simple-toast';
 import { BASE_URL } from '../config';
 import { API_ENDPOINTS } from '../utils/constants';
-import { getToken, removeToken } from '../utils/tokenManager';
 import { queryClient } from '../../App';
+import { useAuthStore } from '../stores/authStore';
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -24,14 +24,12 @@ const PUBLIC_URLs = [
 apiClient.interceptors.request.use(
   async config => {
     try {
-      const token = await getToken();
+      const token = await useAuthStore.getState().token;
       const isPublicUrl = PUBLIC_URLs.some(url => config.url?.includes(url));
 
-      if (isPublicUrl || !token) {
-        return config;
+      if (token && !isPublicUrl) {
+        config.headers.Authorization = `Bearer ${token}`;
       }
-
-      config.headers.Authorization = `Bearer ${token}`;
       return config;
     } catch (error) {
       console.error('Request interceptor error:', error);
@@ -51,11 +49,12 @@ apiClient.interceptors.response.use(
     return response;
   },
   async error => {
+    const originalRequest = error.config;
     console.log('API Error:', {
       message: error.message,
       code: error.code,
       response: error.response?.status,
-      config: error.config?.url,
+      url: originalRequest?.url,
     });
 
     // Network error (no response)
@@ -65,9 +64,12 @@ apiClient.interceptors.response.use(
     }
 
     // Session expired error
-    if (error.response.status === 401) {
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      console.log('Session expired or token is invalid. Logging out.');
       Toast.show('Session expired. Please log in again.', Toast.LONG);
-      await removeToken();
+
+      useAuthStore.getState().logout();
       await queryClient.invalidateQueries({ queryKey: ['profile'] });
     } else {
       // Other server errors
