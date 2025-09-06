@@ -4,8 +4,10 @@ import {
   TUser,
   RequestOtpResponseSchema,
 } from '../schemas/authSchemas';
+import { useAuthStore } from '../stores/authStore';
 import { apiClient } from './apiClient';
 import Toast from 'react-native-simple-toast';
+
 interface OtpPayload {
   email: string;
   otp: string;
@@ -30,7 +32,12 @@ export const requestOtp = async (payload: {
 export const verifyOtp = async (payload: OtpPayload): Promise<string> => {
   const { data } = await apiClient.post('/api/auth/verify-otp', payload);
   const validatedData = VerifyOtpResponseSchema.parse(data);
-  return validatedData.token;
+
+  const token = validatedData.token;
+  if (token) {
+    await useAuthStore.getState().setToken(token);
+  }
+  return token;
 };
 
 // authApi.ts - UPDATE getProfile FUNCTION
@@ -38,8 +45,9 @@ export const getProfile = async (): Promise<TUser> => {
   try {
     const { data } = await apiClient.get('/api/profile');
 
-    // Directly validate the response since it's not nested
     const validated = UserProfileResponseSchema.parse(data);
+
+    useAuthStore.getState().setUser(validated);
     return validated;
   } catch (error: any) {
     console.error('getProfile error details:', {

@@ -2,7 +2,6 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
 import EnterLoginOTPScreen from '../screens/EnterLoginOTPScreen';
-import AppNavigator from './AppNavigator';
 import CMSScreen from '../screens/CMSScreen';
 import TermsConditionsScreen from '../screens/TermsConditionsScreen';
 import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
@@ -17,7 +16,6 @@ export default function AuthNavigator() {
         name="EnterLoginOTPScreen"
         component={EnterLoginOTPScreen}
       />
-      <Stack.Screen name="App" component={AppNavigator} />
       <Stack.Screen name="CMSScreen" component={CMSScreen} />
       <Stack.Screen
         name="TermsConditionsScreen"
