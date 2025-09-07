@@ -5,11 +5,11 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from 'react-native-simple-toast';
+import RNBootSplash from 'react-native-bootsplash';
 
 import { ThemeService } from './src/services/ThemeService';
 import AppNavigator from './src/navigation/AppNavigator';
 import AuthNavigator from './src/navigation/AuthNavigator';
-import LoadingOverlay from './src/components/loadingOverlay';
 import {
   useAuthIsReady,
   useAuthStore,
@@ -36,6 +36,11 @@ export const queryClient = new QueryClient({
 function AppContent() {
   const isAuthenticated = useIsAuthenticated();
   const isAuthReady = useAuthIsReady();
+  useEffect(() => {
+    if (isAuthReady) {
+      RNBootSplash.hide({ fade: true });
+    }
+  }, [isAuthReady]);
 
   console.log('AppContent:', {
     isAuthenticated,
@@ -43,7 +48,8 @@ function AppContent() {
 
   // Show loading screen until we know auth status -- Loader will added.
   if (!isAuthReady) {
-    return <LoadingOverlay visible={true} />;
+    // return <LoadingOverlay visible={true} />;
+    return null;
   }
 
   return (
