@@ -12,8 +12,8 @@ export type TUpdateProfilePayload = {
   first_name: string;
   last_name: string;
   designation: string;
-  company_name: string;
-  company_website: string;
+  company_name: string | null;
+  company_website: string | null;
   email: string;
   phone: string;
   bio: string;
@@ -78,6 +78,6 @@ export const getHomeData = async () => {
 
 // FETCH TAGS DATA API
 export const getTags = async () => {
-  const { data } = await apiClient.post('/api/tags');
+  const { data } = await apiClient.get('/api/tags');
   return data.data || data;
 };

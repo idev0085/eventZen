@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React from 'react';
 import {
   Alert,
   StyleSheet,
@@ -30,9 +30,7 @@ import CustomText from '../components/ui/text';
 import Icon from '../components/icon';
 import Card from '../components/card';
 import { useAuth } from '../hooks/useAuth';
-import { BASE_URL } from '../config';
-import { apiCall, formatTimeRange } from '../utils/helpers';
-import { getToken } from '../utils/tokenManager';
+import { useProfile } from '../hooks/useApi';
 const ICON_SIZE = 22;
 const ARROW_ICON_SIZE = 22;
 const CustomSideBarMenus = [
@@ -107,31 +105,13 @@ const CustomSideBarCMS = [
 ];
 
 export default function CustomSideBar({ navigation }: any) {
-  const [apiData, setApiData] = useState({});
-  const [searchQuery, setSearchQuery] = useState('');
+  const { data: profileData } = useProfile();
+
   const { logout } = useAuth();
   const handleLogout = async () => {
     await logout();
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = await getToken();
-      try {
-        const response = await apiCall(
-          BASE_URL + '/api/profile',
-          'GET',
-          undefined,
-          token,
-        );
-        // Assuming the API returns an object with a 'data' array
-        setApiData(response);
-      } catch (error) {
-        console.log('error fetching connections', error);
-      } finally {
-      }
-    };
-    fetchData();
-  }, []);
+
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -144,7 +124,7 @@ export default function CustomSideBar({ navigation }: any) {
             <View style={styles.profileleftContainer}>
               <View style={styles.imageBox}>
                 <Icon
-                  source={{ uri: apiData?.imageUrl }}
+                  source={{ uri: profileData?.imageUrl }}
                   size={50}
                   backgroundColor={COLORS.placeholder}
                   borderRadius={50}
@@ -152,8 +132,12 @@ export default function CustomSideBar({ navigation }: any) {
               </View>
             </View>
             <View style={styles.profileRightContainer}>
-              <CustomText style={styles.textName}>{apiData?.name}</CustomText>
-              <CustomText style={styles.textEmail}>{apiData?.email}</CustomText>
+              <CustomText style={styles.textName}>
+                {profileData?.name}
+              </CustomText>
+              <CustomText style={styles.textEmail}>
+                {profileData?.email}
+              </CustomText>
             </View>
             <TouchableOpacity
               style={styles.qrBox}

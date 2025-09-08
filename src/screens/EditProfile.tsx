@@ -9,106 +9,73 @@ import Button from '../components/ui/button';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
 import Toast from 'react-native-simple-toast';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { getToken } from '../utils/tokenManager';
-import { BASE_URL } from '../config';
-import { apiCall } from '../utils/helpers';
+import { useProfile, useTags, useUpdateProfile } from '../hooks/useApi';
+import LoadingOverlay from '../components/loadingOverlay';
 
 const EditProfile = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
-  const [availableTags, setAvailableTags] = useState([]);
+  const { data: profileData, isLoading: isProfileLoading } = useProfile();
+  const { data: availableTags, isLoading: areTagsLoading } = useTags();
+  const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
 
-  const initialTags = Array.isArray(route?.params?.data?.tags)
-    ? route.params.data.tags
-    : typeof route?.params?.data?.tags === 'string'
-    ? route.params.data.tags.split(',')
-    : [];
-
-  const [profileData, setProfileData] = useState({
-    ...route?.params?.data,
-    tags: initialTags,
-  });
-
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState<any>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const token = await getToken();
-      try {
-        const response = await apiCall(
-          BASE_URL + '/api/tags',
-          'GET',
-          undefined,
-          token,
-        );
-        console.log('🚀 ~ fetchData ~ tags response:', response);
-        setAvailableTags(response.data || response);
-      } catch (error) {
-        console.log('error fetching tags', error);
-      }
-    };
-    fetchData();
-  }, []);
+    if (profileData) {
+      setFormData({
+        ...profileData,
+        tags: Array.isArray(profileData.tags) ? profileData.tags : [],
+      });
+    }
+  }, [profileData]);
 
   const handleInputChange = (field: string, value: any) => {
-    setProfileData(prevData => ({ ...prevData, [field]: value }));
+    setFormData(prevData => ({ ...prevData, [field]: value }));
   };
 
   const selectTag = (tag: any) => {
-    const currentTags = profileData.tags || [];
+    const currentTags = formData.tags || [];
     const tagName = tag.name || tag;
-
     const newTags = currentTags.includes(tagName)
       ? currentTags.filter(t => t !== tagName)
       : [...currentTags, tagName];
-
     handleInputChange('tags', newTags);
   };
 
   const isTagSelected = (tag: any) => {
     const tagName = tag.name || tag;
-    const currentTags = profileData.tags || [];
-    return currentTags.includes(tagName);
+    return formData?.tags?.includes(tagName);
   };
 
-  const handleSave = async () => {
-    setLoading(true);
-    const token = await getToken();
-    try {
-      const payload = {
-        first_name: profileData.first_name || '',
-        last_name: profileData.lastname || '',
-        designation: profileData.designation || '',
-        company_name: profileData.company_name || '',
-        company_website: profileData.company_website || '',
-        email: profileData.email || '',
-        phone: profileData.phone || '',
-        bio: profileData.bio || '',
-        tags: Array.isArray(profileData.tags)
-          ? profileData.tags.join(',')
-          : profileData.tags || '',
-      };
-
-      console.log('Sending payload:', payload);
-
-      await apiCall(BASE_URL + '/api/profile', 'PUT', payload, token);
-      Toast.show('Profile updated successfully!', Toast.LONG);
-      navigation.goBack();
-    } catch (error) {
-      console.log('error updating profile', error);
-      if (error.response?.data?.errors) {
-        const errorMessages = Object.values(error.response.data.errors)
-          .flat()
-          .join('\n');
-        Toast.show(`Validation errors:\n${errorMessages}`, Toast.LONG);
-      } else {
-        Toast.show('Failed to update profile. Please try again.', Toast.LONG);
-      }
-    } finally {
-      setLoading(false);
+  const handleSave = () => {
+    if (!formData) return;
+    if (!formData.first_name || !formData.lastname) {
+      Toast.show('First and Last name are required.', Toast.LONG);
+      return;
     }
+
+    const payload = {
+      first_name: formData.first_name,
+      last_name: formData.lastname,
+      designation: formData.designation || '',
+      company_name: formData.company_name || '',
+      company_website: formData.company_website
+        ? formData.company_website
+        : null,
+      email: formData.email,
+      phone: formData.phone || '',
+      bio: formData.bio || '',
+      tags: Array.isArray(formData.tags) ? formData.tags.join(',') : '',
+    };
+
+    console.log('payload___', payload);
+
+    updateProfile(payload);
   };
+  const isLoading = isProfileLoading || areTagsLoading;
+
+  if (isLoading || !formData) {
+    return <LoadingOverlay visible={true} />;
+  }
 
   return (
     <>
@@ -129,7 +96,7 @@ const EditProfile = () => {
 
           {/* Updatable Fields */}
           <TextBox
-            value={profileData?.first_name}
+            value={formData?.first_name}
             label={'First Name'}
             labelStyle={styles.labelStyle}
             placeholder={''}
@@ -140,7 +107,7 @@ const EditProfile = () => {
           />
 
           <TextBox
-            value={profileData?.lastname}
+            value={formData?.lastname}
             label={'Last Name'}
             labelStyle={styles.labelStyle}
             placeholder={''}
@@ -151,7 +118,7 @@ const EditProfile = () => {
           />
 
           <TextBox
-            value={profileData?.designation}
+            value={formData?.designation}
             label={'Designation'}
             labelStyle={styles.labelStyle}
             placeholder={''}
@@ -162,7 +129,7 @@ const EditProfile = () => {
           />
 
           <TextBox
-            value={profileData?.company_name}
+            value={formData?.company_name}
             label={'Company Name'}
             labelStyle={styles.labelStyle}
             placeholder={''}
@@ -173,7 +140,7 @@ const EditProfile = () => {
           />
 
           <TextBox
-            value={profileData?.company_website}
+            value={formData?.company_website}
             label={'Company Website'}
             labelStyle={styles.labelStyle}
             placeholder={''}
@@ -212,7 +179,7 @@ const EditProfile = () => {
           </View>
 
           <TextBox
-            value={profileData?.email}
+            value={formData?.email}
             label={'Email Address'}
             labelStyle={styles.labelStyle}
             placeholder={''}
@@ -223,7 +190,7 @@ const EditProfile = () => {
           />
 
           <TextBox
-            value={profileData?.phone}
+            value={formData?.phone}
             label={'Phone Number'}
             labelStyle={styles.labelStyle}
             placeholder={''}
@@ -234,7 +201,7 @@ const EditProfile = () => {
           />
 
           <TextBox
-            value={profileData?.bio}
+            value={formData?.bio}
             label={'Bio'}
             labelStyle={styles.labelStyle}
             placeholder={''}
@@ -249,11 +216,11 @@ const EditProfile = () => {
       </ScrollView>
       <View style={styles.btnContainer}>
         <Button
-          title={loading ? 'Saving...' : 'Save'}
+          title={isUpdating ? 'Saving...' : 'Save'}
           onPress={handleSave}
           style={{ width: '80%' }}
           textStyle={styles.btnTextStyle}
-          disabled={loading}
+          disabled={isUpdating}
         />
       </View>
     </>
