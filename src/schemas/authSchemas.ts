@@ -46,30 +46,33 @@ export const UserSchema = z.object({
 
 //! Schema for the full /api/profile response
 export const UserProfileResponseSchema = z.object({
-  success: z.boolean(),
-  message: z.string(),
   id: z.number(),
+  name: z.string(),
   first_name: z.string().nullable(),
   lastname: z.string().nullable(),
-  name: z.string(),
   email: z.string().email(),
   phone: z.string().nullable(),
   imageUrl: z.string().nullable(),
   designation: z.string().nullable(),
   bio: z.string().nullable(),
-  tags: z.array(z.string()),
+  tags: z.array(z.string()).nullable(),
   my_qr_code: z.string().url().nullable(),
+  success: z.boolean(),
+  message: z.string(),
   company_name: z.string().nullable(),
   company_email: z.string().nullable(),
+  company_website: z.string().url().nullable(),
   company_phone: z.string().nullable(),
   image_url: z.string().nullable(),
-  roles: z.array(z.string()),
+  roles: z.array(z.string()).nullable(),
   company_about_page: z.string().url().nullable(),
   company_location_page: z.string().url().nullable(),
   company_privacy_policy_page: z.string().url().nullable(),
   company_terms_of_service_page: z.string().url().nullable(),
 });
 
-export type TUser = z.infer<typeof UserSchema>;
+// export type TUser = z.infer<typeof UserSchema>;
+// export type TUser = z.infer<typeof UserSchema>;
+export type TUser = z.infer<typeof UserProfileResponseSchema>;
 export type TUserProfileResponse = z.infer<typeof UserProfileResponseSchema>;
 export type TVerifyOtpResponse = z.infer<typeof VerifyOtpResponseSchema>;
