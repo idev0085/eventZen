@@ -8,6 +8,17 @@ import { useAuthStore } from '../stores/authStore';
 import { apiClient } from './apiClient';
 import Toast from 'react-native-simple-toast';
 
+export type TUpdateProfilePayload = {
+  first_name: string;
+  last_name: string;
+  designation: string;
+  company_name: string;
+  company_website: string;
+  email: string;
+  phone: string;
+  bio: string;
+  tags: string;
+};
 interface OtpPayload {
   email: string;
   otp: string;
@@ -36,28 +47,37 @@ export const verifyOtp = async (payload: OtpPayload): Promise<string> => {
   const token = validatedData.token;
   if (token) {
     await useAuthStore.getState().setToken(token);
+    try {
+      const userProfile = await getProfile();
+      useAuthStore.getState().setUser(userProfile);
+    } catch (error) {
+      console.error('Login ke baad profile fetch nahi hua', error);
+    }
   }
   return token;
 };
 
-// authApi.ts - UPDATE getProfile FUNCTION
 export const getProfile = async (): Promise<TUser> => {
-  try {
-    const { data } = await apiClient.get('/api/profile');
+  const { data } = await apiClient.get('/api/profile');
+  const validated = UserProfileResponseSchema.parse(data);
+  return validated;
+};
 
-    const validated = UserProfileResponseSchema.parse(data);
+// UPDATE PROFILE API
 
-    useAuthStore.getState().setUser(validated);
-    return validated;
-  } catch (error: any) {
-    console.error('getProfile error details:', {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status,
-    });
+export const updateProfile = async (payload: TUpdateProfilePayload) => {
+  const { data } = await apiClient.put('/api/profile', payload);
+  return data;
+};
 
-    throw new Error(
-      error.response?.data?.message || 'Failed to fetch profile.',
-    );
-  }
+// FETCH HOME Screen DATA API
+export const getHomeData = async () => {
+  const { data } = await apiClient.post('/api/home');
+  return data;
+};
+
+// FETCH TAGS DATA API
+export const getTags = async () => {
+  const { data } = await apiClient.post('/api/tags');
+  return data.data || data;
 };
