@@ -7,6 +7,7 @@ import {
   Text,
   ActivityIndicator,
 } from 'react-native';
+import { OneSignal, LogLevel } from 'react-native-onesignal';
 import HomeHeader from '../components/homeHeader';
 import QuickActionMenu from '../components/quickActionMenu';
 import UpcomingEvent from '../components/upcomingEvent';
@@ -24,7 +25,7 @@ import FloatingScannerCTA from '../components/floatingScannerCTA';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
-import { BASE_URL } from '../config';
+import { BASE_URL, ONESIGNAL_API_KEY } from '../config';
 import { getToken } from '../utils/tokenManager';
 import LoadingOverlay from '../components/loadingOverlay';
 
@@ -63,6 +64,12 @@ const HomeScreen = ({ ...props }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+      OneSignal.initialize(ONESIGNAL_API_KEY);
+      OneSignal.Notifications.requestPermission(true);
+      const userID = await OneSignal.User.getOnesignalId();
+      console.log('OneSignal User ID:', userID);
+
       setLoading(true);
       const token = await getToken();
       try {
