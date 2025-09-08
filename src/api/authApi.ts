@@ -81,3 +81,14 @@ export const getTags = async () => {
   const { data } = await apiClient.get('/api/tags');
   return data.data || data;
 };
+
+// FETCH TAGS DATA API
+export const getSessions = async () => {
+  const { data } = await apiClient.get('/api/sessions');
+  return data.data || data;
+};
+// FETCH TAGS DATA API
+export const getConnections = async () => {
+  const { data } = await apiClient.get('/api/connections');
+  return data.data || data;
+};
