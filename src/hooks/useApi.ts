@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAuthStore } from '../stores/authStore';
 import {
   getHomeData,
   getProfile,
@@ -9,23 +8,14 @@ import {
 } from '../api/authApi';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
-import { useEffect } from 'react';
 
 // Profile hooks
-export const useProfile = async () => {
-  const setUser = useAuthStore(state => state.setUser);
-
-  const { data, isSuccess } = useQuery({
+export const useProfile = () => {
+  return useQuery({
     queryKey: ['profile'],
-    queryFn: await getProfile,
+    queryFn: getProfile,
+    staleTime: 1000 * 60 * 5, // 5 mints
   });
-
-  useEffect(() => {
-    if (isSuccess && data) {
-      console.log('Data is available:', data);
-      setUser;
-    }
-  }, [data, isSuccess]);
 };
 
 export const useUpdateProfile = () => {
