@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { TUser } from '../schemas/authSchemas';
 import { keychainStorage } from '../services/keychainStorage';
-import { getProfile } from '../api/authApi';
 import { queryClient } from '../../App';
 
 interface AuthState {
@@ -35,15 +34,6 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       setToken: async (token: string) => {
         console.log('🔑 Setting new token and fetching profile...');
         set({ token, status: 'ready' });
-        try {
-          const userProfile = await getProfile();
-          set({ user: userProfile });
-          console.log('👤 User profile fetched and set!');
-        } catch (error) {
-          console.error('Failed to fetch profile after login', error);
-
-          get().logout();
-        }
       },
 
       setUser: (user: TUser) => {

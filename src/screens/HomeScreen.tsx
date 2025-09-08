@@ -5,19 +5,18 @@ import {
   Alert,
   View,
   Text,
-  ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import { OneSignal, LogLevel } from 'react-native-onesignal';
 import HomeHeader from '../components/homeHeader';
 import QuickActionMenu from '../components/quickActionMenu';
 import UpcomingEvent from '../components/upcomingEvent';
 import ConnectionsCard from '../components/connectionCard';
-import { GENERATED_CONNECTIONS, COLORS, TEXT_SIZES } from '../utils/constants';
+import { COLORS, TEXT_SIZES } from '../utils/constants';
 import {
   getVideoId,
   parseISODateString,
   formatTimeRange,
-  apiCall,
 } from '../utils/helpers';
 import Toast from 'react-native-simple-toast';
 import MyStats from '../components/myStats';
@@ -25,9 +24,10 @@ import FloatingScannerCTA from '../components/floatingScannerCTA';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
-import { BASE_URL, ONESIGNAL_API_KEY } from '../config';
-import { getToken } from '../utils/tokenManager';
+import { ONESIGNAL_API_KEY } from '../config';
 import LoadingOverlay from '../components/loadingOverlay';
+import { useHomeData, useProfile } from '../hooks/useApi';
+import { useAuthStore } from '../stores/authStore';
 
 const HomeSessions = ({ ...props }) => {
   return (
@@ -41,7 +41,7 @@ const HomeSessions = ({ ...props }) => {
           See more
         </Text>
       </View>
-      {props?.data?.home_sessions?.map(session => (
+      {props?.data?.home_sessions?.slice(0, 4).map(session => (
         <Card style={styles.card} key={session.id}>
           <SessionListItem
             title={session?.title}
@@ -58,9 +58,21 @@ const HomeSessions = ({ ...props }) => {
 };
 
 const HomeScreen = ({ ...props }) => {
-  const [apiDataHome, setApiDataHome] = useState({});
-  const [apiDataProfile, setApiDataProfile] = useState({});
-  const [loading, setLoading] = useState(true);
+  const {
+    data: homeData,
+    isLoading: isHomeLoading,
+    refetch: refetchHomeData,
+    isRefetching: isRefetchingHome,
+  } = useHomeData();
+
+  const {
+    data: profileData,
+    isLoading: isProfileLoading,
+    isSuccess,
+  } = useProfile();
+
+  // Zustand store
+  const setUser = useAuthStore(state => state.setUser);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,42 +81,15 @@ const HomeScreen = ({ ...props }) => {
       OneSignal.Notifications.requestPermission(true);
       const userID = await OneSignal.User.getOnesignalId();
       console.log('OneSignal User ID:', userID);
-
-      setLoading(true);
-      const token = await getToken();
-      try {
-        const response = await apiCall(
-          BASE_URL + '/api/home',
-          'POST',
-          undefined,
-          token,
-        );
-        console.log('================>', BASE_URL + '/api/home');
-        console.log('response', response);
-        // Assuming the API returns an object with a 'data' array)
-        setApiDataHome(response);
-      } catch (error) {
-        console.log('error', error);
-      } finally {
-        setLoading(false);
-      }
-
-      try {
-        const response = await apiCall(
-          BASE_URL + '/api/profile',
-          'GET',
-          undefined,
-          token,
-        );
-        // Assuming the API returns an object with a 'data' array
-        setApiDataProfile(response);
-      } catch (error) {
-        console.log('error fetching connections', error);
-      } finally {
-      }
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (isSuccess && profileData) {
+      setUser(profileData);
+    }
+  }, [isSuccess, profileData, setUser]);
 
   const [playing, setPlaying] = useState(false);
   const onStateChange = useCallback(state => {
@@ -121,28 +106,34 @@ const HomeScreen = ({ ...props }) => {
     Toast.show('Start Networking Live', Toast.LONG);
   };
 
-  const VIDEO = getVideoId(apiDataHome?.banner?.videoUrl);
+  const VIDEO = getVideoId(homeData?.banner?.videoUrl);
   const upcomingEventDate = parseISODateString(
-    apiDataHome?.upcomingEvent?.startDateTime,
+    homeData?.upcomingEvent?.startDateTime,
   );
-  // console.log(
-  //   'MOCK_DATA_HOME?.banner?.videoUrl',
-  //   MOCK_DATA_HOME?.banner?.videoUrl,
-  // );
-  // console.log('VIDEO', VIDEO);
+
+  const isLoading = isHomeLoading || isProfileLoading;
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.homeScreenContainer}>
-        {loading ? (
-          <LoadingOverlay visible={loading} />
+      <ScrollView
+        style={styles.homeScreenContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetchingHome}
+            onRefresh={refetchHomeData}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        {isLoading ? (
+          <LoadingOverlay visible={true} />
         ) : (
           <>
             <HomeHeader
-              userName={apiDataProfile?.name}
+              userName={profileData?.name}
               welcomeMessage="Welcome !"
-              profileImage={apiDataProfile?.imageUrl}
-              hasNewNotification={apiDataHome?.notifications?.hasNew}
+              profileImage={profileData?.imageUrl}
+              hasNewNotification={homeData?.notifications?.hasNew}
             />
             {VIDEO && (
               <YoutubePlayer
@@ -157,16 +148,16 @@ const HomeScreen = ({ ...props }) => {
               <UpcomingEvent eventDate={upcomingEventDate} />
             )}
             <QuickActionMenu />
-            {apiDataHome?.home_sessions?.length > 0 && (
-              <HomeSessions data={apiDataHome} />
+            {homeData?.home_sessions?.length > 0 && (
+              <HomeSessions data={homeData} />
             )}
-            {apiDataHome?.home_connections?.length > 0 && (
+            {homeData?.home_connections?.length > 0 && (
               <ConnectionsCard
-                connections={apiDataHome?.home_connections}
+                connections={homeData?.home_connections}
                 onStartNetworking={handleOnStartNetworking}
               />
             )}
-            {apiDataHome?.myStats && <MyStats data={apiDataHome?.myStats} />}
+            {homeData?.myStats && <MyStats data={homeData?.myStats} />}
           </>
         )}
       </ScrollView>
@@ -185,7 +176,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   card: {
-    // marginHorizontal: 10,
     alignSelf: 'center',
     width: '90%',
     justifyContent: 'center',
