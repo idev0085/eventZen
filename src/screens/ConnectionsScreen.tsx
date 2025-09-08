@@ -1,46 +1,26 @@
-import React, { use, useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { COLORS } from '../utils/constants';
 import ListItem from '../components/listItem';
-import { ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
 import SearchUI from '../components/Search';
 import BackHeader from '../components/BackHeader';
-import { BASE_URL } from '../config';
-import { apiCall, formatTimeRange } from '../utils/helpers';
-import { getToken } from '../utils/tokenManager';
 import CustomText from '../components/ui/text';
 import LoadingOverlay from '../components/loadingOverlay';
+import { useConnections } from '../hooks/useApi';
 
 export default function ConnectionScreen({ ...props }) {
-  const [apiData, setApiData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const token = await getToken();
-      try {
-        const response = await apiCall(
-          BASE_URL + '/api/connections',
-          'GET',
-          undefined,
-          token,
-        );
-        // Assuming the API returns an object with a 'data' array
-        setApiData(response || []);
-      } catch (error) {
-        console.log('error fetching connections', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  const {
+    data: connectionData,
+    isLoading,
+    refetch: refetchConnectionData,
+    isRefetching: isRefetchingConnection,
+  } = useConnections();
 
   const filteredData =
-    apiData?.filter(item =>
+    connectionData?.filter(item =>
       item.name?.toLowerCase().includes(searchQuery.toLowerCase()),
     ) || [];
 
@@ -52,9 +32,18 @@ export default function ConnectionScreen({ ...props }) {
         placeholder="Search Connections..."
         onChangeText={setSearchQuery}
       />
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {loading ? (
-          <LoadingOverlay visible={loading} />
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetchingConnection}
+            onRefresh={refetchConnectionData}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        {isLoading ? (
+          <LoadingOverlay visible={true} />
         ) : filteredData.length > 0 ? (
           filteredData.map(item => (
             <Card key={item.id} style={styles.card}>

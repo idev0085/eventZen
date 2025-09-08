@@ -1,51 +1,41 @@
-import React, { use, useEffect, useState } from 'react';
-import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, RefreshControl, ScrollView } from 'react-native';
 import { COLORS } from '../utils/constants';
 
 import SessionListItem from '../components/sessionListItem';
-import { DrawerLayoutAndroid, ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
 
 import CustomText from '../components/ui/text';
 import BackHeader from '../components/BackHeader';
-import { BASE_URL } from '../config';
-import { apiCall, formatTimeRange } from '../utils/helpers';
-import { getToken } from '../utils/tokenManager';
+import { formatTimeRange } from '../utils/helpers';
 import LoadingOverlay from '../components/loadingOverlay';
+import { useSessions } from '../hooks/useApi';
 
 export default function SessionsScreen({ ...props }) {
-  const [apiData, setApiData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    data: sessionData,
+    isLoading,
+    refetch: refetchSessionData,
+    isRefetching: isRefetchingHome,
+  } = useSessions();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const token = await getToken();
-      try {
-        const response = await apiCall(
-          BASE_URL + '/api/sessions',
-          'GET',
-          undefined,
-          token,
-        );
-        setApiData(response);
-      } catch (error) {
-        console.log('error', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-  //console.log('apiData', apiData, getToken());
   return (
     <>
       <BackHeader title="Session" showBtn={false} />
-      <ScrollView style={styles.container}>
-        {loading ? (
-          <LoadingOverlay visible={loading} />
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetchingHome}
+            onRefresh={refetchSessionData}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        {isLoading ? (
+          <LoadingOverlay visible={true} />
         ) : (
-          apiData?.map((day, index) => (
+          sessionData?.map((day, index) => (
             <View key={day.date || index}>
               <CustomText
                 style={{ fontSize: 24, fontWeight: 'bold', margin: 10 }}
