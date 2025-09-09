@@ -14,6 +14,39 @@ export const formatDate = (dateString: string): string => {
   return date.toLocaleDateString();
 };
 
+export const getFullNameFormatDate = (dateString: string) => {
+  if (!dateString) return;
+  const date = new Date(dateString);
+
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  // get months
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  const month = monthNames[date.getMonth()];
+
+  //! format the day with a leading zero if it is a single digit
+  const formattedDay = day < 10 ? `0${day}` : day;
+
+  const formattedDate = `${formattedDay}, ${month} ${year}`;
+
+  return formattedDate;
+};
+
 export const getFileExtension = (filename: string): string => {
   return filename.split('.').pop()?.toLowerCase() || '';
 };
@@ -205,4 +238,4 @@ export const timeAgo = (dateString: string): string => {
   if (diffHours > 0) return `${diffHours} hour(s) ago`;
   if (diffMinutes > 0) return `${diffMinutes} minute(s) ago`;
   return 'Just now';
-}
+};

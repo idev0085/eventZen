@@ -92,6 +92,7 @@ export const COLORS = {
   eventTimeBox: '#1261CC',
   badgeGreen: '#e8f2ee',
   badgeYellow: '#fef5e8',
+  tinyDot: '##7C7C7C',
 };
 
 export const TEXT_SIZES = {
@@ -275,5 +276,5 @@ export {
   ArrowLeftIcon,
   OtpImageBackground,
   Download,
-  OpenScannerIcon
+  OpenScannerIcon,
 };

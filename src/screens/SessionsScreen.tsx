@@ -1,13 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, RefreshControl, ScrollView } from 'react-native';
-import { COLORS } from '../utils/constants';
-
+import { COLORS, TEXT_SIZES } from '../utils/constants';
 import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
-
 import CustomText from '../components/ui/text';
 import BackHeader from '../components/BackHeader';
-import { formatTimeRange } from '../utils/helpers';
+import { formatTimeRange, getFullNameFormatDate } from '../utils/helpers';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useSessions } from '../hooks/useApi';
 
@@ -38,9 +36,13 @@ export default function SessionsScreen({ ...props }) {
           sessionData?.map((day, index) => (
             <View key={day.date || index}>
               <CustomText
-                style={{ fontSize: 24, fontWeight: 'bold', margin: 10 }}
+                style={{
+                  fontSize: TEXT_SIZES.md,
+                  fontWeight: 'bold',
+                  margin: 10,
+                }}
               >
-                {day?.date}
+                {getFullNameFormatDate(day?.date)}
               </CustomText>
               {day?.session_list?.map(session => (
                 <Card

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { GreenBadge, Timer, COLORS, TEXT_SIZES } from '../utils/constants';
+import { Timer, COLORS, TEXT_SIZES } from '../utils/constants';
 
 interface ListItemProps {
   onPress?: () => void;
@@ -27,6 +27,14 @@ const SessionListItem: React.FC<ListItemProps> = ({
   title,
   onPress,
 }) => {
+  const isCompleted = status === 'Completed';
+  const primaryColor = isCompleted ? COLORS.textSecondary : COLORS.primary;
+  const textColor = isCompleted ? COLORS.textSecondary : COLORS.textPrimary;
+
+  const speakerText =
+    Array.isArray(speakers) && speakers.length > 0
+      ? speakers.map(speaker => speaker.name).join(' · ')
+      : '';
   return (
     <TouchableOpacity style={styles.sessionItem} onPress={onPress}>
       <View style={styles.leftWrapper}>
@@ -56,6 +64,7 @@ const SessionListItem: React.FC<ListItemProps> = ({
           {workshopNo}
         </Text>
       </View>
+
       <View style={styles.midleDotWrapper}>
         <View
           style={[
@@ -66,6 +75,7 @@ const SessionListItem: React.FC<ListItemProps> = ({
           ]}
         />
       </View>
+
       <View style={styles.rightWrapper}>
         <Text style={styles.textWorkshop}>{title}</Text>
         {Array.isArray(speakers) && speakers?.length > 0 && (
@@ -79,11 +89,17 @@ const SessionListItem: React.FC<ListItemProps> = ({
             Speaker
           </Text>
         )}
-        {speakers?.map((speaker, index) => (
-          <Text key={index} style={styles.textSpeakerName}>
-            {speaker.name}
-          </Text>
-        ))}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          {speakers?.map((speaker, index) => (
+            <>
+              <Text>{speaker.name}</Text>
+              {index < speakers.length - 1 && (
+                <Text style={styles.speakerSeparator}> · </Text>
+              )}
+            </>
+          ))}
+        </View>
+        ;
       </View>
     </TouchableOpacity>
   );
@@ -117,8 +133,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   rightWrapper: {
-    width: '60%',
-    //  height: '100%',
+    width: '50%',
+    flexWrap: 'nowrap',
     justifyContent: 'center',
     paddingRight: 10,
   },
@@ -183,6 +199,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     marginTop: 4,
     marginRight: 15,
+  },
+  speakerSeparator: {
+    fontSize: TEXT_SIZES.sm,
+    color: COLORS.textSecondary,
+    lineHeight: 10,
   },
 });
 
