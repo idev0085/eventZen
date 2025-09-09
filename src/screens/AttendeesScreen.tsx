@@ -14,7 +14,7 @@ import { getToken } from '../utils/tokenManager';
 import LoadingOverlay from '../components/loadingOverlay';
 import UserList from '../components/userList';
 
-export default function SpeakersScreen({ ...props }) {
+export default function AttendeesScreen({ ...props }) {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
 

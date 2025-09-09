@@ -11,7 +11,10 @@ import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
 import TermsConditionsScreen from '../screens/TermsConditionsScreen';
 import SessionsDetailsScreen from '../screens/SessionsDetailsScreen';
 import FavouriteSessionScreen from '../screens/FavouriteSessionScreen';
-
+import NotificationsScreen from '../screens/NotificationsScreen';
+import QRScannerScreen from '../screens/QRScannerScreen';
+import AttendeesScreen from '../screens/AttendeesScreen';
+import SpeakersScreen from '../screens/SpeakersScreen';
 const AppStack = createStackNavigator();
 
 function AppNavigator() {
@@ -43,6 +46,13 @@ function AppNavigator() {
         name="FavouriteSessionScreen"
         component={FavouriteSessionScreen}
       />
+      <AppStack.Screen
+        name="NotificationsScreen"
+        component={NotificationsScreen}
+      />
+      <AppStack.Screen name="QRScannerScreen" component={QRScannerScreen} />
+      <AppStack.Screen name="AttendeesScreen" component={AttendeesScreen} />
+      <AppStack.Screen name="SpeakersScreen" component={SpeakersScreen} />
     </AppStack.Navigator>
   );
 }

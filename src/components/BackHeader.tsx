@@ -8,6 +8,8 @@ interface BackHeaderProps {
   onBack?: () => void;
   routeName?: string;
   showBtn?: boolean;
+  rightFunction?: () => void;
+  rightLabel?: string;
 }
 
 const BackHeader: React.FC<BackHeaderProps> = ({
@@ -15,6 +17,8 @@ const BackHeader: React.FC<BackHeaderProps> = ({
   onBack,
   routeName,
   showBtn = true,
+  rightFunction,
+  rightLabel,
 }) => {
   const navigation = useNavigation();
 
@@ -36,6 +40,13 @@ const BackHeader: React.FC<BackHeaderProps> = ({
         </TouchableOpacity>
       ) : null}
       <Text style={styles.title}>{title}</Text>
+      {rightFunction ? (
+        <TouchableOpacity onPress={rightFunction} style={styles.rightFunction}>
+          {rightLabel ? (
+            <Text style={styles.rightLabel}>{rightLabel}</Text>
+          ) : null}
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
@@ -58,5 +69,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: TEXT_SIZES.md,
     fontWeight: '400',
+  },
+  rightFunction: {
+    marginLeft: 'auto',
+  },
+  rightLabel: {
+    fontSize: TEXT_SIZES.md,
+    color: COLORS.primary,
+    fontFamily: 'Roboto-Medium',
   },
 });

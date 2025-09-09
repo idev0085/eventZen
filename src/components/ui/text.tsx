@@ -9,6 +9,7 @@ const CustomText = ({
   bgColor = COLORS.secondary,
   onPress,
   icon,
+  badgeStyle,
   ...props
 }: {
   style?: any;
@@ -17,10 +18,11 @@ const CustomText = ({
   bgColor?: string;
   icon?: React.ReactNode;
   onPress?: () => void;
+  badgeStyle?: object;
 }) => {
   if (badge) {
     return (
-      <View style={[styles.badge, { backgroundColor: bgColor }]}>
+      <View style={[styles.badge, { backgroundColor: bgColor }, badgeStyle]}>
         {icon}
         <Text style={[styles.text, styles.badgeText, style]} {...props}>
           {children}
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
   badgeText: {
     color: COLORS.white,
     fontSize: 12,
-    marginLeft: 5,
+    //marginLeft: 5,
   },
 });
 

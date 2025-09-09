@@ -54,16 +54,28 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
 interface QuickActionMenuProps {
   onMenuItemPress?: (screenName: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  navigations?: any; // Adjust the type based on your navigation prop structure
 }
 
 const QuickActionMenu: React.FC<QuickActionMenuProps> = ({
   onMenuItemPress,
   containerStyle,
+  navigations,
 }) => {
   const navigation = useNavigation();
   const menuItems = [
-    { id: 1, name: 'Attendee', icon: AttendeeIcon, screenName: 'Profile' },
-    { id: 2, name: 'Speaker', icon: SpeakersIcon, screenName: 'Speakers' },
+    {
+      id: 1,
+      name: 'Attendee',
+      icon: AttendeeIcon,
+      screenName: 'AttendeesScreen',
+    },
+    {
+      id: 2,
+      name: 'Speaker',
+      icon: SpeakersIcon,
+      screenName: 'SpeakersScreen',
+    },
     {
       id: 3,
       name: 'Exhibitors',
@@ -76,8 +88,12 @@ const QuickActionMenu: React.FC<QuickActionMenuProps> = ({
   const handleMenuItemPress = (screenName: string) => {
     console.log('Navigating to:', screenName);
     onMenuItemPress?.(screenName);
-    //navigation.navigate(`${screenName}`);
-    Alert.alert('Work in Progress');
+    if (screenName === 'AttendeesScreen' || screenName === 'SpeakersScreen') {
+      navigations.navigate(screenName);
+      return;
+    } else {
+      Alert.alert('Work in Progress');
+    }
   };
 
   return (

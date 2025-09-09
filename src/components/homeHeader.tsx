@@ -23,9 +23,10 @@ const HomeHeader = ({
   profileImage,
   bellIcon,
   hasNewNotification,
+  navigation,
 }: any) => {
   const handleNotification = () => {
-    Alert.alert('Notification Bell Icon Clicked');
+    navigation.navigate('NotificationsScreen');
   };
 
   return (

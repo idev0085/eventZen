@@ -141,7 +141,7 @@ export default function CustomSideBar({ navigation }: any) {
             </View>
             <TouchableOpacity
               style={styles.qrBox}
-              onPress={() => Alert.alert('Development Work in progress')}
+              onPress={() => navigation.navigate('QRScannerScreen')}
             >
               <DrawerHeaderQr width={40} height={40} />
             </TouchableOpacity>

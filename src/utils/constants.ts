@@ -55,6 +55,8 @@ import FavoriteFilledIcon from '../../assets/svg/svgComponents/FavoriteFilledIco
 import ScannerActionIcon from '../../assets/svg/svgComponents/ScannerActionIcon';
 import ArrowLeftIcon from '../../assets/svg/svgComponents/ArrowLeftIcon';
 import OtpImageBackground from '../../assets/svg/svgComponents/OtpImageBackground';
+import Download from '../../assets/svg/svgComponents/Download';
+import OpenScannerIcon from '../../assets/svg/svgComponents/OpenScannerIcon';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -272,4 +274,6 @@ export {
   ScannerActionIcon,
   ArrowLeftIcon,
   OtpImageBackground,
+  Download,
+  OpenScannerIcon
 };

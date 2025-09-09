@@ -191,3 +191,18 @@ export const formatTimeRange = (
     timeFormat,
   )} - ${endTime.toLocaleTimeString('en-US', timeFormat)}`;
 };
+
+// write a function to return how many days , how many hours , how many minutes ago from current time
+export const timeAgo = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now.getTime() - date.getTime());
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const diffHours = Math.floor((diffTime / (1000 * 60 * 60)) % 24);
+  const diffMinutes = Math.floor((diffTime / (1000 * 60)) % 60);
+
+  if (diffDays > 0) return `${diffDays} day(s) ago`;
+  if (diffHours > 0) return `${diffHours} hour(s) ago`;
+  if (diffMinutes > 0) return `${diffMinutes} minute(s) ago`;
+  return 'Just now';
+}

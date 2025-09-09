@@ -58,6 +58,14 @@ const HomeSessions = ({ ...props }) => {
 };
 
 const HomeScreen = ({ ...props }) => {
+  OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+  OneSignal.initialize(ONESIGNAL_API_KEY);
+  OneSignal.Notifications.requestPermission(true);
+  OneSignal.Notifications.addEventListener('click', event => {
+    //Alert.alert('Notification Clicked', JSON.stringify(event));
+    props.navigation.navigate('NotificationsScreen');
+  });
+
   const {
     data: homeData,
     isLoading: isHomeLoading,
@@ -76,9 +84,6 @@ const HomeScreen = ({ ...props }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      OneSignal.Debug.setLogLevel(LogLevel.Verbose);
-      OneSignal.initialize(ONESIGNAL_API_KEY);
-      OneSignal.Notifications.requestPermission(true);
       const userID = await OneSignal.User.getOnesignalId();
       console.log('OneSignal User ID:', userID);
     };
@@ -134,6 +139,7 @@ const HomeScreen = ({ ...props }) => {
               welcomeMessage="Welcome !"
               profileImage={profileData?.imageUrl}
               hasNewNotification={homeData?.notifications?.hasNew}
+              navigation={props.navigation}
             />
             {VIDEO && (
               <YoutubePlayer
@@ -147,7 +153,7 @@ const HomeScreen = ({ ...props }) => {
             {upcomingEventDate && (
               <UpcomingEvent eventDate={upcomingEventDate} />
             )}
-            <QuickActionMenu />
+            <QuickActionMenu navigations={props.navigation} />
             {homeData?.home_sessions?.length > 0 && (
               <HomeSessions data={homeData} />
             )}

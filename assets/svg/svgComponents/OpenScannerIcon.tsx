@@ -1,0 +1,98 @@
+import * as React from 'react';
+import Svg, { SvgProps, Path, Rect, G, Defs, ClipPath } from 'react-native-svg';
+
+interface CustomSvgProps extends SvgProps {
+  xmlns?: string;
+}
+
+const OpenScannerIcon = ({
+  height = 18,
+  width = 19,
+  ...props
+}: CustomSvgProps) => (
+  <Svg width={width} height={height} viewBox="0 0 19 18" fill="none" {...props}>
+    <G clipPath="url(#clip0_1423_1241)">
+      <Path
+        d="M15.2239 -0.789551H18.5C19.0523 -0.789551 19.5 -0.341836 19.5 0.210449V3.24896"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Path
+        d="M15.1789 18.7897H18.455C19.0072 18.7897 19.455 18.342 19.455 17.7897V14.7512"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Path
+        d="M3.82356 -0.789551H0.547485C-0.00480002 -0.789551 -0.452515 -0.341836 -0.452515 0.210449V3.24896"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Path
+        d="M3.77607 18.7897H0.499999C-0.0522854 18.7897 -0.5 18.342 -0.5 17.7897V14.7512"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Path
+        d="M12.3067 2.34839H15.1766C15.7289 2.34839 16.1766 2.7961 16.1766 3.34839V6.33714C16.1766 6.88943 15.7289 7.33714 15.1766 7.33714H12.3067C11.7544 7.33714 11.3067 6.88943 11.3067 6.33714V3.34839C11.3067 2.7961 11.7544 2.34839 12.3067 2.34839Z"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Rect
+        width="1.1878"
+        height="1.1878"
+        transform="matrix(-1 0 0 1 14.2761 4.2489)"
+        fill="white"
+      />
+      <Path
+        d="M3.99196 2.34839H6.86194C7.41422 2.34839 7.86194 2.7961 7.86194 3.34839V6.33714C7.86194 6.88943 7.41422 7.33714 6.86194 7.33714H3.99197C3.43968 7.33714 2.99197 6.88943 2.99197 6.33714V3.34839C2.99197 2.7961 3.43968 2.34839 3.99196 2.34839Z"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Rect
+        width="1.1878"
+        height="1.1878"
+        transform="matrix(-1 0 0 1 5.96155 4.2489)"
+        fill="white"
+      />
+      <Path
+        d="M12.3067 10.663H15.1766C15.7289 10.663 16.1766 11.1107 16.1766 11.663V14.6517C16.1766 15.204 15.7289 15.6517 15.1766 15.6517H12.3067C11.7544 15.6517 11.3067 15.204 11.3067 14.6517V11.663C11.3067 11.1107 11.7544 10.663 12.3067 10.663Z"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Rect
+        width="1.1878"
+        height="1.1878"
+        transform="matrix(-1 0 0 1 14.2761 12.5635)"
+        fill="white"
+      />
+      <Path
+        d="M9.04968 11.6133V9.47522H5.96141V11.6133"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Path
+        d="M6.91166 12V13.9889H8.81213"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Path
+        d="M5.48645 14.4641V12.326H2.39817"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Path
+        d="M2.39807 13.7514V15.8894H5.48635"
+        stroke="white"
+        strokeLinecap="round"
+      />
+      <Path d="M9.04968 15.8894H6.91165" stroke="white" strokeLinecap="round" />
+      <Path d="M4.53613 9.47522H2.3981" stroke="white" strokeLinecap="round" />
+    </G>
+    <Defs>
+      <ClipPath id="clip0_1423_1241">
+        <Rect width="18" height="18" fill="white" transform="translate(0.5)" />
+      </ClipPath>
+    </Defs>
+  </Svg>
+);
+export default OpenScannerIcon;

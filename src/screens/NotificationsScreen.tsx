@@ -14,7 +14,7 @@ import { getToken } from '../utils/tokenManager';
 import LoadingOverlay from '../components/loadingOverlay';
 import UserList from '../components/userList';
 
-export default function SpeakersScreen({ ...props }) {
+export default function NotificationsScreen({ ...props }) {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,20 +38,20 @@ export default function SpeakersScreen({ ...props }) {
     };
     fetchData();
   }, []);
-  //   const rightFunction = () => {
-  //     Alert.alert('Development Work in progress');
-  //   };
-  //   const viewSpeaker = () => {
-  //     Alert.alert('Development Work in progress');
-  //   };
+  const rightFunction = () => {
+    Alert.alert('Development Work in progress');
+  };
+  const viewSpeaker = () => {
+    Alert.alert('Development Work in progress');
+  };
   //console.log('apiData', apiData, getToken());
   return (
     <>
       <BackHeader
-        title="Attendees"
+        title="Notification"
         showBtn={true}
-        //   rightFunction={rightFunction}
-        //   rightLabel={'Read All'}
+        rightFunction={rightFunction}
+        rightLabel={'Read All'}
       />
       <ScrollView style={styles.container}>
         {loading ? (
@@ -61,7 +61,7 @@ export default function SpeakersScreen({ ...props }) {
             <UserList
               key={index}
               notificationData={value}
-              // viewSpeaker={viewSpeaker}
+              viewSpeaker={viewSpeaker}
             />
           ))
         )}
