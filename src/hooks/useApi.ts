@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  getConnectionDetailsById,
   getConnections,
   getHomeData,
   getProfile,
+  getSessionDetailsById,
   getSessions,
   getTags,
   TUpdateProfilePayload,
@@ -65,5 +67,21 @@ export const useConnections = () => {
   return useQuery({
     queryKey: ['connections'],
     queryFn: getConnections,
+  });
+};
+
+export const useSessionDetails = (sessionId: string | number) => {
+  return useQuery({
+    queryKey: ['session', sessionId],
+    queryFn: () => getSessionDetailsById(sessionId),
+    enabled: !!sessionId,
+  });
+};
+
+export const useConnectionDetails = (connectionId: string | number) => {
+  return useQuery({
+    queryKey: ['connection', connectionId],
+    queryFn: () => getConnectionDetailsById(connectionId),
+    enabled: !!connectionId,
   });
 };

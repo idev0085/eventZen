@@ -95,3 +95,20 @@ export const getConnections = async () => {
   const { data } = await apiClient.get('/api/connections');
   return data.data || data;
 };
+
+// FETCH SESSION USING SESSION ID
+export const getSessionDetailsById = async (sessionId: string | number) => {
+  console.log(`🚀 Fetching details for session ID: ${sessionId}`);
+
+  const { data } = await apiClient.get(`/api/sessions/${sessionId}`);
+  return data;
+};
+
+// FETCH CONNECTION USING CONNECTION ID
+export const getConnectionDetailsById = async (
+  connectionId: string | number,
+) => {
+  console.log(`🚀 Fetching details for session ID: ${connectionId}`);
+  const { data } = await apiClient.get(`/api/connections/${connectionId}`);
+  return data;
+};

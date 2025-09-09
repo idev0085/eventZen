@@ -1,8 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {
-  Search,
   TimerWait,
   COLORS,
   Timer,
@@ -14,17 +13,15 @@ import {
 } from '../utils/constants';
 import { ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
-import TextBox from '../components/ui/textBox';
-import SearchUI from '../components/Search';
 import CustomText from '../components/ui/text';
 import Icon from '../components/icon';
-import YoutubePlayer from 'react-native-youtube-iframe';
 import Button from '../components/ui/button';
 import BackHeader from '../components/BackHeader';
 import { BASE_URL } from '../config';
 import { apiCall, formatTimeRange } from '../utils/helpers';
 import { getToken } from '../utils/tokenManager';
 import LoadingOverlay from '../components/loadingOverlay';
+import { useSessionDetails } from '../hooks/useApi';
 
 const ICON_SIZE = 20;
 
@@ -80,13 +77,6 @@ const OverView = ({ session }) => {
 
   return (
     <View style={{ marginTop: 10 }}>
-      {/* <YoutubePlayer
-        height={300}
-        play={playing}
-        videoId={'iee2TATGMyI'}
-        onChangeState={onStateChange}
-      /> */}
-
       <CustomText
         style={STATUS_TEXT_COLOR}
         badge={true}
@@ -170,57 +160,26 @@ const FooterBtn = () => {
 
 export default function SessionsDetailsScreen() {
   const route = useRoute();
-  const { sessionId } = route.params;
-  const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { sessionId } = route.params as { sessionId: number };
 
-  useEffect(() => {
-    const fetchSessionDetails = async () => {
-      if (!sessionId) {
-        Alert.alert('Error', 'Session ID is missing.');
-        setLoading(false);
-        return;
-      }
-      try {
-        setLoading(true);
-        const token = await getToken();
-        // Assuming the API endpoint for a single session is /api/sessions/{id}
-        const response = await apiCall(
-          `${BASE_URL}/api/sessions/${sessionId}`,
-          'GET',
-          undefined,
-          token,
-        );
-        // NOTE: The session data might be directly in `response` or `response.data`
-        // depending on your API structure. Adjust if necessary.
-        console.log(`${BASE_URL}/api/sessions/${sessionId}`);
-        setSession(response);
-      } catch (error) {
-        console.log('error fetching session details', error);
-        Alert.alert('Error', 'Could not fetch session details.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data: session, isLoading, isError } = useSessionDetails(sessionId);
 
-    fetchSessionDetails();
-  }, [sessionId]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <LoadingOverlay visible={loading} />
+        <LoadingOverlay visible={true} />
       </View>
     );
   }
 
-  // if (!session) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //       <CustomText>Session details not available.</CustomText>
-  //     </View>
-  //   );
-  // }
+  if (isError) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <BackHeader title="Session Details" />
+        <CustomText>Could not fetch session details.</CustomText>
+      </View>
+    );
+  }
 
   return (
     <>
