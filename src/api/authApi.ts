@@ -51,7 +51,10 @@ export const verifyOtp = async (payload: OtpPayload): Promise<string> => {
       const userProfile = await getProfile();
       useAuthStore.getState().setUser(userProfile);
     } catch (error) {
-      console.error('Login ke baad profile fetch nahi hua', error);
+      console.error(
+        'Error occured while fetching the getProfile after login',
+        error,
+      );
     }
   }
   return token;
