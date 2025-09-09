@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   },
   textMenu: {
     fontSize: TEXT_SIZES.xs,
-    color: COLORS.black,
+    color: COLORS.textPrimary,
     fontFamily: 'Roboto-Regular',
     paddingLeft: 10,
   },
