@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
-import { StatusBar, Platform, View, Text } from 'react-native';
+import { StatusBar, Platform } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from 'react-native-simple-toast';
+import BootSplash from 'react-native-bootsplash';
 
 import { ThemeService } from './src/services/ThemeService';
 import AppNavigator from './src/navigation/AppNavigator';
 import AuthNavigator from './src/navigation/AuthNavigator';
-import LoadingOverlay from './src/components/loadingOverlay';
 import {
   useAuthIsReady,
   useAuthStore,
@@ -43,11 +43,16 @@ function AppContent() {
 
   // Show loading screen until we know auth status -- Loader will added.
   if (!isAuthReady) {
-    return <LoadingOverlay visible={true} />;
+    // return <LoadingOverlay visible={true} />;
+    return null;
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      onReady={() => {
+        BootSplash.hide();
+      }}
+    >
       {isAuthenticated ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
