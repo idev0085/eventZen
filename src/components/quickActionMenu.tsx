@@ -66,13 +66,13 @@ const QuickActionMenu: React.FC<QuickActionMenuProps> = ({
   const menuItems = [
     {
       id: 1,
-      name: 'Attendee',
+      name: 'Attendees',
       icon: AttendeeIcon,
       screenName: 'AttendeesScreen',
     },
     {
       id: 2,
-      name: 'Speaker',
+      name: 'Speakers',
       icon: SpeakersIcon,
       screenName: 'SpeakersScreen',
     },

@@ -1,4 +1,11 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import TextBox from '../components/ui/textBox';
@@ -10,6 +17,8 @@ import { useAuth } from '../hooks/useAuth';
 import Checkbox from '@react-native-community/checkbox';
 
 export default function LoginScreen({ ...props }) {
+  const { height, width } = useWindowDimensions();
+
   const [email, setEmail] = useState('henry.roy@example.com');
   const { performRequestOtp, isRequestingOtp } = useAuth();
   const [isChecked, setChecked] = useState(false);
@@ -33,11 +42,11 @@ export default function LoginScreen({ ...props }) {
       <Image
         source={PNG_IMAGES.LoginBg}
         style={styles.background}
-        width={100}
-        height={100}
+        width={width}
+        height={height * 0.5}
       />
       {/* <LoginImageBackground /> */}
-      <Card style={styles.card}>
+      <Card style={[styles.card, { top: height * 0.35 }]}>
         <View>
           <CustomText style={styles.title}>Welcome Back !</CustomText>
           <CustomText style={styles.subtitle}>Login to continue !</CustomText>
@@ -110,11 +119,13 @@ export default function LoginScreen({ ...props }) {
 
 const styles = StyleSheet.create({
   background: {
-    alignSelf: 'center',
-    width: 'auto',
-    position: 'relative',
-    minWidth: 375,
-    minHeight: 427,
+    //alignSelf: 'center',
+    // width: 'auto',
+    position: 'absolute',
+    // minWidth: 375,
+    // minHeight: 427,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
   card: {
     position: 'absolute',

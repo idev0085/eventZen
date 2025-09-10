@@ -26,7 +26,7 @@ import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
 import { ONESIGNAL_API_KEY } from '../config';
 import LoadingOverlay from '../components/loadingOverlay';
-import { useHomeData, useProfile } from '../hooks/useApi';
+import { useHomeData, useProfile, updateOneSignal } from '../hooks/useApi';
 import { useAuthStore } from '../stores/authStore';
 
 const HomeSessions = ({ ...props }) => {
@@ -86,6 +86,12 @@ const HomeScreen = ({ ...props }) => {
     const fetchData = async () => {
       const userID = await OneSignal.User.getOnesignalId();
       console.log('OneSignal User ID:', userID);
+      let obj = {
+        onesignal_userid: userID,
+      };
+      console.log('OneSignal update payload:', obj);
+      const { data: onesignalResponse } = updateOneSignal(obj);
+      console.log('OneSignal update response:', onesignalResponse);
     };
     fetchData();
   }, []);

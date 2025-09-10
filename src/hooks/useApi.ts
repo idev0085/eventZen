@@ -10,7 +10,10 @@ import {
   TUpdateProfilePayload,
   updateProfile,
   getAttedees,
-  getAttedeesDetailsById
+  getAttedeesDetailsById,
+  getSpeakers,
+  getSpeakersDetailsById,
+  addOneSignal
 } from '../api/authApi';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
@@ -101,4 +104,26 @@ export const useAttendeeDetails = (userId: string | number) => {
     queryFn: () => getAttedeesDetailsById(userId),
     enabled: !!userId,
   });
+}
+
+export const useSpeakers = () => {
+  return useQuery({
+  queryKey: ['speakers'],
+  queryFn: getSpeakers,
+});
+}
+export const useSpeakerDetails = (userId: string | number) => {
+return useQuery({
+  queryKey: ['speaker', userId],
+  queryFn: () => getSpeakersDetailsById(userId),
+  enabled: !!userId,
+});
+}
+
+export const updateOneSignal = (obj: object) => {
+  console.log('useApi - updateOneSignal called with:', obj);
+  return useQuery({
+  queryKey: ['onesignal', obj],
+  queryFn:()=> addOneSignal(obj),
+});
 }

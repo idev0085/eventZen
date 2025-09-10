@@ -55,7 +55,7 @@ const CustomSideBarMenus = [
   {
     name: 'Speakers',
     icon: DrawerSpeaker,
-    route: 'Speakers',
+    route: 'SpeakersScreen',
     arrow: DrawerArrow,
   },
   {
@@ -153,7 +153,7 @@ export default function CustomSideBar({ navigation }: any) {
             key={index}
             style={styles.card}
             onPress={() => {
-              item.route === 'Profile'
+              item.route === 'Profile' || item.route === 'SpeakersScreen'
                 ? navigation.navigate(`${item.route}`)
                 : Alert.alert(`Navigating to ${item.route} Work in progress`);
             }}

@@ -124,4 +124,19 @@ export const getAttedeesDetailsById = async (userId: string | number) => {
   return data[0];
 };
 
-//
+
+export const getSpeakers = async () => {
+  const { data } = await apiClient.get('/api/speakers');
+  return data.data || data;
+}
+
+export const getSpeakersDetailsById = async (userId: string | number) => {
+  const { data } = await apiClient.get(`/api/speakers/${userId}`);
+  return data[0];
+}
+
+export const addOneSignal = async (obj: object) => {
+  console.log('OneSignal update payload:', obj);
+  const { data } = await apiClient.post('/api/onesignal', obj);
+  return data;
+}

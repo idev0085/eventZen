@@ -42,7 +42,7 @@ export default function NotificationsScreen({ ...props }) {
     Alert.alert('Development Work in progress');
   };
   const viewSpeaker = () => {
-    Alert.alert('Development Work in progress');
+    props.navigation.navigate('SpeakersScreen');
   };
   //console.log('apiData', apiData, getToken());
   return (

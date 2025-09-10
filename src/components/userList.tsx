@@ -11,7 +11,9 @@ interface UserListProps {
   image?: string;
   notificationData?: object;
   attendeesData?: object;
+  speakersData?: object;
   viewSpeaker?: () => void;
+  viewDetails?: (id: string | number) => void;
 }
 export default function UserList({
   name,
@@ -22,6 +24,7 @@ export default function UserList({
   viewSpeaker,
   attendeesData,
   viewDetails,
+  speakersData,
 }: UserListProps) {
   console.log('notificationData', notificationData);
   if (notificationData?.message) {
@@ -114,6 +117,47 @@ export default function UserList({
           <View style={styles.rolesWrapper}>
             {attendeesData?.roles.length > 0 &&
               attendeesData?.roles?.map((role, index) => (
+                <View key={index} style={styles.roleBox}>
+                  <CustomText style={styles.textMeta}>{role}</CustomText>
+                </View>
+              ))}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+  if (speakersData?.name) {
+    return (
+      <TouchableOpacity
+        style={styles.containerAttendees}
+        onPress={() => viewDetails(speakersData?.id)}
+      >
+        <View style={styles.leftContainer}>
+          <View style={styles.imageBox}>
+            <Icon
+              source={{
+                uri: speakersData?.image_url,
+              }}
+              size={80}
+              backgroundColor={COLORS.placeholder}
+              borderRadius={50}
+            />
+          </View>
+        </View>
+        <View style={styles.rightContainerAttendees}>
+          <CustomText style={styles.textName}>{speakersData?.name}</CustomText>
+
+          <CustomText style={styles.textDesignation}>
+            {speakersData?.role}
+          </CustomText>
+
+          <CustomText style={styles.viewSpeakerText} onPress={viewSpeaker}>
+            {speakersData?.company_name}
+          </CustomText>
+
+          <View style={styles.rolesWrapper}>
+            {speakersData?.roles.length > 0 &&
+              speakersData?.roles?.map((role, index) => (
                 <View key={index} style={styles.roleBox}>
                   <CustomText style={styles.textMeta}>{role}</CustomText>
                 </View>
