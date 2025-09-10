@@ -1,4 +1,4 @@
-import { StyleSheet, Touchable, View } from 'react-native';
+import { StyleSheet, Touchable, TouchableOpacity, View } from 'react-native';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import { GreenBadge, COLORS } from '../utils/constants';
@@ -10,6 +10,7 @@ interface UserListProps {
   company?: string;
   image?: string;
   notificationData?: object;
+  attendeesData?: object;
   viewSpeaker?: () => void;
 }
 export default function UserList({
@@ -19,6 +20,8 @@ export default function UserList({
   image,
   notificationData,
   viewSpeaker,
+  attendeesData,
+  viewDetails,
 }: UserListProps) {
   console.log('notificationData', notificationData);
   if (notificationData?.message) {
@@ -79,6 +82,47 @@ export default function UserList({
       </View>
     );
   }
+  if (attendeesData?.name) {
+    return (
+      <TouchableOpacity
+        style={styles.containerAttendees}
+        onPress={() => viewDetails(attendeesData?.id)}
+      >
+        <View style={styles.leftContainer}>
+          <View style={styles.imageBox}>
+            <Icon
+              source={{
+                uri: attendeesData?.image_url,
+              }}
+              size={80}
+              backgroundColor={COLORS.placeholder}
+              borderRadius={50}
+            />
+          </View>
+        </View>
+        <View style={styles.rightContainerAttendees}>
+          <CustomText style={styles.textName}>{attendeesData?.name}</CustomText>
+
+          <CustomText style={styles.textDesignation}>
+            {attendeesData?.role}
+          </CustomText>
+
+          <CustomText style={styles.viewSpeakerText} onPress={viewSpeaker}>
+            {attendeesData?.company_name}
+          </CustomText>
+
+          <View style={styles.rolesWrapper}>
+            {attendeesData?.roles.length > 0 &&
+              attendeesData?.roles?.map((role, index) => (
+                <View key={index} style={styles.roleBox}>
+                  <CustomText style={styles.textMeta}>{role}</CustomText>
+                </View>
+              ))}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
   return null;
 }
 
@@ -97,6 +141,15 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
   },
+  containerAttendees: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.white,
+    padding: 10,
+    marginVertical: 5,
+    width: '95%',
+    margin: 10,
+  },
   leftContainer: {
     // width: '30%',
     //alignItems: 'center',
@@ -108,6 +161,12 @@ const styles = StyleSheet.create({
     width: '60%',
     paddingLeft: 10,
     //justifyContent: 'center',
+    marginRight: 10,
+  },
+  rightContainerAttendees: {
+    width: '70%',
+    paddingLeft: 10,
+    // justifyContent: 'center',
     marginRight: 10,
   },
   imageBox: {
@@ -173,5 +232,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Roboto-Regular',
     marginTop: 5,
+  },
+  roleBox: {
+    backgroundColor: '#004FB833',
+    marginRight: 5,
+    marginBottom: 5,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 6,
+    paddingBottom: 6,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  rolesWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  textMeta: {
+    color: COLORS.text,
+    fontSize: 14,
+    fontFamily: 'Roboto-Regular',
   },
 });

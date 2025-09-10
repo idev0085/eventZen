@@ -9,6 +9,8 @@ import {
   getTags,
   TUpdateProfilePayload,
   updateProfile,
+  getAttedees,
+  getAttedeesDetailsById
 } from '../api/authApi';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
@@ -85,3 +87,18 @@ export const useConnectionDetails = (connectionId: string | number) => {
     enabled: !!connectionId,
   });
 };
+
+export const useAttendees = () => {
+    return useQuery({
+    queryKey: ['attendees'],
+    queryFn: getAttedees,
+  });
+}
+
+export const useAttendeeDetails = (userId: string | number) => {
+  return useQuery({
+    queryKey: ['attendee', userId],
+    queryFn: () => getAttedeesDetailsById(userId),
+    enabled: !!userId,
+  });
+}

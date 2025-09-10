@@ -1,11 +1,11 @@
 import React, { use, useEffect, useState } from 'react';
-import { Alert, StyleSheet, View, ActivityIndicator, Text } from 'react-native';
+import { Alert, StyleSheet, View, RefreshControl, Text } from 'react-native';
 import { COLORS } from '../utils/constants';
 
 import SessionListItem from '../components/sessionListItem';
 import { DrawerLayoutAndroid, ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
-
+import SearchUI from '../components/Search';
 import CustomText from '../components/ui/text';
 import BackHeader from '../components/BackHeader';
 import { BASE_URL } from '../config';
@@ -13,34 +13,28 @@ import { apiCall, formatTimeRange } from '../utils/helpers';
 import { getToken } from '../utils/tokenManager';
 import LoadingOverlay from '../components/loadingOverlay';
 import UserList from '../components/userList';
+import { useAttendees } from '../hooks/useApi';
 
 export default function AttendeesScreen({ ...props }) {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const token = await getToken();
-      try {
-        const response = await apiCall(
-          BASE_URL + '/api/get-notifications',
-          'GET',
-          undefined,
-          token,
-        );
-        setApiData(response);
-      } catch (error) {
-        console.log('error', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-  //   const rightFunction = () => {
-  //     Alert.alert('Development Work in progress');
-  //   };
+  const {
+    data: attendeesData,
+    isLoading,
+    refetch: refetchData,
+    isRefetching: isRefetching,
+  } = useAttendees();
+
+  console.log('attendeesData', attendeesData);
+  const filteredData =
+    attendeesData?.filter(item =>
+      item.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+    ) || [];
+  const viewDetails = id => {
+    props.navigation.navigate('ViewAttendeeDetailsScreen', { userId: id });
+  };
   //   const viewSpeaker = () => {
   //     Alert.alert('Development Work in progress');
   //   };
@@ -53,15 +47,29 @@ export default function AttendeesScreen({ ...props }) {
         //   rightFunction={rightFunction}
         //   rightLabel={'Read All'}
       />
-      <ScrollView style={styles.container}>
-        {loading ? (
+      <SearchUI
+        value={searchQuery}
+        placeholder="Search Attendees..."
+        onChangeText={setSearchQuery}
+      />
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={refetchData}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        {isLoading ? (
           <LoadingOverlay visible={loading} />
         ) : (
-          apiData?.map((value, index) => (
+          filteredData?.map((value, index) => (
             <UserList
               key={index}
-              notificationData={value}
-              // viewSpeaker={viewSpeaker}
+              attendeesData={value}
+              viewDetails={viewDetails}
             />
           ))
         )}
@@ -71,9 +79,9 @@ export default function AttendeesScreen({ ...props }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
+  scrollContainer: {
+    flexGrow: 1,
+    backgroundColor: COLORS.background,
   },
   card: {
     marginHorizontal: 10,

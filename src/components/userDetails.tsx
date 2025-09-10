@@ -8,12 +8,16 @@ interface UserDetailsProps {
   designation?: string;
   company?: string;
   image?: string;
+  isAttendeeDetails?: boolean;
+  roles?: string[];
 }
 export default function CompanyDetails({
   name,
   designation,
   company,
   image,
+  isAttendeeDetails = false,
+  roles = [],
 }: UserDetailsProps) {
   return (
     <Card style={styles.card}>
@@ -32,8 +36,17 @@ export default function CompanyDetails({
           <CustomText style={styles.textName}>{name}</CustomText>
           <CustomText style={styles.textDesignation}>{designation}</CustomText>
           <View style={styles.companyBox}>
-            <GreenBadge />
+            {isAttendeeDetails && <GreenBadge />}
             <CustomText style={styles.textCompany}>{company}</CustomText>
+          </View>
+
+          <View style={styles.rolesWrapper}>
+            {roles.length > 0 &&
+              roles?.map((role, index) => (
+                <View key={index} style={styles.roleBox}>
+                  <CustomText style={styles.textMeta}>{role}</CustomText>
+                </View>
+              ))}
           </View>
         </View>
       </View>
@@ -95,5 +108,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-SemiBold',
     marginLeft: 5,
+  },
+  roleBox: {
+    backgroundColor: '#004FB833',
+    marginRight: 5,
+    marginBottom: 5,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 6,
+    paddingBottom: 6,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  rolesWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  textMeta: {
+    color: COLORS.text,
+    fontSize: 14,
+    fontFamily: 'Roboto-Regular',
   },
 });

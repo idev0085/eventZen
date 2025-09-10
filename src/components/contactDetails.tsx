@@ -20,6 +20,9 @@ interface ContactDetailsProps {
   onPressPhone?: () => void;
   onPressWebsite?: () => void;
   socialLinks?: { name: string; url: string }[];
+  isViewAttendeeDetails?: boolean;
+  social_media_links?: { [key: string]: string | null | undefined };
+  onPressSocialLink?: (url: string) => void;
 }
 const getIconFromName = (name: string) => {
   switch (name?.toLowerCase()) {
@@ -45,6 +48,9 @@ export default function ContactDetails({
   onPressPhone,
   onPressWebsite,
   socialLinks = [],
+  isViewAttendeeDetails = false,
+  social_media_links,
+  onPressSocialLink,
 }: ContactDetailsProps) {
   return (
     <Card style={styles.card}>
@@ -71,21 +77,75 @@ export default function ContactDetails({
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.container}>
-        <View style={styles.leftContainer}>
-          <CustomText style={styles.textName}>Address</CustomText>
-          <CustomText style={styles.textDesignation}>{address}</CustomText>
+      {address && (
+        <View style={styles.container}>
+          <View style={styles.leftContainer}>
+            <CustomText style={styles.textName}>Address</CustomText>
+            <CustomText style={styles.textDesignation}>{address}</CustomText>
+          </View>
         </View>
-      </View>
-      <View style={styles.container}>
-        <View style={styles.leftContainer}>
-          <CustomText style={styles.textName}>Website</CustomText>
-          <CustomText onPress={onPressWebsite} style={styles.textCompany}>
-            {website}
-          </CustomText>
+      )}
+
+      {website && (
+        <View style={styles.container}>
+          <View style={styles.leftContainer}>
+            <CustomText style={styles.textName}>Website</CustomText>
+            <CustomText onPress={onPressWebsite} style={styles.textCompany}>
+              {website}
+            </CustomText>
+          </View>
         </View>
-      </View>
-      {socialLinks?.length > 0 && (
+      )}
+
+      {isViewAttendeeDetails && social_media_links && (
+        <View style={styles.container}>
+          <View style={styles.leftContainer}>
+            <CustomText style={styles.textName}>Social Media Links</CustomText>
+            <View style={styles.companyBox}>
+              {social_media_links?.facebook && (
+                <TouchableOpacity
+                  onPress={() =>
+                    onPressSocialLink(social_media_links?.facebook)
+                  }
+                  style={{ marginTop: 10, marginRight: 10 }}
+                >
+                  <SocialFacebook />
+                </TouchableOpacity>
+              )}
+              {social_media_links?.instagram && (
+                <TouchableOpacity
+                  onPress={() =>
+                    onPressSocialLink(social_media_links?.instagram)
+                  }
+                  style={{ marginTop: 10, marginRight: 10 }}
+                >
+                  <SocialInstagram />
+                </TouchableOpacity>
+              )}
+              {social_media_links?.linkedin && (
+                <TouchableOpacity
+                  onPress={() =>
+                    onPressSocialLink(social_media_links?.linkedin)
+                  }
+                  style={{ marginTop: 10, marginRight: 10 }}
+                >
+                  <SocialLinkedin />
+                </TouchableOpacity>
+              )}
+              {social_media_links?.twitter && (
+                <TouchableOpacity
+                  onPress={() => onPressSocialLink(social_media_links?.twitter)}
+                  style={{ marginTop: 10, marginRight: 10 }}
+                >
+                  <SocialTwitter />
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        </View>
+      )}
+
+      {/* {socialLinks?.length > 0 && (
         <View style={styles.container}>
           <View style={styles.leftContainer}>
             <CustomText style={styles.textName}>Social Media Links</CustomText>
@@ -107,7 +167,7 @@ export default function ContactDetails({
             </View>
           </View>
         </View>
-      )}
+      )} */}
     </Card>
   );
 }

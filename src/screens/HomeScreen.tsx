@@ -90,11 +90,11 @@ const HomeScreen = ({ ...props }) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (isSuccess && profileData) {
-      setUser(profileData);
-    }
-  }, [isSuccess, profileData, setUser]);
+  // useEffect(() => {
+  //   if (isSuccess && profileData) {
+  //     setUser(profileData);
+  //   }
+  // }, [isSuccess, profileData, setUser]);
 
   const [playing, setPlaying] = useState(false);
   const onStateChange = useCallback(state => {
@@ -115,6 +115,9 @@ const HomeScreen = ({ ...props }) => {
   const upcomingEventDate = parseISODateString(
     homeData?.upcomingEvent?.startDateTime,
   );
+
+  console.log('Home Data:', homeData);
+  console.log('Profile Data:', profileData);
 
   const isLoading = isHomeLoading || isProfileLoading;
 

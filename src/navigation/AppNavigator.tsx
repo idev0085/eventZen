@@ -15,6 +15,7 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import QRScannerScreen from '../screens/QRScannerScreen';
 import AttendeesScreen from '../screens/AttendeesScreen';
 import SpeakersScreen from '../screens/SpeakersScreen';
+import ViewAttendeeDetailsScreen from '../screens/ViewAttendeeDetailsScreen';
 const AppStack = createStackNavigator();
 
 function AppNavigator() {
@@ -53,6 +54,10 @@ function AppNavigator() {
       <AppStack.Screen name="QRScannerScreen" component={QRScannerScreen} />
       <AppStack.Screen name="AttendeesScreen" component={AttendeesScreen} />
       <AppStack.Screen name="SpeakersScreen" component={SpeakersScreen} />
+      <AppStack.Screen
+        name="ViewAttendeeDetailsScreen"
+        component={ViewAttendeeDetailsScreen}
+      />
     </AppStack.Navigator>
   );
 }

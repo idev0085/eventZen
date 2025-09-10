@@ -171,13 +171,15 @@ export const removeSession = async (key: string) => {
   }
 };
 
-export const getVideoId = (value: string) => {
-  if (!value) {
-    return '';
+export const getVideoId = (value: string): string => {
+  if (!value) return '';
+
+  const youtubeMatch = value.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if (youtubeMatch && youtubeMatch[1]) {
+    return youtubeMatch[1];
   }
-  const parts = value?.split('/');
-  console.log('parts', parts);
-  console.log('parts[parts.length - 1]', parts[parts.length - 1]);
+
+  const parts = value.split('/');
   return parts[parts.length - 1];
 };
 

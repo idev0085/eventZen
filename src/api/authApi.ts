@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import {
   VerifyOtpResponseSchema,
   UserProfileResponseSchema,
@@ -62,9 +63,9 @@ export const verifyOtp = async (payload: OtpPayload): Promise<string> => {
 
 export const getProfile = async (): Promise<TUser> => {
   const { data } = await apiClient.get('/api/profile');
-  const validated = UserProfileResponseSchema.parse(data);
-  return validated;
+  return data;
 };
+
 
 // UPDATE PROFILE API
 
@@ -112,3 +113,15 @@ export const getConnectionDetailsById = async (
   const { data } = await apiClient.get(`/api/connections/${connectionId}`);
   return data;
 };
+
+export const getAttedees = async () => {
+  const { data } = await apiClient.get('/api/attendees');
+  return data.data || data;
+};
+
+export const getAttedeesDetailsById = async (userId: string | number) => {
+  const { data } = await apiClient.get(`/api/attendees/${userId}`);
+  return data[0];
+};
+
+//
