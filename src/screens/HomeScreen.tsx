@@ -26,8 +26,7 @@ import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
 import { ONESIGNAL_API_KEY } from '../config';
 import LoadingOverlay from '../components/loadingOverlay';
-import { useHomeData, useProfile, updateOneSignal } from '../hooks/useApi';
-import { useAuthStore } from '../stores/authStore';
+import { useHomeData, useProfile, useUpdateOneSignal } from '../hooks/useApi';
 
 const HomeSessions = ({ ...props }) => {
   return (
@@ -79,9 +78,6 @@ const HomeScreen = ({ ...props }) => {
     isSuccess,
   } = useProfile();
 
-  // Zustand store
-  const setUser = useAuthStore(state => state.setUser);
-
   useEffect(() => {
     const fetchData = async () => {
       const userID = await OneSignal.User.getOnesignalId();
@@ -90,17 +86,11 @@ const HomeScreen = ({ ...props }) => {
         onesignal_userid: userID,
       };
       console.log('OneSignal update payload:', obj);
-      const { data: onesignalResponse } = updateOneSignal(obj);
+      const { data: onesignalResponse } = useUpdateOneSignal(obj);
       console.log('OneSignal update response:', onesignalResponse);
     };
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   if (isSuccess && profileData) {
-  //     setUser(profileData);
-  //   }
-  // }, [isSuccess, profileData, setUser]);
 
   const [playing, setPlaying] = useState(false);
   const onStateChange = useCallback(state => {

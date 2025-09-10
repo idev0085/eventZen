@@ -29,7 +29,7 @@ const EditProfile = () => {
   }, [profileData]);
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData(prevData => ({ ...prevData, [field]: value }));
+    setFormData((prevData: any) => ({ ...prevData, [field]: value }));
   };
 
   const selectTag = (tag: any) => {

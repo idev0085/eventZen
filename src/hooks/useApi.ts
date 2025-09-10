@@ -13,7 +13,7 @@ import {
   getAttedeesDetailsById,
   getSpeakers,
   getSpeakersDetailsById,
-  addOneSignal
+  addOneSignal,
 } from '../api/authApi';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
@@ -92,11 +92,11 @@ export const useConnectionDetails = (connectionId: string | number) => {
 };
 
 export const useAttendees = () => {
-    return useQuery({
+  return useQuery({
     queryKey: ['attendees'],
     queryFn: getAttedees,
   });
-}
+};
 
 export const useAttendeeDetails = (userId: string | number) => {
   return useQuery({
@@ -104,26 +104,26 @@ export const useAttendeeDetails = (userId: string | number) => {
     queryFn: () => getAttedeesDetailsById(userId),
     enabled: !!userId,
   });
-}
+};
 
 export const useSpeakers = () => {
   return useQuery({
-  queryKey: ['speakers'],
-  queryFn: getSpeakers,
-});
-}
+    queryKey: ['speakers'],
+    queryFn: getSpeakers,
+  });
+};
 export const useSpeakerDetails = (userId: string | number) => {
-return useQuery({
-  queryKey: ['speaker', userId],
-  queryFn: () => getSpeakersDetailsById(userId),
-  enabled: !!userId,
-});
-}
-
-export const updateOneSignal = (obj: object) => {
-  console.log('useApi - updateOneSignal called with:', obj);
   return useQuery({
-  queryKey: ['onesignal', obj],
-  queryFn:()=> addOneSignal(obj),
-});
-}
+    queryKey: ['speaker', userId],
+    queryFn: () => getSpeakersDetailsById(userId),
+    enabled: !!userId,
+  });
+};
+
+export const useUpdateOneSignal = (obj: object) => {
+  console.log('useApi - useUpdateOneSignal called with:', obj);
+  return useQuery({
+    queryKey: ['onesignal', obj],
+    queryFn: () => addOneSignal(obj),
+  });
+};
