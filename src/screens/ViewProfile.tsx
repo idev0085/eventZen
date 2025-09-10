@@ -1,4 +1,3 @@
-import { useState, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../utils/constants';
 import Icon from '../components/icon';
@@ -8,60 +7,25 @@ import TextBox from '../components/ui/textBox';
 import Button from '../components/ui/button';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
-import { BASE_URL } from '../config';
-import { apiCall } from '../utils/helpers';
-import { getToken } from '../utils/tokenManager';
 import LoadingOverlay from '../components/loadingOverlay';
-import { useFocusEffect } from '@react-navigation/native';
+import { useProfile } from '../hooks/useApi';
 
 const ViewProfile = ({ navigation }) => {
-  const [apiData, setApiData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: profileData, isLoading } = useProfile();
 
-  // Fetch profile data
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    const token = await getToken();
-    try {
-      const response = await apiCall(
-        BASE_URL + '/api/profile',
-        'GET',
-        undefined,
-        token,
-      );
-
-      // Normalize tags to array
-      setApiData({
-        ...response,
-        tags: response?.tags
-          ? Array.isArray(response.tags)
-            ? response.tags
-            : response.tags.split(',')
-          : [],
-      });
-    } catch (error) {
-      console.log('error fetching profile', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchData();
-    }, [fetchData]),
-  );
+  if (isLoading) {
+    return <LoadingOverlay visible={true} />;
+  }
+  // // Fetch profile data
 
   return (
     <>
-      {isLoading ? <LoadingOverlay visible={isLoading} /> : null}
       <BackHeader title="View Profile" />
-
       <ScrollView>
         <Card style={styles.card}>
           <TouchableOpacity style={styles.imageBox}>
             <Icon
-              source={{ uri: apiData?.imageUrl }}
+              source={{ uri: profileData?.imageUrl }}
               size={100}
               backgroundColor={COLORS.placeholder}
               borderRadius={50}
@@ -70,24 +34,24 @@ const ViewProfile = ({ navigation }) => {
 
           <CustomText style={styles.textLabel}>Name</CustomText>
           <CustomText style={styles.textMeta}>
-            {apiData?.first_name} {apiData?.last_name}
+            {profileData?.first_name} {profileData?.last_name}
           </CustomText>
 
           <CustomText style={styles.textLabel}>Designation</CustomText>
           <CustomText style={styles.textMeta}>
-            {apiData?.designation}
+            {profileData?.designation}
           </CustomText>
 
           <CustomText style={styles.textLabel}>Company Name</CustomText>
           <CustomText style={styles.textMeta}>
-            {apiData?.company_name}
+            {profileData?.company_name}
           </CustomText>
 
           <View style={styles.tagContainer}>
             <CustomText style={styles.textLabel}>Tags</CustomText>
             <View style={styles.tagsWrapper}>
-              {apiData?.tags?.length
-                ? apiData.tags.map((tag, index) => (
+              {profileData?.tags?.length
+                ? profileData.tags.map((tag, index) => (
                     <View key={index} style={styles.tagsBox}>
                       <CustomText style={styles.textMeta}>{tag}</CustomText>
                     </View>
@@ -97,14 +61,14 @@ const ViewProfile = ({ navigation }) => {
           </View>
 
           <CustomText style={styles.textLabel}>Email Id</CustomText>
-          <CustomText style={styles.textMeta}>{apiData?.email}</CustomText>
+          <CustomText style={styles.textMeta}>{profileData?.email}</CustomText>
 
           <CustomText style={styles.textLabel}>Phone No.</CustomText>
-          <CustomText style={styles.textMeta}>{apiData?.phone}</CustomText>
+          <CustomText style={styles.textMeta}>{profileData?.phone}</CustomText>
 
           <CustomText style={styles.textLabel}>Bio</CustomText>
           <TextBox
-            value={apiData?.bio}
+            value={profileData?.bio}
             label={''}
             labelStyle={styles.textMeta}
             placeholder={''}
@@ -121,7 +85,7 @@ const ViewProfile = ({ navigation }) => {
           title={'Edit'}
           onPress={() =>
             navigation.navigate('EditProfile', {
-              data: apiData,
+              data: profileData,
             })
           }
           style={{ width: '80%' }}
