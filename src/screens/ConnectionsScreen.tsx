@@ -26,7 +26,7 @@ export default function ConnectionScreen({ ...props }) {
 
   return (
     <>
-      <BackHeader title="Connection" showBtn={false} />
+      <BackHeader title="Connection Made" showBtn={false} />
       <SearchUI
         value={searchQuery}
         placeholder="Search Connections..."
