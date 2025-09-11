@@ -55,7 +55,7 @@ export const UserProfileResponseSchema = z.object({
   imageUrl: z.string().nullable(),
   designation: z.string().nullable(),
   bio: z.string().nullable(),
-  tags: z.array(z.string()).nullable(),
+  tag: z.array(z.string()).nullable(),
   my_qr_code: z.string().url().nullable(),
   success: z.boolean(),
   message: z.string(),

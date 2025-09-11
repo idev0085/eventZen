@@ -17,7 +17,7 @@ export type TUpdateProfilePayload = {
   email: string;
   phone: string;
   bio: string;
-  tags: string;
+  tag: string;
 };
 interface OtpPayload {
   email: string;
