@@ -15,6 +15,7 @@ interface ListItemProps {
   workshopNo?: string;
   status?: string;
   title?: string;
+  my_agenda?: string;
 }
 
 const SessionListItem: React.FC<ListItemProps> = ({
@@ -26,6 +27,7 @@ const SessionListItem: React.FC<ListItemProps> = ({
   status,
   title,
   onPress,
+  my_agenda,
 }) => {
   const isCompleted = status === 'Completed';
   const primaryColor = isCompleted ? COLORS.textSecondary : COLORS.primary;
@@ -42,11 +44,15 @@ const SessionListItem: React.FC<ListItemProps> = ({
           <Timer
             height={15}
             width={15}
-            color={status === 'Completed' ? COLORS.icon : COLORS.primary}
+            color={
+              status === 'Completed' && !isFavorite
+                ? COLORS.icon
+                : COLORS.primary
+            }
           />
           <Text
             style={
-              status === 'Completed'
+              status === 'Completed' && !isFavorite
                 ? styles.textTimeFrame
                 : styles.textTimeFrameBlue
             }
@@ -56,7 +62,7 @@ const SessionListItem: React.FC<ListItemProps> = ({
         </View>
         <Text
           style={
-            status === 'Completed'
+            status === 'Completed' && !isFavorite
               ? styles.textWorkshop
               : styles.textWorkshopBlack
           }
@@ -69,7 +75,7 @@ const SessionListItem: React.FC<ListItemProps> = ({
         <View
           style={[
             styles.activeDot,
-            status === 'Completed'
+            status === 'Completed' && !isFavorite
               ? { backgroundColor: COLORS.textSecondary }
               : { backgroundColor: COLORS.primary },
           ]}
@@ -78,26 +84,33 @@ const SessionListItem: React.FC<ListItemProps> = ({
 
       <View style={styles.rightWrapper}>
         <Text style={styles.textWorkshop}>{title}</Text>
-        {Array.isArray(speakers) && speakers?.length > 0 && (
-          <Text
-            style={
-              status === 'Completed'
-                ? styles.textSpeaker
-                : styles.textSpeakerBlue
-            }
-          >
-            Speaker
-          </Text>
-        )}
+        {my_agenda === '' &&
+          Array.isArray(speakers) &&
+          speakers?.length > 0 && (
+            <Text
+              style={
+                status === 'Completed' && !isFavorite
+                  ? styles.textSpeaker
+                  : styles.textSpeakerBlue
+              }
+            >
+              Speaker
+            </Text>
+          )}
+        {my_agenda !== '' && <Text style={styles.textSpeakerBlue}>Agenda</Text>}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {speakers?.map((speaker, index) => (
-            <>
-              <Text>{speaker.name}</Text>
-              {index < speakers.length - 1 && (
-                <Text style={styles.speakerSeparator}> · </Text>
-              )}
-            </>
-          ))}
+          {my_agenda === '' &&
+            speakers?.map((speaker, index) => (
+              <>
+                <Text>{speaker.name}</Text>
+                {index < speakers.length - 1 && (
+                  <Text style={styles.speakerSeparator}> · </Text>
+                )}
+              </>
+            ))}
+          {my_agenda !== '' && (
+            <Text style={styles.textMyAgenda}>{my_agenda}</Text>
+          )}
         </View>
         ;
       </View>
@@ -204,6 +217,11 @@ const styles = StyleSheet.create({
     fontSize: TEXT_SIZES.sm,
     color: COLORS.textSecondary,
     lineHeight: 10,
+  },
+  textMyAgenda: {
+    fontSize: 14,
+    color: COLORS.textPrimary,
+    fontFamily: 'Roboto-Regular',
   },
 });
 

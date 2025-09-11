@@ -17,6 +17,7 @@ import AttendeesScreen from '../screens/AttendeesScreen';
 import SpeakersScreen from '../screens/SpeakersScreen';
 import ViewAttendeeDetailsScreen from '../screens/ViewAttendeeDetailsScreen';
 import ViewSpeakersDetailsScreen from '../screens/ViewSpeakersDetailsScreen';
+import MyAgendaScreen from '../screens/MyAgendaScreen';
 const AppStack = createStackNavigator();
 
 function AppNavigator() {
@@ -63,6 +64,7 @@ function AppNavigator() {
         name="ViewSpeakersDetailsScreen"
         component={ViewSpeakersDetailsScreen}
       />
+      <AppStack.Screen name="MyAgendaScreen" component={MyAgendaScreen} />
     </AppStack.Navigator>
   );
 }

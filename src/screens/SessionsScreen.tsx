@@ -69,6 +69,7 @@ export default function SessionsScreen({ ...props }) {
                     speakers={session?.speakers}
                     workshopNo={session?.workshop_no}
                     status={session?.status}
+                    my_agenda=""
                   />
                 </Card>
               ))}

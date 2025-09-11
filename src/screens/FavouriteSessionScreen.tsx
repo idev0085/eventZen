@@ -78,6 +78,8 @@ export default function FavouriteSessionScreen({ ...props }) {
                     speakers={session?.speakers}
                     workshopNo={session?.workshop_no}
                     status={session?.status}
+                    isFavorite={session?.isFavorite}
+                    my_agenda=""
                   />
                 </Card>
               ))}
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingRight: 30,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.primary,
+    // borderWidth: 1,
+    // borderColor: COLORS.primary,
   },
 });

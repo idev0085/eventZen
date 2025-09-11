@@ -241,3 +241,12 @@ export const timeAgo = (dateString: string): string => {
   if (diffMinutes > 0) return `${diffMinutes} minute(s) ago`;
   return 'Just now';
 };
+
+// write a function that can take sentance as string and trim it to a specific number of words and add '...' at the end if it exceeds that limit
+export const trimText = (text: string, wordLimit: number): string => {
+  const words = text.split(' ');
+  if (words.length <= wordLimit) {
+    return text;
+  }
+  return words.slice(0, wordLimit).join(' ') + '...';
+}

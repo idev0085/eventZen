@@ -43,7 +43,7 @@ const CustomSideBarMenus = [
   {
     name: 'My Agenda',
     icon: DrawerMyAgenda,
-    route: 'MyAgenda',
+    route: 'MyAgendaScreen',
     arrow: DrawerArrow,
   },
   {
@@ -155,7 +155,8 @@ export default function CustomSideBar({ navigation }: any) {
             onPress={() => {
               item.route === 'Profile' ||
               item.route === 'SpeakersScreen' ||
-              item.route === 'FavouriteSessionScreen'
+              item.route === 'FavouriteSessionScreen' ||
+              item.route === 'MyAgendaScreen'
                 ? navigation.navigate(`${item.route}`)
                 : Alert.alert(`Navigating to ${item.route} Work in progress`);
             }}
