@@ -1,37 +1,89 @@
-import { Alert, StyleSheet, View } from 'react-native';
-import { COLORS } from '../utils/constants';
-
+import React from 'react';
+import { StyleSheet, View, RefreshControl, ScrollView } from 'react-native';
+import { COLORS, TEXT_SIZES } from '../utils/constants';
 import SessionListItem from '../components/sessionListItem';
-import { ScrollView } from 'react-native-gesture-handler';
 import Card from '../components/card';
-
 import CustomText from '../components/ui/text';
 import BackHeader from '../components/BackHeader';
+import { formatTimeRange, getFullNameFormatDate } from '../utils/helpers';
+import LoadingOverlay from '../components/loadingOverlay';
+import { useSessions } from '../hooks/useApi';
+
 export default function FavouriteSessionScreen({ ...props }) {
+  const [favouriteSessions, setFavouriteSessions] = React.useState([]);
+  const {
+    data: sessionData,
+    isLoading,
+    refetch: refetchSessionData,
+    isRefetching: isRefetchingHome,
+  } = useSessions();
+  React.useEffect(() => {
+    if (sessionData && sessionData.length > 0) {
+      const favSessions = sessionData
+        .map(day => {
+          return {
+            ...day,
+            session_list: day.session_list.filter(
+              session => session.isFavorite === true,
+            ),
+          };
+        })
+        .filter(day => day.session_list.length > 0);
+      setFavouriteSessions(favSessions);
+    } else {
+      setFavouriteSessions([]);
+    }
+  }, [sessionData]);
+
   return (
     <>
       <BackHeader title="Favorite Sessions" showBtn={true} />
-      <ScrollView style={styles.container}>
-        <CustomText style={{ fontSize: 24, fontWeight: 'bold', margin: 10 }}>
-          28 Apr, 2025
-        </CustomText>
-
-        <Card style={styles.cardOngoing}>
-          <SessionListItem
-            title="Opening Keynote: The Future of Innovation"
-            time="10:00 AM - 11:00 AM"
-            onPress={() => props.navigation.navigate('SessionsDetailsScreen')}
-            speakers={[
-              {
-                name: 'Dr. A',
-                designation: 'Chief Innovation Officer',
-                company: 'Innovatech Solutions',
-              },
-            ]}
-            workshopNo="Workshop NO : 01"
-            status="Ongoing"
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetchingHome}
+            onRefresh={refetchSessionData}
+            tintColor={COLORS.primary}
           />
-        </Card>
+        }
+      >
+        {isLoading ? (
+          <LoadingOverlay visible={true} />
+        ) : (
+          favouriteSessions?.map((day, index) => (
+            <View key={day.date || index}>
+              <CustomText
+                style={{
+                  fontSize: TEXT_SIZES.md,
+                  fontWeight: 'bold',
+                  margin: 10,
+                }}
+              >
+                {getFullNameFormatDate(day?.date)}
+              </CustomText>
+              {day?.session_list?.map(session => (
+                <Card key={session.id} style={styles.cardOngoing}>
+                  <SessionListItem
+                    title={session?.title}
+                    time={formatTimeRange(
+                      session?.start_time,
+                      session?.end_time,
+                    )}
+                    onPress={() =>
+                      props.navigation.navigate('SessionsDetailsScreen', {
+                        sessionId: session.id,
+                      })
+                    }
+                    speakers={session?.speakers}
+                    workshopNo={session?.workshop_no}
+                    status={session?.status}
+                  />
+                </Card>
+              ))}
+            </View>
+          ))
+        )}
       </ScrollView>
     </>
   );
@@ -40,7 +92,7 @@ export default function FavouriteSessionScreen({ ...props }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.background,
   },
   cardOngoing: {
     marginHorizontal: 10,

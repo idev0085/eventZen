@@ -153,7 +153,9 @@ export default function CustomSideBar({ navigation }: any) {
             key={index}
             style={styles.card}
             onPress={() => {
-              item.route === 'Profile' || item.route === 'SpeakersScreen'
+              item.route === 'Profile' ||
+              item.route === 'SpeakersScreen' ||
+              item.route === 'FavouriteSessionScreen'
                 ? navigation.navigate(`${item.route}`)
                 : Alert.alert(`Navigating to ${item.route} Work in progress`);
             }}

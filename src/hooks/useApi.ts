@@ -13,7 +13,7 @@ import {
   getAttedeesDetailsById,
   getSpeakers,
   getSpeakersDetailsById,
-  addOneSignal,
+  addOneSignal
 } from '../api/authApi';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
