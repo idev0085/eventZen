@@ -18,56 +18,177 @@ const EditProfile = () => {
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
 
   const [formData, setFormData] = useState<any>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (profileData) {
       setFormData({
         ...profileData,
-        tags: Array.isArray(profileData.tags) ? profileData.tags : [],
+        tag: Array.isArray(profileData.tag) ? profileData.tag : [],
       });
     }
   }, [profileData]);
 
+  const validateField = (field: string, value: any): string => {
+    switch (field) {
+      case 'first_name':
+        if (!value || value.trim().length === 0)
+          return 'First name is required';
+        if (value.trim().length < 2)
+          return 'First name must be at least 2 characters';
+        return '';
+
+      case 'last_name':
+        if (!value || value.trim().length === 0) return 'Last name is required';
+        if (value.trim().length < 2)
+          return 'Last name must be at least 2 characters';
+        return '';
+
+      case 'designation':
+        if (!value || value.trim().length === 0)
+          return 'Designation is required';
+        return '';
+
+      case 'company_name':
+        if (!value || value.trim().length === 0)
+          return 'Company name is required';
+        return '';
+
+      case 'email':
+        if (!value || value.trim().length === 0) return 'Email is required';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value))
+          return 'Please enter a valid email address';
+        return '';
+
+      case 'phone':
+        if (!value || value.trim().length === 0)
+          return 'Phone number is required';
+
+        const phoneRegex = /^[+]?[0-9\s\-()]{10,}$/;
+        if (!phoneRegex.test(value.replace(/\s/g, '')))
+          return 'Please enter a valid phone number';
+        return '';
+
+      case 'bio':
+        if (!value || value.trim().length === 0) return 'Bio is required';
+        if (value.trim().length < 10)
+          return 'Bio must be at least 10 characters';
+        return '';
+
+      case 'tag':
+        if (!value || value.length === 0) return 'At least one tag is required';
+        return '';
+
+      case 'company_website':
+        if (value && value.trim().length > 0) {
+          try {
+            new URL(value.startsWith('http') ? value : `https://${value}`);
+          } catch {
+            return 'Please enter a valid website URL';
+          }
+        }
+        return '';
+
+      default:
+        return '';
+    }
+  };
+
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevData: any) => ({ ...prevData, [field]: value }));
+
+    // Validate field on change and update errors
+    const error = validateField(field, value);
+    setErrors(prev => ({
+      ...prev,
+      [field]: error,
+    }));
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
+
+    // Validate all required fields
+    const fieldsToValidate = [
+      'first_name',
+      'last_name',
+      'designation',
+      'company_name',
+      'email',
+      'phone',
+      'bio',
+      'tag',
+    ];
+
+    fieldsToValidate.forEach(field => {
+      const error = validateField(field, formData[field]);
+      if (error) {
+        newErrors[field] = error;
+        isValid = false;
+      }
+    });
+
+    // Validate company_website if provided
+    if (formData.company_website) {
+      const websiteError = validateField(
+        'company_website',
+        formData.company_website,
+      );
+      if (websiteError) {
+        newErrors.company_website = websiteError;
+        isValid = false;
+      }
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const selectTag = (tag: any) => {
-    const currentTags = formData.tags || [];
+    const currentTags = formData.tag || [];
     const tagName = tag.name || tag;
+
     const newTags = currentTags.includes(tagName)
       ? currentTags.filter(t => t !== tagName)
       : [...currentTags, tagName];
-    handleInputChange('tags', newTags);
+
+    handleInputChange('tag', newTags);
   };
 
   const isTagSelected = (tag: any) => {
     const tagName = tag.name || tag;
-    return formData?.tags?.includes(tagName);
+    return formData?.tag?.includes(tagName);
   };
 
   const handleSave = () => {
     if (!formData) return;
-    if (!formData.first_name || !formData.lastname) {
-      Toast.show('First and Last name are required.', Toast.LONG);
+
+    if (!validateForm()) {
+      const firstErrorField = Object.keys(errors).find(key => errors[key]);
+      const firstErrorMessage = firstErrorField
+        ? errors[firstErrorField]
+        : 'Please fix the validation errors';
+
+      Toast.show(firstErrorMessage, Toast.LONG);
+
       return;
     }
 
     const payload = {
-      first_name: formData.first_name,
-      last_name: formData.lastname,
-      designation: formData.designation || '',
-      company_name: formData.company_name || '',
+      first_name: formData.first_name.trim(),
+      last_name: formData.last_name.trim(),
+      designation: formData.designation.trim(),
+      company_name: formData.company_name.trim(),
       company_website: formData.company_website
-        ? formData.company_website
+        ? formData.company_website.trim()
         : null,
-      email: formData.email,
-      phone: formData.phone || '',
-      bio: formData.bio || '',
-      tags: Array.isArray(formData.tags) ? formData.tags.join(',') : '',
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      bio: formData.bio.trim(),
+      tags: Array.isArray(formData.tag) ? formData.tag.join(',') : '',
     };
-
-    console.log('payload___', payload);
 
     updateProfile(payload);
   };
@@ -107,11 +228,11 @@ const EditProfile = () => {
           />
 
           <TextBox
-            value={formData?.lastname}
+            value={formData?.last_name}
             label={'Last Name'}
             labelStyle={styles.labelStyle}
             placeholder={''}
-            onChangeText={text => handleInputChange('lastname', text)}
+            onChangeText={text => handleInputChange('last_name', text)}
             required={true}
             style={styles.textBoxStyle}
             editable={true}
@@ -143,9 +264,9 @@ const EditProfile = () => {
             value={formData?.company_website}
             label={'Company Website'}
             labelStyle={styles.labelStyle}
-            placeholder={''}
+            placeholder={'https://example.com'}
             onChangeText={text => handleInputChange('company_website', text)}
-            required={true}
+            required={false}
             style={styles.textBoxStyle}
             editable={true}
           />
@@ -155,6 +276,7 @@ const EditProfile = () => {
             <Text style={styles.labelStyle}>
               Tags <Text style={styles.asterisk}> *</Text>
             </Text>
+            {errors.tag && <Text style={styles.errorText}>{errors.tag}</Text>}
             <View style={styles.tagsWrapper}>
               {availableTags?.map((tag, index) => (
                 <TouchableOpacity
@@ -187,6 +309,8 @@ const EditProfile = () => {
             required={true}
             style={styles.textBoxStyle}
             editable={true}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
 
           <TextBox
@@ -198,13 +322,14 @@ const EditProfile = () => {
             required={true}
             style={styles.textBoxStyle}
             editable={true}
+            keyboardType="phone-pad"
           />
 
           <TextBox
             value={formData?.bio}
             label={'Bio'}
             labelStyle={styles.labelStyle}
-            placeholder={''}
+            placeholder={'Tell us about yourself...'}
             onChangeText={text => handleInputChange('bio', text)}
             required={true}
             style={styles.textAreaStyle}

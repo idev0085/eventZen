@@ -12,6 +12,7 @@ import { useProfile } from '../hooks/useApi';
 
 const ViewProfile = ({ navigation }) => {
   const { data: profileData, isLoading } = useProfile();
+  console.log('🚀 ~ ViewProfile ~ profileData:', profileData);
 
   if (isLoading) {
     return <LoadingOverlay visible={true} />;
@@ -33,9 +34,7 @@ const ViewProfile = ({ navigation }) => {
           </TouchableOpacity>
 
           <CustomText style={styles.textLabel}>Name</CustomText>
-          <CustomText style={styles.textMeta}>
-            {profileData?.first_name} {profileData?.last_name}
-          </CustomText>
+          <CustomText style={styles.textMeta}>{profileData?.name}</CustomText>
 
           <CustomText style={styles.textLabel}>Designation</CustomText>
           <CustomText style={styles.textMeta}>
@@ -50,8 +49,8 @@ const ViewProfile = ({ navigation }) => {
           <View style={styles.tagContainer}>
             <CustomText style={styles.textLabel}>Tags</CustomText>
             <View style={styles.tagsWrapper}>
-              {profileData?.tags?.length
-                ? profileData.tags.map((tag, index) => (
+              {profileData?.tag?.length
+                ? profileData.tag.map((tag, index) => (
                     <View key={index} style={styles.tagsBox}>
                       <CustomText style={styles.textMeta}>{tag}</CustomText>
                     </View>
