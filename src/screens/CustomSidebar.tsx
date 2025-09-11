@@ -31,8 +31,8 @@ import Icon from '../components/icon';
 import Card from '../components/card';
 import { useAuth } from '../hooks/useAuth';
 import { useProfile } from '../hooks/useApi';
-const ICON_SIZE = 22;
-const ARROW_ICON_SIZE = 22;
+const ICON_SIZE = 20;
+const ARROW_ICON_SIZE = 20;
 const CustomSideBarMenus = [
   {
     name: 'Profile',
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textMenu: {
-    fontSize: TEXT_SIZES.xs,
+    fontSize: TEXT_SIZES.md,
     color: COLORS.textPrimary,
     fontFamily: 'Roboto-Regular',
     paddingLeft: 10,
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   },
   textLogout: {
     color: COLORS.logoutError,
-    fontSize: TEXT_SIZES.xs,
+    fontSize: TEXT_SIZES.md,
     fontFamily: 'Roboto-Regular',
     paddingLeft: 10,
   },
