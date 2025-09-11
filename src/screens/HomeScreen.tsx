@@ -17,6 +17,7 @@ import {
   getVideoId,
   parseISODateString,
   formatTimeRange,
+  apiCall,
 } from '../utils/helpers';
 import Toast from 'react-native-simple-toast';
 import MyStats from '../components/myStats';
@@ -24,10 +25,10 @@ import FloatingScannerCTA from '../components/floatingScannerCTA';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
-import { ONESIGNAL_API_KEY } from '../config';
+import { ONESIGNAL_API_KEY, BASE_URL } from '../config';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useHomeData, useProfile, useUpdateOneSignal } from '../hooks/useApi';
-
+import { getToken } from '../utils/tokenManager';
 const HomeSessions = ({ ...props }) => {
   return (
     <>
@@ -78,6 +79,21 @@ const HomeScreen = ({ ...props }) => {
     isSuccess,
   } = useProfile();
 
+  const updateOneSignal = async (obj: object) => {
+    const token = await getToken();
+    try {
+      const response = await apiCall(
+        BASE_URL + '/api/onesignal',
+        'POST',
+        obj,
+        token,
+      );
+      console.log('OneSignal update response:', response);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       const userID = await OneSignal.User.getOnesignalId();
@@ -86,8 +102,9 @@ const HomeScreen = ({ ...props }) => {
         onesignal_userid: userID,
       };
       console.log('OneSignal update payload:', obj);
-      const { data: onesignalResponse } = useUpdateOneSignal(obj);
-      console.log('OneSignal update response:', onesignalResponse);
+      updateOneSignal(obj);
+      // const { data: onesignalResponse } = useUpdateOneSignal(obj);
+      // console.log('OneSignal update response:', onesignalResponse);
     };
     fetchData();
   }, []);

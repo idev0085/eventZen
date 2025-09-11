@@ -21,25 +21,42 @@ export default function NotificationsScreen({ ...props }) {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const token = await getToken();
-      try {
-        const response = await apiCall(
-          BASE_URL + '/api/get-notifications',
-          'GET',
-          undefined,
-          token,
-        );
-        setApiData(response);
-      } catch (error) {
-        console.log('error', error);
-      } finally {
-        setLoading(false);
-      }
+      readAll();
     };
     fetchData();
   }, []);
-  const rightFunction = () => {
-    Alert.alert('Development Work in progress');
+  const readAll = async () => {
+    const token = await getToken();
+    try {
+      const response = await apiCall(
+        BASE_URL + '/api/get-notifications',
+        'GET',
+        undefined,
+        token,
+      );
+      setApiData(response);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const rightFunction = async () => {
+    const token = await getToken();
+    setLoading(true);
+    try {
+      await apiCall(
+        BASE_URL + '/api/notification-read-all',
+        'GET',
+        undefined,
+        token,
+      );
+      readAll();
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setLoading(false);
+    }
   };
   const viewSpeaker = () => {
     props.navigation.navigate('SpeakersScreen');
