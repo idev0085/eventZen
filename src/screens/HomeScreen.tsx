@@ -36,7 +36,9 @@ const HomeSessions = ({ ...props }) => {
         <Text style={styles.label}>Sessions</Text>
         <Text
           style={styles.labelViewAll}
-          onPress={() => Alert.alert('View All')}
+          onPress={() =>
+            props.navigation.navigate('SessionsScreen', { routeFrom: 'Home' })
+          }
         >
           See more
         </Text>
@@ -46,10 +48,15 @@ const HomeSessions = ({ ...props }) => {
           <SessionListItem
             title={session?.title}
             time={formatTimeRange(session.start_time, session.end_time)}
-            onPress={() => Alert.alert('Item Pressed')}
+            onPress={() =>
+              props.navigation.navigate('SessionsDetailsScreen', {
+                id: session.id,
+              })
+            }
             speakers={session?.speakers}
             workshopNo={session?.workshop_no}
             status="Ongoing"
+            my_agenda=""
           />
         </Card>
       ))}
@@ -171,7 +178,7 @@ const HomeScreen = ({ ...props }) => {
             )}
             <QuickActionMenu navigations={props.navigation} />
             {homeData?.home_sessions?.length > 0 && (
-              <HomeSessions data={homeData} />
+              <HomeSessions data={homeData} navigation={props.navigation} />
             )}
             {homeData?.home_connections?.length > 0 && (
               <ConnectionsCard

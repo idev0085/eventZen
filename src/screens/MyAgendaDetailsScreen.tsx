@@ -53,27 +53,27 @@ const OverView = ({ session }) => {
       ? styles.statusText
       : styles.statusText;
 
-  const sessionMeta = [
-    {
-      icon: <Calander width={ICON_SIZE} height={ICON_SIZE} />,
-      // Assuming start_time is an ISO string. You might need a date formatting utility.
-      text: session?.start_time
-        ? new Date(session.start_time).toLocaleDateString()
-        : 'N/A',
-    },
-    {
-      icon: <Timer width={ICON_SIZE} height={ICON_SIZE} />,
-      text: formatTimeRange(session?.start_time, session?.end_time),
-    },
-    {
-      icon: <Location width={ICON_SIZE} height={ICON_SIZE} />,
-      text: session?.location || 'N/A',
-    },
-    {
-      icon: <Workshop width={ICON_SIZE} height={ICON_SIZE} />,
-      text: session?.workshop_no || 'N/A',
-    },
-  ];
+  // const sessionMeta = [
+  //   {
+  //     icon: <Calander width={ICON_SIZE} height={ICON_SIZE} />,
+  //     // Assuming start_time is an ISO string. You might need a date formatting utility.
+  //     text: session?.start_time
+  //       ? new Date(session.start_time).toLocaleDateString()
+  //       : 'N/A',
+  //   },
+  //   {
+  //     icon: <Timer width={ICON_SIZE} height={ICON_SIZE} />,
+  //     text: formatTimeRange(session?.start_time, session?.end_time),
+  //   },
+  //   {
+  //     icon: <Location width={ICON_SIZE} height={ICON_SIZE} />,
+  //     text: session?.location || 'N/A',
+  //   },
+  //   {
+  //     icon: <Workshop width={ICON_SIZE} height={ICON_SIZE} />,
+  //     text: session?.workshop_no || 'N/A',
+  //   },
+  // ];
 
   return (
     <View style={{ marginTop: 10 }}>
@@ -88,77 +88,20 @@ const OverView = ({ session }) => {
       <CustomText style={styles.textOverviewHeading}>
         {session?.title}
       </CustomText>
-
-      {sessionMeta?.map((item, index) => {
-        return (
-          <View key={index} style={styles.sessionMeta}>
-            {item.icon}
-            <CustomText style={styles.textOverViewIconLabel}>
-              {item.text}
-            </CustomText>
-          </View>
-        );
-      })}
     </View>
   );
 };
 const Details = ({ type, context }) => {
   return (
-    <View style={{ marginTop: 20 }}>
-      <CustomText style={styles.textDetailsType}>
+    <View style={{ marginTop: 10 }}>
+      {/* <CustomText style={styles.textDetailsType}>
         {type?.charAt(0)?.toUpperCase() + type?.slice(1)}
-      </CustomText>
+      </CustomText> */}
       <CustomText style={styles.textDetailsContext}>{context}</CustomText>
     </View>
   );
 };
-const Speakers = ({ type, list }) => {
-  return (
-    <View style={{ marginTop: 20, marginBottom: 20 }}>
-      {list?.map((item, index) => {
-        return (
-          <View key={index} style={styles.sessionMeta}>
-            <Icon
-              source={{ uri: item?.image }}
-              size={60}
-              backgroundColor={COLORS.placeholder}
-              borderRadius={50}
-            />
-            <View style={{ marginLeft: 10 }}>
-              <CustomText style={styles.textSpeakerName}>
-                {item?.name}
-              </CustomText>
-              <CustomText style={styles.textSpeakerDesignation}>
-                {item?.designation}
-              </CustomText>
-            </View>
-          </View>
-        );
-      })}
-    </View>
-  );
-};
-const FooterBtn = () => {
-  return (
-    <View style={styles.footerBtnWrapper}>
-      <Button
-        title={'Add to Favorite'}
-        variant={'primary'}
-        onPress={() => Alert.alert('Development Work in progress')}
-        textStyle={styles.footerBtnText}
-      />
-
-      <Button
-        title="Create Agenda"
-        variant={'secondary'}
-        onPress={() => Alert.alert('Development Work in progress')}
-        textStyle={styles.footerBtnText}
-      />
-    </View>
-  );
-};
-
-export default function SessionsDetailsScreen() {
+export default function MyAgendaDetailsScreen({ ...props }) {
   const route = useRoute();
   const { sessionId } = route.params as { sessionId: number };
 
@@ -183,23 +126,45 @@ export default function SessionsDetailsScreen() {
 
   return (
     <>
-      <BackHeader title="Session Details" />
+      <BackHeader title="Agenda Details" showBtn={true} />
       <ScrollView style={styles.container}>
         <Card style={styles.card}>
           <OverView session={session} />
           {session.description && (
             <Details type={'description'} context={session.description} />
           )}
-          {session.demoes && (
-            <Details type={'demos'} context={session.demoes} />
-          )}
-          {session.panels && (
-            <Details type={'panels'} context={session.panels} />
-          )}
-          {session.speakers?.length > 0 && (
-            <Speakers type={'speakers'} list={session.speakers} />
-          )}
-          {session.status !== 'Completed' && <FooterBtn />}
+
+          <CustomText
+            style={styles.textReadMore}
+            onPress={() => {
+              props.navigation.navigate('SessionsDetailsScreen', {
+                sessionId: sessionId,
+              });
+            }}
+          >
+            Read More
+          </CustomText>
+        </Card>
+
+        <Card style={styles.card}>
+          <CustomText
+            style={styles.textAgenda}
+            badge={true}
+            icon={<Calander strokeColor={COLORS.white} />}
+            bgColor={COLORS.primary}
+          >
+            Agenda
+          </CustomText>
+          <CustomText style={styles.textAgendaLabel}>Agenda Details</CustomText>
+          <CustomText style={styles.textDetailsContext}>
+            Lorem ipsum dolor sit amet consectetur. Pellentesque non turpis
+            donec in. Eget cursus turpis massa at. Vitae cras mi est scelerisque
+            non tellus lobortis. Scelerisque convallis aliquet euismod lobortis
+            ipsum ut. Nunc tempor ante netus faucibus diam sed nunc amet. Semper
+            fermentum nunc feugiat sodales. Mattis vitae risus volutpat vitae
+            sodales eget in massa. Erat elementum sit sed orci sed nisi nec
+            sagittis.
+          </CustomText>
         </Card>
       </ScrollView>
     </>
@@ -296,5 +261,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Roboto-Regular',
     color: COLORS.warning,
+  },
+  textReadMore: {
+    fontSize: 16,
+    fontFamily: 'Roboto-Medium',
+    color: COLORS.primary,
+    textDecorationLine: 'underline',
+    marginTop: 10,
+  },
+  textAgendaLabel: {
+    fontSize: 20,
+    fontFamily: 'Roboto-Bold',
+    color: COLORS.primary,
+    marginTop: 10,
+  },
+  textAgenda: {
+    fontSize: 12,
+    fontFamily: 'Roboto-Bold',
+    color: COLORS.white,
+    marginLeft: 5,
   },
 });

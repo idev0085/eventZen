@@ -76,7 +76,7 @@ export default function MyAgendaScreen({ ...props }) {
                       session?.end_time,
                     )}
                     onPress={() =>
-                      props.navigation.navigate('SessionsDetailsScreen', {
+                      props.navigation.navigate('MyAgendaDetailsScreen', {
                         sessionId: session.id,
                       })
                     }

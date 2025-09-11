@@ -8,8 +8,12 @@ import BackHeader from '../components/BackHeader';
 import { formatTimeRange, getFullNameFormatDate } from '../utils/helpers';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useSessions } from '../hooks/useApi';
+import { useRoute } from '@react-navigation/native';
 
 export default function SessionsScreen({ ...props }) {
+  const route = useRoute();
+  const { routeFrom } = (route.params ?? {}) as { routeFrom?: string };
+
   const {
     data: sessionData,
     isLoading,
@@ -19,7 +23,10 @@ export default function SessionsScreen({ ...props }) {
 
   return (
     <>
-      <BackHeader title="Session" showBtn={false} />
+      <BackHeader
+        title="Session"
+        showBtn={routeFrom === 'Home' ? true : false}
+      />
       <ScrollView
         style={styles.container}
         refreshControl={
