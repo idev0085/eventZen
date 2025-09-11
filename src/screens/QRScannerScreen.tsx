@@ -5,15 +5,12 @@ import {
   View,
   Text,
   useWindowDimensions,
-  Linking,
 } from 'react-native';
 import { COLORS, Download, OpenScannerIcon } from '../utils/constants';
 import Icon from '../components/icon';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
-import TextBox from '../components/ui/textBox';
 import Button from '../components/ui/button';
-import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
 import { BASE_URL } from '../config';
 import { apiCall } from '../utils/helpers';

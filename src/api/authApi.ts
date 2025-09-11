@@ -137,3 +137,24 @@ export const addOneSignal = async (obj: object) => {
   const { data } = await apiClient.post('/api/onesignal', obj);
   return data;
 };
+
+export const uploadAvatar = async (file: {
+  uri: string;
+  type: string;
+  name: string;
+}) => {
+  const formData = new FormData();
+  formData.append('image', {
+    uri: file.uri,
+    type: file.type,
+    name: file.name,
+  } as any);
+
+  const { data } = await apiClient.post('/api/profile/avatar', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return data;
+};

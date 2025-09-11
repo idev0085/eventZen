@@ -13,7 +13,8 @@ import {
   getAttedeesDetailsById,
   getSpeakers,
   getSpeakersDetailsById,
-  addOneSignal
+  addOneSignal,
+  uploadAvatar,
 } from '../api/authApi';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
@@ -125,5 +126,22 @@ export const useUpdateOneSignal = (obj: object) => {
   return useQuery({
     queryKey: ['onesignal', obj],
     queryFn: () => addOneSignal(obj),
+  });
+};
+
+export const useUploadAvatar = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: uploadAvatar,
+    onSuccess: () => {
+      Toast.show('Profile picture updated successfully!', Toast.LONG);
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+    },
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || 'Failed to upload profile picture';
+      Toast.show(String(message), Toast.LONG);
+    },
   });
 };
