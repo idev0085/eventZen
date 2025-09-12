@@ -9,16 +9,38 @@ import Button from '../components/ui/button';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
 import Toast from 'react-native-simple-toast';
-import { useProfile, useTags, useUpdateProfile } from '../hooks/useApi';
+import {
+  useProfile,
+  useTags,
+  useUpdateProfile,
+  useUploadAvatar,
+} from '../hooks/useApi';
 import LoadingOverlay from '../components/loadingOverlay';
+import { pickImage } from '../utils/imagePicker';
 
 const EditProfile = () => {
   const { data: profileData, isLoading: isProfileLoading } = useProfile();
   const { data: availableTags, isLoading: areTagsLoading } = useTags();
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
 
+  const { mutate: uploadAvatar, isPending: isUploading } = useUploadAvatar();
   const [formData, setFormData] = useState<any>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handlePickAvatar = async () => {
+    const file = await pickImage();
+    if (!file) return;
+
+    // Fixed file type validation
+    const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (!validTypes.includes(file.type)) {
+      Toast.show('Only JPG, JPEG and PNG images allowed', Toast.LONG);
+      return;
+    }
+
+    uploadAvatar(file);
+  };
 
   useEffect(() => {
     if (profileData) {
@@ -203,7 +225,11 @@ const EditProfile = () => {
       <BackHeader title="Edit Profile" />
       <ScrollView>
         <Card style={styles.card}>
-          <TouchableOpacity style={styles.imageBox} disabled={true}>
+          <TouchableOpacity
+            style={styles.imageBox}
+            disabled={isUploading}
+            onPress={handlePickAvatar}
+          >
             <Icon
               source={{ uri: profileData?.imageUrl }}
               size={100}
@@ -211,7 +237,11 @@ const EditProfile = () => {
               borderRadius={50}
             />
             <View style={styles.imageBoxEdit}>
-              <EditProfileIcon />
+              {isUploading ? (
+                <Text style={{ color: COLORS.white, fontSize: 12 }}>...</Text>
+              ) : (
+                <EditProfileIcon />
+              )}
             </View>
           </TouchableOpacity>
 
