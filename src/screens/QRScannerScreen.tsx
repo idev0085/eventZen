@@ -1,10 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
   View,
   Text,
   useWindowDimensions,
+  ActivityIndicator,
 } from 'react-native';
 import { COLORS, Download, OpenScannerIcon } from '../utils/constants';
 import Icon from '../components/icon';
@@ -12,71 +13,44 @@ import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import Button from '../components/ui/button';
 import BackHeader from '../components/BackHeader';
-import { BASE_URL } from '../config';
-import { apiCall } from '../utils/helpers';
-import { getToken } from '../utils/tokenManager';
 import LoadingOverlay from '../components/loadingOverlay';
 import Modal from 'react-native-modal';
-import ReactNativeBlobUtil from 'react-native-blob-util';
-import { useFocusEffect } from '@react-navigation/native';
+import Toast from 'react-native-simple-toast';
+import { useFileDownloader } from '../hooks/useFileDownloader';
+import { useProfile } from '../hooks/useApi';
 
 const QRScannerScreen = ({ ...props }) => {
-  const [apiData, setApiData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const openModal = () => setVisible(true);
   const closeModal = () => setVisible(false);
   const { width, height } = useWindowDimensions();
+  const { download, isDownloading } = useFileDownloader();
 
-  // Fetch profile data
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    const token = await getToken();
-    try {
-      const response = await apiCall(
-        BASE_URL + '/api/profile',
-        'GET',
-        undefined,
-        token,
-      );
-
-      // Normalize tags to array
-      setApiData(response);
-    } catch (error) {
-      console.log('error fetching profile', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchData();
-    }, [fetchData]),
-  );
+  const { data: profileData, isLoading } = useProfile();
 
   const openScanner = () => {
     setVisible(true);
   };
 
   const downloadQrCode = () => {
-    ReactNativeBlobUtil.config({
-      // add this option that makes response data to be stored as a file,
-      // this is much more performant.
-      fileCache: true,
-    })
-      .fetch('GET', apiData?.my_qr_code, {
-        //some headers ..
-      })
-      .then(res => {
-        // the temp file path
-        console.log('The file saved to ', res.path());
-      });
+    if (!profileData?.my_qr_code) {
+      Toast.show('No download URL provided', Toast.LONG);
+      return;
+    }
+
+    download({
+      url: profileData?.my_qr_code,
+      fileName: `file_${Date.now()}`,
+      fileType: 'png',
+    });
   };
+
+  if (isLoading) {
+    <LoadingOverlay visible={true} />;
+  }
 
   return (
     <>
-      {isLoading ? <LoadingOverlay visible={isLoading} /> : null}
       <BackHeader title="QR Code" />
 
       <Card style={styles.card}>
@@ -86,7 +60,7 @@ const QRScannerScreen = ({ ...props }) => {
         </CustomText>
         <View style={styles.imageBox}>
           <Icon
-            source={{ uri: apiData?.my_qr_code }}
+            source={{ uri: profileData?.my_qr_code }}
             size={300}
             backgroundColor={COLORS.placeholder}
             borderRadius={50}
@@ -100,8 +74,8 @@ const QRScannerScreen = ({ ...props }) => {
             marginTop: 10,
           }}
         >
-          <TouchableOpacity onPress={downloadQrCode}>
-            <Download />
+          <TouchableOpacity onPress={downloadQrCode} disabled={isDownloading}>
+            {isDownloading ? <ActivityIndicator size={20} /> : <Download />}
           </TouchableOpacity>
         </View>
 
@@ -113,7 +87,6 @@ const QRScannerScreen = ({ ...props }) => {
           iconLeft={<OpenScannerIcon />}
         />
       </Card>
-      {/* <View style={styles.btnContainer}></View> */}
 
       <Modal
         isVisible={visible}
@@ -127,7 +100,7 @@ const QRScannerScreen = ({ ...props }) => {
           </TouchableOpacity>
           <View style={styles.imageBox}>
             <Icon
-              source={{ uri: apiData?.my_qr_code }}
+              source={{ uri: profileData?.my_qr_code }}
               size={width}
               backgroundColor={COLORS.placeholder}
               borderRadius={50}
