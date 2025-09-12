@@ -80,20 +80,26 @@ const QuickActionMenu: React.FC<QuickActionMenuProps> = ({
       id: 3,
       name: 'Exhibitors',
       icon: ExhibitorsIcon,
-      screenName: 'Exhibitors',
+      screenName: 'ExhibitorsScreen',
     },
-    { id: 4, name: 'Sponsors', icon: SponsorsIcon, screenName: 'Sponsors' },
+    {
+      id: 4,
+      name: 'Sponsors',
+      icon: SponsorsIcon,
+      screenName: 'SponsorsScreen',
+    },
   ] as const;
 
   const handleMenuItemPress = (screenName: string) => {
     console.log('Navigating to:', screenName);
     onMenuItemPress?.(screenName);
-    if (screenName === 'AttendeesScreen' || screenName === 'SpeakersScreen') {
-      navigations.navigate(screenName);
-      return;
-    } else {
-      Alert.alert('Work in Progress');
-    }
+    navigations.navigate(screenName);
+    // if (screenName === 'AttendeesScreen' || screenName === 'SpeakersScreen') {
+    //   navigations.navigate(screenName);
+    //   return;
+    // } else {
+    //   Alert.alert('Work in Progress');
+    // }
   };
 
   return (

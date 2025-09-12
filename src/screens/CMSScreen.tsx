@@ -32,7 +32,7 @@ const WebViewer = ({ htmlData }) => {
       source={{ html: htmlData }}
       javaScriptEnabled={true}
       domStorageEnabled={true}
-      textZoom={180}
+      textZoom={200}
       scalesPageToFit={true}
       // renderLoading={LoadingIndicatorView}
       containerStyle={{ flex: 1, padding: 20, backgroundColor: 'white' }}
@@ -69,6 +69,9 @@ const CMSScreen = ({ ...props }) => {
       {props?.page === 'privacy-policy' && <WebViewer htmlData={htmlData} />}
 
       {props?.page === 'terms-condition' && <WebViewer htmlData={htmlData} />}
+
+      {props?.page === 'help-support' && <WebViewer htmlData={htmlData} />}
+
       {props?.authPage && (
         <View style={styles.btnContainer}>
           <Button

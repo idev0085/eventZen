@@ -57,7 +57,7 @@ import ArrowLeftIcon from '../../assets/svg/svgComponents/ArrowLeftIcon';
 import OtpImageBackground from '../../assets/svg/svgComponents/OtpImageBackground';
 import Download from '../../assets/svg/svgComponents/Download';
 import OpenScannerIcon from '../../assets/svg/svgComponents/OpenScannerIcon';
-
+import Level from '../../assets/svg/svgComponents/Level';
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
@@ -93,6 +93,7 @@ export const COLORS = {
   badgeGreen: '#e8f2ee',
   badgeYellow: '#fef5e8',
   tinyDot: '##7C7C7C',
+  bronze: '#CD7F32',
 };
 
 export const TEXT_SIZES = {
@@ -277,4 +278,5 @@ export {
   OtpImageBackground,
   Download,
   OpenScannerIcon,
+  Level
 };

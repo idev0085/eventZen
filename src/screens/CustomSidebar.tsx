@@ -61,19 +61,19 @@ const CustomSideBarMenus = [
   {
     name: 'Exhibitors',
     icon: DrawerExhibitor,
-    route: 'Exhibitors',
+    route: 'ExhibitorsScreen',
     arrow: DrawerArrow,
   },
   {
     name: 'Sponsors',
     icon: DrawerSponsor,
-    route: 'Sponsors',
+    route: 'SponsorsScreen',
     arrow: DrawerArrow,
   },
   {
     name: 'Help and Support',
     icon: DrawerHelp,
-    route: 'Help and support',
+    route: 'HelpSupportScreen',
     arrow: DrawerArrow,
   },
 ];
@@ -156,7 +156,10 @@ export default function CustomSideBar({ navigation }: any) {
               item.route === 'Profile' ||
               item.route === 'SpeakersScreen' ||
               item.route === 'FavouriteSessionScreen' ||
-              item.route === 'MyAgendaScreen'
+              item.route === 'MyAgendaScreen' ||
+              item.route === 'ExhibitorsScreen' ||
+              item.route === 'SponsorsScreen' ||
+              item.route === 'HelpSupportScreen'
                 ? navigation.navigate(`${item.route}`)
                 : Alert.alert(`Navigating to ${item.route} Work in progress`);
             }}

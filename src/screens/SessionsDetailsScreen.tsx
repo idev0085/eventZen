@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
   textSpeakerName: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Roboto-Regular',
     color: COLORS.text,
   },
@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Roboto-Regular',
     color: COLORS.primary,
+    marginTop: 5,
   },
   textDetailsType: {
     fontSize: 18,

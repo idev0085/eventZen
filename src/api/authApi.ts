@@ -158,3 +158,14 @@ export const uploadAvatar = async (file: {
 
   return data;
 };
+
+
+export const getExhibitors = async () => {
+  const { data } = await apiClient.get('/api/exhibitors');
+  return data.data || data;
+}
+
+export const getSponsors = async () => {
+  const { data } = await apiClient.get('/api/sponsors');
+  return data.data || data;
+}

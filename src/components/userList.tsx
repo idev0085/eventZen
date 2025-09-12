@@ -1,7 +1,7 @@
 import { StyleSheet, Touchable, TouchableOpacity, View } from 'react-native';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
-import { GreenBadge, COLORS } from '../utils/constants';
+import { GreenBadge, COLORS, Level } from '../utils/constants';
 import Icon from '../components/icon';
 import { timeAgo } from '../utils/helpers';
 interface UserListProps {
@@ -14,6 +14,8 @@ interface UserListProps {
   speakersData?: object;
   viewSpeaker?: () => void;
   viewDetails?: (id: string | number) => void;
+  exhibitorsData?: object;
+  sponsorsData?: object;
 }
 export default function UserList({
   name,
@@ -25,6 +27,8 @@ export default function UserList({
   attendeesData,
   viewDetails,
   speakersData,
+  exhibitorsData,
+  sponsorsData,
 }: UserListProps) {
   console.log('notificationData', notificationData);
   if (notificationData?.message) {
@@ -167,6 +171,91 @@ export default function UserList({
       </TouchableOpacity>
     );
   }
+  if (exhibitorsData?.name) {
+    return (
+      <TouchableOpacity
+        style={styles.containerAttendees}
+        onPress={() => viewDetails(exhibitorsData?.id)}
+      >
+        <View style={styles.leftContainer}>
+          <View style={styles.imageBox}>
+            <Icon
+              source={{
+                uri: exhibitorsData?.image_url,
+              }}
+              size={80}
+              backgroundColor={COLORS.placeholder}
+              borderRadius={50}
+            />
+          </View>
+        </View>
+        <View style={styles.rightContainerExhibitors}>
+          <CustomText style={styles.textName}>
+            {exhibitorsData?.name}
+          </CustomText>
+          <CustomText style={styles.viewSpeakerText}>
+            {exhibitorsData?.location}
+          </CustomText>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+  if (sponsorsData?.name) {
+    return (
+      <TouchableOpacity
+        style={styles.containerAttendees}
+        onPress={() => viewDetails(sponsorsData?.id)}
+      >
+        <View style={styles.leftContainer}>
+          <View style={styles.imageBox}>
+            <Icon
+              source={{
+                uri: sponsorsData?.image_url,
+              }}
+              size={80}
+              backgroundColor={COLORS.placeholder}
+              borderRadius={50}
+            />
+          </View>
+        </View>
+        <View style={styles.rightContainerExhibitors}>
+          <CustomText style={styles.textName}>{sponsorsData?.name}</CustomText>
+          <View style={{ margin: 5 }} />
+          {sponsorsData?.level === 'Gold' && (
+            <Level
+              backgroundColor={COLORS.warning}
+              strokeColor="#fff"
+              label="Gold"
+            />
+          )}
+          {sponsorsData?.level === 'Silver' && (
+            <Level
+              backgroundColor={COLORS.icon}
+              strokeColor="#fff"
+              label="Silver"
+            />
+          )}
+          {sponsorsData?.level === 'Bronze' && (
+            <Level
+              backgroundColor={COLORS.bronze}
+              strokeColor="#fff"
+              label="Bronze"
+            />
+          )}
+          {sponsorsData?.level === 'Platinum' && (
+            <Level
+              backgroundColor={COLORS.textInputPrimary}
+              strokeColor={COLORS.textPrimary}
+              label="Platinum"
+            />
+          )}
+          {/* <CustomText style={styles.viewSpeakerText}>
+            {exhibitorsData?.location}
+          </CustomText> */}
+        </View>
+      </TouchableOpacity>
+    );
+  }
   return null;
 }
 
@@ -222,7 +311,7 @@ const styles = StyleSheet.create({
   textName: {
     color: COLORS.text,
     fontSize: 15,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: 'Roboto-Bold',
   },
   textDesignation: {
     color: COLORS.textLight,
@@ -299,5 +388,11 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     fontSize: 14,
     fontFamily: 'Roboto-Regular',
+  },
+  rightContainerExhibitors: {
+    width: '70%',
+    paddingLeft: 10,
+    justifyContent: 'center',
+    marginRight: 10,
   },
 });

@@ -15,6 +15,8 @@ import {
   getSpeakersDetailsById,
   addOneSignal,
   uploadAvatar,
+  getExhibitors,
+  getSponsors
 } from '../api/authApi';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
@@ -145,3 +147,17 @@ export const useUploadAvatar = () => {
     },
   });
 };
+
+export const useExhibitors = () => {
+  return useQuery({
+    queryKey: ['exhibitors'],
+    queryFn: getExhibitors,
+  });
+};
+
+export const useSponsors = () => {
+  return useQuery({
+    queryKey: ['sponsors'],
+    queryFn: getSponsors,
+  });
+}
