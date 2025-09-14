@@ -1,18 +1,16 @@
 import React from 'react';
-import { View, Button, Text } from 'react-native';
+import { View, Button, Text, SafeAreaView } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
-import EnterLoginOTPScreen from '../screens/EnterLoginOTPScreen';
-import HomeDrawerNavigator from '../navigation/HomeDrawerNavigator';
-import HomeScreen from '../screens/HomeScreen';
+import TagSelector from '../components/tagSelector';
 
 const Stack = createStackNavigator();
 
 const TestScreen = ({ navigation }: any) => (
-  <View style={{ flex: 1 }}>
-    <HomeScreen />
-  </View>
+  <SafeAreaView style={{ flex: 1 }}>
+    <TagSelector />
+  </SafeAreaView>
 );
 
 export default function DevApp() {
