@@ -58,11 +58,13 @@ import OtpImageBackground from '../../assets/svg/svgComponents/OtpImageBackgroun
 import Download from '../../assets/svg/svgComponents/Download';
 import OpenScannerIcon from '../../assets/svg/svgComponents/OpenScannerIcon';
 import Level from '../../assets/svg/svgComponents/Level';
+import DownloadIcon from '../../assets/svg/svgComponents/DownloadIcon';
+
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
   buildNumber: 1,
-  DEBUG: false,
+  DEBUG: true,
   TOKEN: 'authToken',
   RESEND_TIMER: 60,
 };
@@ -278,5 +280,6 @@ export {
   OtpImageBackground,
   Download,
   OpenScannerIcon,
-  Level
+  Level,
+  DownloadIcon,
 };
