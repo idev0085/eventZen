@@ -16,10 +16,9 @@ interface FilterDropDownProps {
 
 const FilterDropDown = ({ label, options }: FilterDropDownProps) => {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<string[]>([]); // Added type annotation
+  const [selected, setSelected] = useState<string[]>([]);
 
   const toggleSelect = (item: string) => {
-    // Added parameter type
     if (selected.includes(item)) {
       setSelected(selected.filter(s => s !== item));
     } else {
