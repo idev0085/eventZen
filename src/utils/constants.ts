@@ -58,7 +58,7 @@ import OtpImageBackground from '../../assets/svg/svgComponents/OtpImageBackgroun
 import Download from '../../assets/svg/svgComponents/Download';
 import OpenScannerIcon from '../../assets/svg/svgComponents/OpenScannerIcon';
 import Level from '../../assets/svg/svgComponents/Level';
-import DownloadIcon from '../../assets/svg/svgComponents/DownloadIcon';
+import CloudUploadIcon from '../../assets/svg/svgComponents/CloudUploadIcon';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -281,5 +281,5 @@ export {
   Download,
   OpenScannerIcon,
   Level,
-  DownloadIcon,
+  CloudUploadIcon,
 };
