@@ -1,11 +1,23 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Alert,
+} from 'react-native';
 import React, { useState } from 'react';
 import { CloudUploadIcon, COLORS, TEXT_SIZES } from '../utils/constants';
+import {
+  launchImageLibrary,
+  ImageLibraryOptions,
+  Asset,
+} from 'react-native-image-picker';
 
 interface FileUploadCardProps {
   label: string;
   maxSizeMB?: number;
-  onFileSelected: () => void;
+  onFileSelected?: (file: Asset | null) => void;
 }
 
 const FileUploadCard = ({
@@ -13,17 +25,76 @@ const FileUploadCard = ({
   maxSizeMB = 10,
   onFileSelected,
 }: FileUploadCardProps) => {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<Asset | null>(null);
+
+  const handleImagePick = async () => {
+    const options: ImageLibraryOptions = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+      selectionLimit: 1,
+    };
+
+    try {
+      const result = await launchImageLibrary(options);
+
+      if (result.didCancel) {
+        console.log('User cancelled image picker');
+        return;
+      }
+
+      if (result.errorCode) {
+        Alert.alert('Error', `Image picker error: ${result.errorMessage}`);
+        return;
+      }
+
+      if (result.assets && result.assets.length > 0) {
+        const selectedAsset = result.assets[0];
+
+        if (
+          selectedAsset.fileSize &&
+          selectedAsset.fileSize > maxSizeMB * 1024 * 1024
+        ) {
+          Alert.alert(
+            'File too large',
+            `Please select an image smaller than ${maxSizeMB}MB`,
+          );
+          return;
+        }
+
+        setFile(selectedAsset);
+        if (onFileSelected) {
+          onFileSelected(selectedAsset);
+        }
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to pick image');
+      console.error('Image picker error:', error);
+    }
+  };
+
+  const clearSelection = () => {
+    setFile(null);
+    if (onFileSelected) {
+      onFileSelected(null);
+    }
+  };
 
   return (
     <View style={styles.wrapper}>
       <Text style={styles.label}>{label}</Text>
 
       {/* Upload Box */}
-
-      <TouchableOpacity style={styles.uploadBox}>
-        {file ? (
-          <Image source={{ uri: file }} style={styles.previewImage} />
+      <TouchableOpacity
+        style={styles.uploadBox}
+        onPress={file ? clearSelection : handleImagePick}
+      >
+        {file?.uri ? (
+          <View style={styles.previewWrapper}>
+            <Image source={{ uri: file.uri }} style={styles.previewImage} />
+            <Text style={styles.changeText}>Tap to change</Text>
+          </View>
         ) : (
           <View style={styles.placeholder}>
             <View style={styles.uploadIcon}>
@@ -66,9 +137,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden',
     padding: 20,
     borderRadius: 8,
+    minHeight: 200,
   },
   placeholder: {
     justifyContent: 'center',
@@ -90,7 +161,6 @@ const styles = StyleSheet.create({
     color: COLORS.tinyDot,
     marginBottom: 12,
   },
-
   uploadButton: {
     flexDirection: 'row',
     gap: 5,
@@ -105,9 +175,21 @@ const styles = StyleSheet.create({
     fontSize: TEXT_SIZES.sm,
     fontWeight: '500',
   },
+  // ✅ Image Preview Thumbnail
+  previewWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   previewImage: {
-    width: '100%',
-    height: '100%',
+    width: 120,
+    height: 120,
+    borderRadius: 8,
     resizeMode: 'cover',
+    marginBottom: 8,
+  },
+  changeText: {
+    color: COLORS.tinyDot,
+    fontSize: TEXT_SIZES.xs,
+    fontWeight: '500',
   },
 });
