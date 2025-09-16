@@ -63,6 +63,9 @@ import PDFIcon from '../../assets/svg/svgComponents/PDFIcon';
 import PNGIcon from '../../assets/svg/svgComponents/PNGIcon';
 import JPGIcon from '../../assets/svg/svgComponents/JPGIcon';
 import CloseIcon from '../../assets/svg/svgComponents/CloseIcon';
+import EmojiNormalFace from '../../assets/svg/svgComponents/EmojiNormalFace';
+import EmojiWarmFace from '../../assets/svg/svgComponents/EmojiWarmFace';
+import EmojiColdFace from '../../assets/svg/svgComponents/EmojiColdFace';
 
 export const APP_CONFIG = {
   name: 'EventZen',
