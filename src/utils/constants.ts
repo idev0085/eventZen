@@ -59,6 +59,10 @@ import Download from '../../assets/svg/svgComponents/Download';
 import OpenScannerIcon from '../../assets/svg/svgComponents/OpenScannerIcon';
 import Level from '../../assets/svg/svgComponents/Level';
 import CloudUploadIcon from '../../assets/svg/svgComponents/CloudUploadIcon';
+import PDFIcon from '../../assets/svg/svgComponents/PDFIcon';
+import PNGIcon from '../../assets/svg/svgComponents/PNGIcon';
+import JPGIcon from '../../assets/svg/svgComponents/JPGIcon';
+import CloseIcon from '../../assets/svg/svgComponents/CloseIcon';
 
 export const APP_CONFIG = {
   name: 'EventZen',
@@ -282,4 +286,8 @@ export {
   OpenScannerIcon,
   Level,
   CloudUploadIcon,
+  PDFIcon,
+  PNGIcon,
+  JPGIcon,
+  CloseIcon,
 };
