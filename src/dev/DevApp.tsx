@@ -4,13 +4,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import BootSplash from 'react-native-bootsplash';
-import FileUploadCard from '../components/fileUploadCard';
+import RatingCard from '../components/RatingSelectorCard';
 
 const Stack = createStackNavigator();
 
 const TestScreen = ({ navigation }: any) => (
   <SafeAreaView style={{ flex: 1, marginTop: 50 }}>
-    <FileUploadCard />
+    <RatingCard />
   </SafeAreaView>
 );
 
