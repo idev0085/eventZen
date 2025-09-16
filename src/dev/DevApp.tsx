@@ -5,12 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import BootSplash from 'react-native-bootsplash';
 import RatingCard from '../components/RatingSelectorCard';
+import ConnectionDetails from '../screens/ConnectionDetails';
 
 const Stack = createStackNavigator();
 
 const TestScreen = ({ navigation }: any) => (
   <SafeAreaView style={{ flex: 1, marginTop: 50 }}>
-    <RatingCard />
+    <ConnectionDetails />
   </SafeAreaView>
 );
 
