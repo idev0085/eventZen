@@ -293,4 +293,7 @@ export {
   PNGIcon,
   JPGIcon,
   CloseIcon,
+  EmojiNormalFace,
+  EmojiWarmFace,
+  EmojiColdFace,
 };
