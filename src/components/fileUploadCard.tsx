@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -5,112 +6,123 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  ScrollView,
 } from 'react-native';
-import React, { useState } from 'react';
-import { CloudUploadIcon, COLORS, TEXT_SIZES } from '../utils/constants';
 import {
-  launchImageLibrary,
-  ImageLibraryOptions,
-  Asset,
-} from 'react-native-image-picker';
+  CloseIcon,
+  CloudUploadIcon,
+  COLORS,
+  JPGIcon,
+  PDFIcon,
+  PNGIcon,
+  TEXT_SIZES,
+} from '../utils/constants';
+import { launchImageLibrary, Asset } from 'react-native-image-picker';
 
 interface FileUploadCardProps {
-  label: string;
+  multiple: boolean;
+  maxFiles: number;
   maxSizeMB?: number;
-  onFileSelected?: (file: Asset | null) => void;
+  onChange?: (files: Asset[]) => void;
+  title: string;
+  description: string;
+  allowPdf?: boolean;
 }
 
 const FileUploadCard = ({
-  label = 'Visiting Card',
+  multiple = false,
+  maxFiles = 1,
   maxSizeMB = 10,
-  onFileSelected,
+  onChange,
+  title = 'Select file to upload',
+  description = 'SVG, PNG, JPG or GIF (max 10 MB)',
+  allowPdf = false,
 }: FileUploadCardProps) => {
-  const [file, setFile] = useState<Asset | null>(null);
+  const [files, setFiles] = useState<Asset[]>([]);
 
-  const handleImagePick = async () => {
-    const options: ImageLibraryOptions = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-      selectionLimit: 1,
-    };
+  const handlePick = async () => {
+    if (files.length >= maxFiles) {
+      Alert.alert('Limit reached', `You can upload max ${maxFiles} files`);
+      return;
+    }
 
-    try {
-      const result = await launchImageLibrary(options);
+    const result = await launchImageLibrary({
+      mediaType: allowPdf ? 'mixed' : 'photo',
+      selectionLimit: multiple ? maxFiles - files.length : 1,
+    });
 
-      if (result.didCancel) {
-        console.log('User cancelled image picker');
-        return;
-      }
-
-      if (result.errorCode) {
-        Alert.alert('Error', `Image picker error: ${result.errorMessage}`);
-        return;
-      }
-
-      if (result.assets && result.assets.length > 0) {
-        const selectedAsset = result.assets[0];
-
-        if (
-          selectedAsset.fileSize &&
-          selectedAsset.fileSize > maxSizeMB * 1024 * 1024
-        ) {
-          Alert.alert(
-            'File too large',
-            `Please select an image smaller than ${maxSizeMB}MB`,
-          );
-          return;
-        }
-
-        setFile(selectedAsset);
-        if (onFileSelected) {
-          onFileSelected(selectedAsset);
-        }
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to pick image');
-      console.error('Image picker error:', error);
+    if (result.assets) {
+      const valid = result.assets.filter(
+        f => !f.fileSize || f.fileSize <= maxSizeMB * 1024 * 1024,
+      );
+      setFiles(prev => [...prev, ...valid]);
+      onChange?.([...files, ...valid]);
     }
   };
 
-  const clearSelection = () => {
-    setFile(null);
-    if (onFileSelected) {
-      onFileSelected(null);
+  const removeFile = (index: number) => {
+    const updated = files.filter((_, i) => i !== index);
+
+    setFiles(updated);
+    onChange?.(updated);
+  };
+
+  const getFileType = (file: Asset) => {
+    const ext = file.fileName?.split('.').pop()?.toLowerCase();
+
+    if (ext?.includes('pdf')) {
+      return <PDFIcon />;
+    } else if (['jpg', 'jpeg'].includes(ext || '')) {
+      return <JPGIcon />;
+    } else if (ext?.includes('png')) {
+      return <PNGIcon />;
+    } else {
+      return;
     }
   };
 
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.label}>{label}</Text>
-
       {/* Upload Box */}
-      <TouchableOpacity
-        style={styles.uploadBox}
-        onPress={file ? clearSelection : handleImagePick}
-      >
-        {file?.uri ? (
-          <View style={styles.previewWrapper}>
-            <Image source={{ uri: file.uri }} style={styles.previewImage} />
-            <Text style={styles.changeText}>Tap to change</Text>
+      <TouchableOpacity style={styles.uploadBox} onPress={handlePick}>
+        <View style={styles.placeholder}>
+          <View style={styles.uploadIcon}>
+            <CloudUploadIcon width={40} height={40} />
           </View>
-        ) : (
-          <View style={styles.placeholder}>
-            <View style={styles.uploadIcon}>
-              <CloudUploadIcon width={40} height={40} />
-            </View>
-            <Text style={styles.uploadText}>Select file to upload</Text>
-            <Text style={styles.hintText}>
-              SVG, PNG, JPG or GIF (max {maxSizeMB}MB)
-            </Text>
-            <View style={styles.uploadButton}>
-              <CloudUploadIcon color={'#fff'} />
-              <Text style={styles.uploadButtonText}>Upload File</Text>
-            </View>
-          </View>
-        )}
+          <Text style={styles.uploadText}>{title}</Text>
+          <Text style={styles.hintText}>{description}</Text>
+          <TouchableOpacity style={styles.uploadButton} onPress={handlePick}>
+            <CloudUploadIcon color={'#fff'} />
+            <Text style={styles.uploadButtonText}>Upload File</Text>
+          </TouchableOpacity>
+        </View>
       </TouchableOpacity>
+
+      <ScrollView style={{ marginTop: 12 }}>
+        {files.map((file, i) => (
+          <View
+            key={i}
+            style={[styles.list, { marginBottom: files.length === 1 ? 0 : 6 }]}
+          >
+            <View>{getFileType(file)}</View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Text style={styles.fileName} numberOfLines={1}>
+                {file.fileName}
+              </Text>
+              <TouchableOpacity onPress={() => removeFile(i)}>
+                <CloseIcon width={18} height={18} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -175,7 +187,6 @@ const styles = StyleSheet.create({
     fontSize: TEXT_SIZES.sm,
     fontWeight: '500',
   },
-  // ✅ Image Preview Thumbnail
   previewWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -191,5 +202,17 @@ const styles = StyleSheet.create({
     color: COLORS.tinyDot,
     fontSize: TEXT_SIZES.xs,
     fontWeight: '500',
+  },
+  list: {
+    padding: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E3EDFF',
+    borderRadius: 10,
+    gap: 5,
+  },
+  fileName: {
+    color: COLORS.primary,
+    fontSize: TEXT_SIZES.xs,
   },
 });
