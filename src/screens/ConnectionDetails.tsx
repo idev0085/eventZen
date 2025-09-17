@@ -4,7 +4,7 @@ import { COLORS } from '../utils/constants';
 import BackHeader from '../components/BackHeader';
 import LoadingOverlay from '../components/loadingOverlay';
 import UserCard from '../components/userCard';
-import ContactDetailsCard from '../components/ContactDetailsCard';
+import ContactDetailsCard from '../components/contactDetailsCard';
 
 const dummyData = {
   company_name: 'XYZ Corp',
