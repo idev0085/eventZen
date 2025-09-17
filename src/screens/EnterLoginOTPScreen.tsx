@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import Card from '../components/card';
 import {
   APP_CONFIG,
@@ -23,6 +30,7 @@ type AuthStackParamList = {
 type OTPScreenRouteProp = RouteProp<AuthStackParamList, 'EnterLoginOTPScreen'>;
 
 const EnterLoginOTPScreen = (props: any) => {
+  const { height, width } = useWindowDimensions();
   const route = useRoute<OTPScreenRouteProp>();
   const {
     performRequestOtp,
@@ -68,15 +76,34 @@ const EnterLoginOTPScreen = (props: any) => {
 
   return (
     <View>
-      <Image source={PNG_IMAGES.OtpBg} style={styles.backgroundImage} />
+      <Image
+        source={PNG_IMAGES.OtpBg}
+        style={[styles.backgroundImage, { width: width, height: height / 3 }]}
+        resizeMode="cover"
+      />
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'absolute',
+          left: width / 2 - 100,
+          top: width / 3 - 50,
+        }}
+      >
+        <Image
+          source={PNG_IMAGES.logo}
+          style={[styles.background, { width: 200, height: 100 }]}
+          resizeMode="contain"
+        />
+      </View>
       <CustomHeader
         title="Enter Verification Code"
         onBackPress={() => handleBackPress()}
       />
+
       <Card style={styles.card}>
         <View style={styles.contentContainer}>
           <View style={styles.contentImage}>
-            {/* <OtpCenter /> */}
             <OtpImageBackground />
           </View>
           <CustomText style={styles.subTitle}>
@@ -90,7 +117,6 @@ const EnterLoginOTPScreen = (props: any) => {
               <OtpEdit />
             </TouchableOpacity>
           </View>
-          {/* Add your OTP Input field */}
           <View style={{ marginTop: 20 }}>
             <OtpInput
               numberOfDigits={4}
@@ -102,9 +128,6 @@ const EnterLoginOTPScreen = (props: any) => {
               type="numeric"
               secureTextEntry={false}
               focusStickBlinkingDuration={500}
-              // onFocus={() => console.log('Focused')}
-              // onBlur={() => console.log('Blurred')}
-              // onTextChange={setInputOTP}
               onFilled={text => handleVerifyOTP(text)}
               textInputProps={{
                 accessibilityLabel: 'One-Time Password',
@@ -185,7 +208,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     padding: 20,
     borderRadius: 20,
-    top: '50%',
+    top: '70%',
   },
   contentContainer: {
     alignItems: 'center',
@@ -229,6 +252,16 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textBoxPrimary,
     height: 45,
     width: 45,
+  },
+  background: {
+    //alignSelf: 'center',
+    // width: 'auto',
+    //    position: 'absolute',
+    // minWidth: 375,
+    // minHeight: 427,
+    //  borderBottomLeftRadius: 30,
+    // borderBottomRightRadius: 30,
+    // left: '50%',
   },
 });
 

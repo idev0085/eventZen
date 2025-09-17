@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, RefreshControl, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  RefreshControl,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { COLORS, TEXT_SIZES } from '../utils/constants';
 import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
@@ -28,8 +34,7 @@ export default function MyAgendaScreen({ ...props }) {
           return {
             ...day,
             session_list: day.session_list.filter(
-              session =>
-                session.isFavorite === true && session.my_agenda !== '',
+              session => session.my_agenda !== '',
             ),
           };
         })
@@ -39,6 +44,7 @@ export default function MyAgendaScreen({ ...props }) {
       setMyAgenda([]);
     }
   }, [sessionData]);
+  console.log('myAgenda', myAgenda);
 
   return (
     <>
@@ -84,10 +90,7 @@ export default function MyAgendaScreen({ ...props }) {
                     workshopNo={session?.workshop_no}
                     status={session?.status}
                     isFavorite={session?.isFavorite}
-                    my_agenda={trimText(
-                      'Lorem Ipsum is simply dummy te...',
-                      10,
-                    )}
+                    my_agenda={trimText(session?.my_agenda, 10)}
                   />
                 </Card>
               ))}

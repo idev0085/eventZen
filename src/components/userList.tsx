@@ -16,6 +16,7 @@ interface UserListProps {
   viewDetails?: (id: string | number) => void;
   exhibitorsData?: object;
   sponsorsData?: object;
+  isSingle?: boolean;
 }
 export default function UserList({
   name,
@@ -29,6 +30,7 @@ export default function UserList({
   speakersData,
   exhibitorsData,
   sponsorsData,
+  isSingle = false,
 }: UserListProps) {
   console.log('notificationData', notificationData);
   if (notificationData?.message) {
@@ -181,7 +183,9 @@ export default function UserList({
           <View style={styles.imageBox}>
             <Icon
               source={{
-                uri: exhibitorsData?.image_url,
+                uri: isSingle
+                  ? exhibitorsData?.avatar
+                  : exhibitorsData?.image_url,
               }}
               size={80}
               backgroundColor={COLORS.placeholder}

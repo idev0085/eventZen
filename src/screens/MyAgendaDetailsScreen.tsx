@@ -157,13 +157,7 @@ export default function MyAgendaDetailsScreen({ ...props }) {
           </CustomText>
           <CustomText style={styles.textAgendaLabel}>Agenda Details</CustomText>
           <CustomText style={styles.textDetailsContext}>
-            Lorem ipsum dolor sit amet consectetur. Pellentesque non turpis
-            donec in. Eget cursus turpis massa at. Vitae cras mi est scelerisque
-            non tellus lobortis. Scelerisque convallis aliquet euismod lobortis
-            ipsum ut. Nunc tempor ante netus faucibus diam sed nunc amet. Semper
-            fermentum nunc feugiat sodales. Mattis vitae risus volutpat vitae
-            sodales eget in massa. Erat elementum sit sed orci sed nisi nec
-            sagittis.
+            {session?.agenda}
           </CustomText>
         </Card>
       </ScrollView>

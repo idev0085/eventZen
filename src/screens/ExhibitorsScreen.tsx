@@ -33,7 +33,7 @@ export default function ExhibitorsScreen({ ...props }) {
       item.name?.toLowerCase().includes(searchQuery.toLowerCase()),
     ) || [];
   const viewDetails = id => {
-    Alert.alert('Development Work in progress');
+    props.navigation.navigate('ExhibitorsScreenDetails', { exhibitorId: id });
     // props.navigation.navigate('ViewSpeakersDetailsScreen', { userId: id });
   };
   //   const viewSpeaker = () => {

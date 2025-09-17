@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Linking } from 'react-native';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import {
@@ -23,6 +23,7 @@ interface ContactDetailsProps {
   isViewAttendeeDetails?: boolean;
   social_media_links?: { [key: string]: string | null | undefined };
   onPressSocialLink?: (url: string) => void;
+  isViewExhibitorDetails?: boolean;
 }
 const getIconFromName = (name: string) => {
   switch (name?.toLowerCase()) {
@@ -51,6 +52,7 @@ export default function ContactDetails({
   isViewAttendeeDetails = false,
   social_media_links,
   onPressSocialLink,
+  isViewExhibitorDetails = false,
 }: ContactDetailsProps) {
   return (
     <Card style={styles.card}>
@@ -145,29 +147,32 @@ export default function ContactDetails({
         </View>
       )}
 
-      {/* {socialLinks?.length > 0 && (
+      {isViewExhibitorDetails && socialLinks?.length > 0 && (
         <View style={styles.container}>
           <View style={styles.leftContainer}>
             <CustomText style={styles.textName}>Social Media Links</CustomText>
             <View style={styles.companyBox}>
-              {socialLinks.map((link, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => {
-                    if (link.url) {
-                      // Open the URL in a web browser or handle it as needed
-                      console.log(`Opening ${link.name}: ${link.url}`);
-                    }
-                  }}
-                  style={{ marginTop: 10, marginRight: 10 }}
-                >
-                  {getIconFromName(link.name)}
-                </TouchableOpacity>
-              ))}
+              {socialLinks
+                .filter(link => !!link.url && link.url.trim() !== '')
+                .map((link, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      if (link.url) {
+                        // Use Linking to open the URL
+
+                        Linking.openURL(link.url!);
+                      }
+                    }}
+                    style={{ marginTop: 10, marginRight: 10 }}
+                  >
+                    {getIconFromName(link.name)}
+                  </TouchableOpacity>
+                ))}
             </View>
           </View>
         </View>
-      )} */}
+      )}
     </Card>
   );
 }

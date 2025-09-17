@@ -169,3 +169,8 @@ export const getSponsors = async () => {
   const { data } = await apiClient.get('/api/sponsors');
   return data.data || data;
 }
+
+export const getExhibitorById = async (exhibitorId: string | number) => {
+  const { data } = await apiClient.get(`/api/exhibitors/${exhibitorId}`);
+  return data?.data || data;  
+}

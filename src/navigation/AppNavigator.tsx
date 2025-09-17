@@ -23,6 +23,7 @@ import MyAgendaDetailsScreen from '../screens/MyAgendaDetailsScreen';
 import ExhibitorsScreen from '../screens/ExhibitorsScreen';
 import SponsorsScreen from '../screens/SponsorsScreen';
 import HelpSupportScreen from '../screens/HelpAndSupportScreen';
+import ExhibitorsScreenDetails from '../screens/ExhibitorsScreenDetails';
 
 const AppStack = createStackNavigator();
 
@@ -79,6 +80,10 @@ function AppNavigator() {
       <AppStack.Screen name="ExhibitorsScreen" component={ExhibitorsScreen} />
       <AppStack.Screen name="SponsorsScreen" component={SponsorsScreen} />
       <AppStack.Screen name="HelpSupportScreen" component={HelpSupportScreen} />
+      <AppStack.Screen
+        name="ExhibitorsScreenDetails"
+        component={ExhibitorsScreenDetails}
+      />
     </AppStack.Navigator>
   );
 }

@@ -1,5 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import React, { useState, useEffect, use } from 'react';
+import {
+  Alert,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  TextInput,
+} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {
   TimerWait,
@@ -22,7 +29,9 @@ import { apiCall, formatTimeRange } from '../utils/helpers';
 import { getToken } from '../utils/tokenManager';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useSessionDetails } from '../hooks/useApi';
-
+import Toast from 'react-native-simple-toast';
+import Modal from 'react-native-modal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 const ICON_SIZE = 20;
 
 const OverView = ({ session }) => {
@@ -138,20 +147,22 @@ const Speakers = ({ type, list }) => {
     </View>
   );
 };
-const FooterBtn = () => {
+const FooterBtn = ({ ...props }) => {
+  const favText = props.isFav ? 'Remove from Favorite' : 'Add to Favorite';
+  const agendaText = props.isInAgenda ? 'Update Agenda' : 'Create Agenda';
   return (
     <View style={styles.footerBtnWrapper}>
       <Button
-        title={'Add to Favorite'}
+        title={favText}
         variant={'primary'}
-        onPress={() => Alert.alert('Development Work in progress')}
+        onPress={props.addFav}
         textStyle={styles.footerBtnText}
       />
 
       <Button
-        title="Create Agenda"
+        title={agendaText}
         variant={'secondary'}
-        onPress={() => Alert.alert('Development Work in progress')}
+        onPress={props.togglenModalCreateAgenda}
         textStyle={styles.footerBtnText}
       />
     </View>
@@ -159,10 +170,18 @@ const FooterBtn = () => {
 };
 
 export default function SessionsDetailsScreen() {
+  const [isFav, setIsFav] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [agendaText, setAgendaText] = useState('');
   const route = useRoute();
   const { sessionId } = route.params as { sessionId: number };
-
   const { data: session, isLoading, isError } = useSessionDetails(sessionId);
+
+  useEffect(() => {
+    console.log('Session ID:', sessionId);
+    setIsFav(session?.isFavorite);
+    setAgendaText(session?.agenda);
+  }, [session]);
 
   if (isLoading) {
     return (
@@ -181,6 +200,59 @@ export default function SessionsDetailsScreen() {
     );
   }
 
+  const addFav = async (sessionId: number) => {
+    const token = await getToken();
+    try {
+      const response = await apiCall(
+        BASE_URL + `/api/sessions/${sessionId}/favourite`,
+        'GET',
+        undefined,
+        token,
+      );
+      Toast.show(response?.message, Toast.LONG);
+      setIsFav(!session?.isFavorite);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const createAgenda = async (sessionId: number, agendaText: string) => {
+    const token = await getToken();
+    const obj = {
+      message: agendaText,
+      isInAgenda: true,
+    };
+    try {
+      const response = await apiCall(
+        BASE_URL + `/api/sessions/${sessionId}/agenda`,
+        'POST',
+        obj,
+        token,
+      );
+      Toast.show(response?.message, Toast.LONG);
+      setIsFav(!session?.isFavorite);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setOpenModal(false);
+      setAgendaText('');
+    }
+  };
+
+  const togglenModalCreateAgenda = () => {
+    // Alert.alert('Development Work in progress');
+    setOpenModal(!openModal);
+  };
+
+  const handleSaveAgenda = () => {
+    if (!agendaText.trim()) {
+      Toast.show('Agenda cannot be empty.', Toast.SHORT);
+      return;
+    }
+    createAgenda(sessionId, agendaText);
+  };
+
+  console.log('Session Details:', session);
   return (
     <>
       <BackHeader title="Session Details" />
@@ -199,9 +271,63 @@ export default function SessionsDetailsScreen() {
           {session.speakers?.length > 0 && (
             <Speakers type={'speakers'} list={session.speakers} />
           )}
-          {session.status !== 'Completed' && <FooterBtn />}
+          {session.status !== 'Completed' && (
+            <FooterBtn
+              addFav={() => addFav(sessionId)}
+              isFav={isFav}
+              togglenModalCreateAgenda={togglenModalCreateAgenda}
+              isInAgenda={session?.isInAgenda}
+            />
+          )}
         </Card>
       </ScrollView>
+
+      <Modal
+        isVisible={openModal}
+        onBackdropPress={togglenModalCreateAgenda}
+        useNativeDriver
+        style={styles.modal}
+      >
+        <View style={styles.modalContent}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={togglenModalCreateAgenda}
+          >
+            <Text style={{ fontSize: 20, color: COLORS.primary }}>X</Text>
+          </TouchableOpacity>
+
+          <CustomText style={styles.textHeadngCreateAgenda}>
+            Create Agenda
+          </CustomText>
+          <TextInput
+            style={styles.input}
+            placeholder={'Write Your Agenda'}
+            value={agendaText}
+            onChangeText={setAgendaText}
+            multiline
+            numberOfLines={4}
+            underlineColorAndroid="transparent"
+          />
+
+          <View style={styles.footerBtnWrapperModal}>
+            <Button
+              title={'Cancel'}
+              variant={'primary'}
+              onPress={togglenModalCreateAgenda}
+              textStyle={styles.footerBtnTextBlack}
+              style={styles.footerBtnWrapperContainerWhite}
+            />
+
+            <Button
+              title="Save"
+              variant={'secondary'}
+              onPress={handleSaveAgenda}
+              textStyle={styles.footerBtnText}
+              style={styles.footerBtnWrapperContainer}
+            />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
@@ -280,8 +406,8 @@ const styles = StyleSheet.create({
   footerBtnText: {
     color: COLORS.white,
     fontFamily: 'Roboto-Regular',
-    fontSize: 15,
-    padding: 5,
+    fontSize: 14,
+    // padding: 5,
   },
   statusText: {
     fontSize: 14,
@@ -297,5 +423,72 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Roboto-Regular',
     color: COLORS.warning,
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 0,
+  },
+  modalContent: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    padding: 10,
+    // alignItems: 'center',
+    width: '80%',
+    position: 'relative',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    padding: 4,
+    zIndex: 1,
+  },
+  textHeadng: {
+    color: COLORS.text,
+    fontSize: 20,
+    fontFamily: 'Roboto-Bold',
+    marginBottom: 10,
+  },
+  input: {
+    height: 100,
+    borderColor: COLORS.border,
+    borderWidth: 1,
+    borderRadius: 8,
+    fontSize: 16,
+    color: COLORS.text,
+    backgroundColor: COLORS.background,
+    fontFamily: 'Roboto-Regular',
+    paddingVertical: 10,
+    textAlignVertical: 'top',
+  },
+  footerBtnWrapperModal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  textHeadngCreateAgenda: {
+    color: COLORS.text,
+    fontSize: 20,
+    fontFamily: 'Roboto-Bold',
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  footerBtnTextBlack: {
+    color: COLORS.black,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+  },
+  footerBtnWrapperContainerWhite: {
+    width: '40%',
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.black,
+    borderRadius: 10,
+  },
+  footerBtnWrapperContainer: {
+    width: '40%',
+    borderRadius: 10,
   },
 });
