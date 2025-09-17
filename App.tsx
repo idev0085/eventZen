@@ -15,6 +15,7 @@ import {
   useAuthStore,
   useIsAuthenticated,
 } from './src/stores/authStore';
+import { checkForUpdates } from './src/utils/checkForUpdate';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +47,10 @@ function AppContent() {
     // return <LoadingOverlay visible={true} />;
     return null;
   }
+
+  useEffect(() => {
+    checkForUpdates();
+  }, []);
 
   return (
     <NavigationContainer
