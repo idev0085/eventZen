@@ -91,7 +91,7 @@ const EnterLoginOTPScreen = (props: any) => {
         }}
       >
         <Image
-          source={PNG_IMAGES.logo}
+          source={PNG_IMAGES.Otplogo}
           style={[styles.background, { width: 200, height: 100 }]}
           resizeMode="contain"
         />
@@ -171,7 +171,6 @@ const EnterLoginOTPScreen = (props: any) => {
               </TouchableOpacity>
             )}
           </View>
-
           <Button
             onPress={handleVerifyOTP}
             title="Verify"
