@@ -75,6 +75,8 @@ export const APP_CONFIG = {
   DEBUG: true,
   TOKEN: 'authToken',
   RESEND_TIMER: 60,
+  PLAYSTORE_URL: 'https://play.google.com/store/apps/details',
+  ANDROID_PACKAGE_NAME: 'com.eventzen',
 };
 
 export const COLORS = {
