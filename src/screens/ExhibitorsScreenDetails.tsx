@@ -17,39 +17,6 @@ import UserList from '../components/userList';
 import ContactDetails from '../components/contactDetails';
 import CustomText from '../components/ui/text';
 import FileUploadCard from '../components/fileUploadCard';
-
-const DB = {
-  name: 'test',
-  word_no: '-',
-  avatar:
-    'https://sme.nodejsdapldevelopments.com/storage/content_icon/2025-09-16-3823450444-1758017261.jpeg?v=1758108608',
-  location: '-',
-  email: 'test32@gmail.com',
-  phone: '1',
-  website: 'https://www.google.com/',
-  social_links: [
-    {
-      name: 'linkedin',
-      url: '',
-    },
-    {
-      name: 'facebook',
-      url: '',
-    },
-    {
-      name: 'instagram',
-      url: '',
-    },
-    {
-      name: 'twitter',
-      url: '',
-    },
-  ],
-  bio: '',
-  uploaded_files: [],
-  banner:
-    'https://sme.nodejsdapldevelopments.com/storage/content_icon/2025-09-16-3823450444-1758017261.jpeg',
-};
 const ExhibitorsScreenDetails = () => {
   const route = useRoute();
   const { exhibitorId } = route.params as { exhibitorId: number };
@@ -77,15 +44,17 @@ const ExhibitorsScreenDetails = () => {
       >
         <UserList key={'1'} exhibitorsData={exhibitorsData} isSingle={true} />
 
-        <View style={styles.businessCard}>
-          <Image
-            source={{
-              uri: 'https://sme.nodejsdapldevelopments.com/storage/content_icon/2025-09-16-3823450444-1758017261.jpeg',
-            }}
-            style={{ width: width - 20, height: 200, borderRadius: 10 }}
-            resizeMode="cover"
-          />
-        </View>
+        {exhibitorsData?.banner && exhibitorsData?.banner !== '' && (
+          <View style={styles.businessCard}>
+            <Image
+              source={{
+                uri: exhibitorsData?.banner,
+              }}
+              style={{ width: width - 20, height: 200, borderRadius: 10 }}
+              resizeMode="contain"
+            />
+          </View>
+        )}
 
         <ContactDetails
           heading="Contact Details"
@@ -105,7 +74,12 @@ const ExhibitorsScreenDetails = () => {
           <CustomText style={styles.textMeta}>{exhibitorsData?.bio}</CustomText>
         </Card>
 
-        <FileUploadCard label={'Upload'} onFileSelected={() => {}} />
+        <FileUploadCard
+          title={'Upload'}
+          onChange={() => {}}
+          files={[]}
+          maxFiles={5}
+        />
       </ScrollView>
     </>
   );
@@ -140,6 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     marginBottom: 10,
+    backgroundColor: COLORS.white,
   },
   textLabel: {
     fontSize: 16,
@@ -151,5 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Roboto-Regular',
     color: COLORS.text,
+    marginTop: 10,
   },
 });

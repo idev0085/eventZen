@@ -33,8 +33,7 @@ export default function SponsorsScreen({ ...props }) {
       item.name?.toLowerCase().includes(searchQuery.toLowerCase()),
     ) || [];
   const viewDetails = id => {
-    Alert.alert('Development Work in progress');
-    // props.navigation.navigate('ViewSpeakersDetailsScreen', { userId: id });
+    props.navigation.navigate('SponsorsDetailsScreen', { sponsorId: id });
   };
   //   const viewSpeaker = () => {
   //     Alert.alert('Development Work in progress');

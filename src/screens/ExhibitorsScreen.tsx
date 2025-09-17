@@ -36,6 +36,7 @@ export default function ExhibitorsScreen({ ...props }) {
     props.navigation.navigate('ExhibitorsScreenDetails', { exhibitorId: id });
     // props.navigation.navigate('ViewSpeakersDetailsScreen', { userId: id });
   };
+
   //   const viewSpeaker = () => {
   //     Alert.alert('Development Work in progress');
   //   };

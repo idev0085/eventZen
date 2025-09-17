@@ -214,7 +214,7 @@ export default function UserList({
           <View style={styles.imageBox}>
             <Icon
               source={{
-                uri: sponsorsData?.image_url,
+                uri: isSingle ? sponsorsData?.avatar : sponsorsData?.image_url,
               }}
               size={80}
               backgroundColor={COLORS.placeholder}
