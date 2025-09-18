@@ -1,11 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import {
-  COLORS,
-  PNG_IMAGES,
-  TEXT_SIZES,
-  VerifiedBadgeIcon,
-} from '../utils/constants';
+import { View, Text, StyleSheet } from 'react-native';
+import { COLORS, TEXT_SIZES, VerifiedBadgeIcon } from '../utils/constants';
 import Icon from './icon';
 
 interface UserCardProps {
@@ -21,7 +16,6 @@ const UserCard: React.FC<UserCardProps> = ({
   name,
   designation,
 }) => {
-  console.log('🚀 ~ UserCard ~ imageUrl:', imageUrl);
   return (
     <View style={styles.card}>
       <Icon
