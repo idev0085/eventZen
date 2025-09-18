@@ -24,6 +24,8 @@ interface ContactDetailsProps {
   social_media_links?: { [key: string]: string | null | undefined };
   onPressSocialLink?: (url: string) => void;
   isViewExhibitorDetails?: boolean;
+  enableEmailIcon?: boolean;
+  enablePhoneIcon?: boolean;
 }
 const getIconFromName = (name: string) => {
   switch (name?.toLowerCase()) {
@@ -53,6 +55,8 @@ export default function ContactDetails({
   social_media_links,
   onPressSocialLink,
   isViewExhibitorDetails = false,
+  enableEmailIcon = true,
+  enablePhoneIcon = true,
 }: ContactDetailsProps) {
   return (
     <Card style={styles.card}>
@@ -62,22 +66,26 @@ export default function ContactDetails({
           <CustomText style={styles.textName}>Email ID</CustomText>
           <CustomText style={styles.textDesignation}>{email}</CustomText>
         </View>
-        <View style={styles.rightContainer}>
-          <TouchableOpacity onPress={onPressEmail} style={styles.companyBox}>
-            <EmailPadding />
-          </TouchableOpacity>
-        </View>
+        {enableEmailIcon ? (
+          <View style={styles.rightContainer}>
+            <TouchableOpacity onPress={onPressEmail} style={styles.companyBox}>
+              <EmailPadding />
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </View>
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <CustomText style={styles.textName}>Phone No</CustomText>
           <CustomText style={styles.textDesignation}>{phone}</CustomText>
         </View>
-        <View style={styles.rightContainer}>
-          <TouchableOpacity onPress={onPressPhone} style={styles.companyBox}>
-            <PhonePadding />
-          </TouchableOpacity>
-        </View>
+        {enablePhoneIcon ? (
+          <View style={styles.rightContainer}>
+            <TouchableOpacity onPress={onPressPhone} style={styles.companyBox}>
+              <PhonePadding />
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </View>
       {address && (
         <View style={styles.container}>
