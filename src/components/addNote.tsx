@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
-import { COLORS } from '../utils/constants';
+import { SafeAreaView, StyleSheet, TextInput, View } from 'react-native';
+import { COLORS, TEXT_SIZES } from '../utils/constants';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
 
@@ -19,33 +19,36 @@ export default function AddNote({
   return (
     <Card style={styles.card}>
       <CustomText style={styles.textHeadng}>{heading}</CustomText>
-      <TextInput
-        style={styles.input}
-        placeholder={placeholder || 'Add a note...'}
-        value={value}
-        onChangeText={onChangeText}
-        multiline
-        numberOfLines={4}
-        underlineColorAndroid="transparent"
-      />
+      <SafeAreaView style={{ flex: 1 }}>
+        <TextInput
+          style={styles.input}
+          placeholder={placeholder || 'Add a note...'}
+          value={value}
+          onChangeText={onChangeText}
+          multiline
+          underlineColorAndroid="transparent"
+          editable
+          numberOfLines={4}
+          placeholderTextColor={'#B8B8B8'}
+          textAlignVertical="top"
+        />
+      </SafeAreaView>
     </Card>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    // marginHorizontal: 10,
-    alignSelf: 'center',
-    width: '95%',
-    justifyContent: 'center',
+    marginHorizontal: 15,
+    marginVertical: 10,
+    backgroundColor: '#fff',
+    padding: 12,
+    borderRadius: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3,
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 10,
+    elevation: 5,
   },
   container: {
     flex: 1,
@@ -54,19 +57,19 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   input: {
-    height: 100,
+    padding: 12,
     borderColor: COLORS.border,
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 8,
-    fontSize: 16,
+    fontSize: 14,
     color: COLORS.text,
     backgroundColor: COLORS.background,
     fontFamily: 'Roboto-Regular',
-    paddingVertical: 0,
+    minHeight: 100,
   },
   textHeadng: {
     color: COLORS.text,
-    fontSize: 20,
+    fontSize: TEXT_SIZES.md,
     fontFamily: 'Roboto-Bold',
     marginBottom: 10,
   },
