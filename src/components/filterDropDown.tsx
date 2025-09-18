@@ -32,7 +32,9 @@ const FilterDropDown = ({ label, options }: FilterDropDownProps) => {
   const handleDeselectAll = (list: string[]) =>
     setSelected(selected.filter(s => !list.includes(s)));
 
-  const unselected = options.filter(opt => !selected.includes(opt));
+  const unselected = Array.isArray(options)
+    ? options.filter(opt => !selected.includes(opt))
+    : [];
 
   return (
     <View style={styles.wrapper}>
@@ -42,7 +44,9 @@ const FilterDropDown = ({ label, options }: FilterDropDownProps) => {
         style={styles.dropDownHeader}
         onPress={() => setOpen(!open)}
       >
-        <Text style={styles.headerText}>{selected.length} Selected</Text>
+        <Text style={styles.headerText}>
+          {selected.length ? selected.length : 0} Selected
+        </Text>
 
         <Ionicons
           name={open ? 'chevron-up' : 'chevron-down'}
@@ -66,7 +70,7 @@ const FilterDropDown = ({ label, options }: FilterDropDownProps) => {
             >
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>
-                  SELECTED ({selected.length})
+                  SELECTED ({selected.length ? selected.length : 0})
                 </Text>
                 <TouchableOpacity onPress={() => handleDeselectAll(selected)}>
                   <Text style={styles.sectionAction}>Deselect All</Text>
