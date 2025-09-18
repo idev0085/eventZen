@@ -6,12 +6,13 @@ import LoginScreen from '../screens/LoginScreen';
 import BootSplash from 'react-native-bootsplash';
 import RatingCard from '../components/RatingSelectorCard';
 import ConnectionDetails from '../screens/ConnectionDetails';
+import ConnectionForm from '../screens/ConnectionForm';
 
 const Stack = createStackNavigator();
 
 const TestScreen = ({ navigation }: any) => (
   <SafeAreaView style={{ flex: 1, marginTop: 50 }}>
-    <ConnectionDetails />
+    <ConnectionForm />
   </SafeAreaView>
 );
 

@@ -5,8 +5,9 @@ import BackHeader from '../components/BackHeader';
 import LoadingOverlay from '../components/loadingOverlay';
 import UserCard from '../components/userCard';
 import ContactDetailsCard from '../components/contactDetailsCard';
+import ContactDetails from '../components/contactDetails';
 
-const dummyData = {
+const connectionData = {
   company_name: 'XYZ Corp',
   image_url:
     'https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png',
@@ -27,21 +28,29 @@ const ConnectionDetails = () => {
     return <LoadingOverlay visible={isLoading} />;
   }
 
-  if (!dummyData) {
-    return null;
-  }
+  // if (!dummyData) {
+  //   return null;
+  // }
 
   return (
     <>
       <BackHeader title="Connection Details" showBtn={true} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <UserCard
+        {/* <UserCard
           userName={dummyData?.name}
           userTitle={dummyData?.role}
           companyName={dummyData?.company_name}
           imageUrl={dummyData?.image_url}
+        /> */}
+        {/* <UserList key={'1'} exhibitorsData={exhibitorsData} isSingle={true} /> */}
+        {/* <ContactDetailsCard details={connectionData.contact_details} /> */}
+        <ContactDetails
+          heading="Contact Details"
+          email={connectionData.contact_details.email}
+          phone={connectionData.contact_details.phone}
+          address={connectionData.contact_details.address}
+          website={connectionData.contact_details.website}
         />
-        <ContactDetailsCard details={dummyData.contact_details} />
       </ScrollView>
     </>
   );
