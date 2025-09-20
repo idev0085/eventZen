@@ -3,7 +3,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  Text,
   useWindowDimensions,
   ActivityIndicator,
 } from 'react-native';
@@ -18,6 +17,7 @@ import Modal from 'react-native-modal';
 import Toast from 'react-native-simple-toast';
 import { useFileDownloader } from '../hooks/useFileDownloader';
 import { useProfile } from '../hooks/useApi';
+import QRScannerModal from '../components/QRScannerModal';
 
 const QRScannerScreen = ({ ...props }) => {
   const [visible, setVisible] = useState(false);
@@ -94,19 +94,12 @@ const QRScannerScreen = ({ ...props }) => {
         useNativeDriver
         style={styles.modal}
       >
-        <View style={styles.modalContent}>
-          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-            <Text style={{ fontSize: 20, color: COLORS.primary }}>X</Text>
-          </TouchableOpacity>
-          <View style={styles.imageBox}>
-            <Icon
-              source={{ uri: profileData?.my_qr_code }}
-              size={width}
-              backgroundColor={COLORS.placeholder}
-              borderRadius={50}
-            />
-          </View>
-        </View>
+        <QRScannerModal
+          onClose={closeModal}
+          onScanSuccess={qrValue => {
+            console.log('Scanned:', qrValue);
+          }}
+        />
       </Modal>
     </>
   );

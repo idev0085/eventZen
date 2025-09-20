@@ -7,12 +7,15 @@ import BootSplash from 'react-native-bootsplash';
 import RatingCard from '../components/RatingSelectorCard';
 import ConnectionDetails from '../screens/ConnectionDetails';
 import ConnectionForm from '../screens/ConnectionForm';
+import QRScannerScreen from '../screens/QRScannerScreen';
+import QRScannerModal from '../components/QRScannerModal';
 
 const Stack = createStackNavigator();
 
 const TestScreen = ({ navigation }: any) => (
   <SafeAreaView style={{ flex: 1, marginTop: 50 }}>
-    <ConnectionForm />
+    {/* <ConnectionForm /> */}
+    {/* <QRScannerScreen /> */}
   </SafeAreaView>
 );
 
