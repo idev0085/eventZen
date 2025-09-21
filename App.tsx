@@ -38,19 +38,14 @@ function AppContent() {
   const isAuthenticated = useIsAuthenticated();
   const isAuthReady = useAuthIsReady();
 
-  console.log('AppContent:', {
-    isAuthenticated,
-  });
+  useEffect(() => {
+    checkForUpdates();
+  }, []);
 
-  // Show loading screen until we know auth status -- Loader will added.
   if (!isAuthReady) {
     // return <LoadingOverlay visible={true} />;
     return null;
   }
-
-  useEffect(() => {
-    checkForUpdates();
-  }, []);
 
   return (
     <NavigationContainer
