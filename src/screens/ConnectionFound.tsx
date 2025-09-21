@@ -30,6 +30,7 @@ const ConnectionFound = () => {
     note: 'This is a note',
   };
   const handleSave = () => {};
+  const handleCancel = () => {};
 
   return (
     <>
@@ -53,13 +54,14 @@ const ConnectionFound = () => {
         />
         <AddNote heading="Add Note" onChangeText={setTextArea} />
       </ScrollView>
-      <View style={styles.footer}>
+      <View style={styles.buttonRow}>
         <Button
-          title="Save"
-          onPress={handleSave}
-          style={{ borderRadius: 10, width: '100%' }}
-          textStyle={{ fontSize: TEXT_SIZES.sm, fontWeight: '400' }}
+          title="Cancel"
+          variant="outlined"
+          onPress={handleCancel}
+          style={styles.buttonHalf}
         />
+        <Button title="Save" onPress={handleSave} style={styles.buttonHalf} />
       </View>
     </>
   );
@@ -76,5 +78,14 @@ const styles = StyleSheet.create({
   footer: {
     backgroundColor: '#fff',
     padding: 15,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    gap: 10,
+  },
+  buttonHalf: {
+    flex: 1,
   },
 });
