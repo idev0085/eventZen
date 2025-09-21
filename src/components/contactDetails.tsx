@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   card: {
     // marginHorizontal: 10,
     alignSelf: 'center',
-    width: '95%',
+    width: '92%',
     justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
