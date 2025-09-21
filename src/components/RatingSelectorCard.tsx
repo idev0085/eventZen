@@ -7,11 +7,15 @@ type RatingOption = 'Cold' | 'Normal' | 'Warm';
 interface RatingSelectorCardProps {
   initialRating?: RatingOption;
   onRatingChange?: (rating: RatingOption) => void;
+  emojiSize?: number;
+  labelStyle?: object;
 }
 
 const RatingSelectorCard: React.FC<RatingSelectorCardProps> = ({
   initialRating = 'Warm',
   onRatingChange,
+  emojiSize,
+  labelStyle,
 }) => {
   const [selectedRating, setSelectedRating] =
     useState<RatingOption>(initialRating);
@@ -38,7 +42,7 @@ const RatingSelectorCard: React.FC<RatingSelectorCardProps> = ({
 
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>Ratings</Text>
+      <Text style={[styles.title, labelStyle]}>Ratings</Text>
       <View style={styles.optionsContainer}>
         {['Cold', 'Normal', 'Warm'].map(rating => {
           const isSelected = selectedRating === rating;
@@ -51,7 +55,9 @@ const RatingSelectorCard: React.FC<RatingSelectorCardProps> = ({
               ]}
               onPress={() => handlePress(rating as RatingOption)}
             >
-              <Text style={styles.emoji}>
+              <Text
+                style={(styles.emoji, { fontSize: emojiSize ? emojiSize : 38 })}
+              >
                 {getEmoji(rating as RatingOption)}
               </Text>
               <Text
@@ -74,16 +80,21 @@ const RatingSelectorCard: React.FC<RatingSelectorCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
+    // backgroundColor: '#fff',
+    // borderRadius: 10,
+    // padding: 15,
+    // marginHorizontal: 20,
+    // marginTop: 20,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.1,
+    // shadowRadius: 4,
+    // elevation: 3,
+
+    margin: 10,
     backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    marginHorizontal: 20,
-    marginTop: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    marginHorizontal: 2,
+    borderRadius: 8,
   },
   title: {
     fontSize: 18,
