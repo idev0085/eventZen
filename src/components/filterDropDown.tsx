@@ -11,12 +11,21 @@ import { Ionicons } from '@react-native-vector-icons/ionicons';
 
 interface FilterDropDownProps {
   label?: string;
-  options: string[];
+  options?: string[];
+  labelStyle?: object;
 }
 
-const FilterDropDown = ({ label, options }: FilterDropDownProps) => {
+const FilterDropDown = ({
+  label,
+  options = [],
+  labelStyle,
+}: FilterDropDownProps) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
+
+  // Safe array operations
+  const safeOptions = Array.isArray(options) ? options : [];
+  const optionsLength = safeOptions.length;
 
   const toggleSelect = (item: string) => {
     if (selected.includes(item)) {
@@ -32,17 +41,16 @@ const FilterDropDown = ({ label, options }: FilterDropDownProps) => {
   const handleDeselectAll = (list: string[]) =>
     setSelected(selected.filter(s => !list.includes(s)));
 
-  const unselected = Array.isArray(options)
-    ? options.filter(opt => !selected.includes(opt))
-    : [];
+  const unselected = safeOptions.filter(opt => !selected.includes(opt));
 
   return (
     <View style={styles.wrapper}>
       {/* label */}
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
       <TouchableOpacity
         style={styles.dropDownHeader}
         onPress={() => setOpen(!open)}
+        disabled={optionsLength === 0} // Disable if no options
       >
         <Text style={styles.headerText}>
           {selected.length ? selected.length : 0} Selected
@@ -54,8 +62,14 @@ const FilterDropDown = ({ label, options }: FilterDropDownProps) => {
           size={20}
         />
       </TouchableOpacity>
+
+      {/* Show message if no options */}
+      {optionsLength === 0 && (
+        <Text style={styles.noOptionsText}>No options available</Text>
+      )}
+
       {/* Drop-down body */}
-      {open && (
+      {open && optionsLength > 0 && (
         <View style={styles.dropDownBody}>
           {/* selected section */}
           {selected.length > 0 && (
@@ -70,7 +84,7 @@ const FilterDropDown = ({ label, options }: FilterDropDownProps) => {
             >
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>
-                  SELECTED ({selected.length ? selected.length : 0})
+                  SELECTED ({selected.length})
                 </Text>
                 <TouchableOpacity onPress={() => handleDeselectAll(selected)}>
                   <Text style={styles.sectionAction}>Deselect All</Text>
@@ -109,13 +123,15 @@ const FilterDropDown = ({ label, options }: FilterDropDownProps) => {
           >
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>
-                UNSELECTED ({unselected.length}/{options.length})
+                UNSELECTED ({unselected.length}/{optionsLength})
               </Text>
-              <TouchableOpacity onPress={() => handleSelectAll(unselected)}>
-                <Text style={styles.sectionAction}>{`${
-                  selected.length !== options.length ? 'Select All' : ''
-                }`}</Text>
-              </TouchableOpacity>
+              {unselected.length > 0 && (
+                <TouchableOpacity onPress={() => handleSelectAll(unselected)}>
+                  <Text style={styles.sectionAction}>{`${
+                    selected.length !== optionsLength ? 'Select All' : ''
+                  }`}</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <FlatList
               data={unselected}
@@ -148,7 +164,7 @@ const styles = StyleSheet.create({
   wrapper: {
     margin: 10,
     backgroundColor: '#fff',
-    padding: 12,
+    marginHorizontal: 2,
     borderRadius: 8,
   },
   label: {
@@ -205,5 +221,12 @@ const styles = StyleSheet.create({
   itemText: {
     color: COLORS.tinyDot,
     fontSize: TEXT_SIZES.sm,
+  },
+  noOptionsText: {
+    fontSize: TEXT_SIZES.sm,
+    color: '#999',
+    fontStyle: 'italic',
+    padding: 12,
+    textAlign: 'center',
   },
 });

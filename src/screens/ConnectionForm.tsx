@@ -13,7 +13,14 @@ import Button from '../components/ui/button';
 const ConnectionForm = () => {
   const [title, setTitle] = useState('Mr');
 
-  const options = [];
+  // const options = [];
+  const options = [
+    'Electronics',
+    'Clothing',
+    'Home & Garden',
+    'Sports & Outdoors',
+    'Books & Media',
+  ];
 
   const handleOnChange = () => {};
 
@@ -98,9 +105,21 @@ const ConnectionForm = () => {
             autoCapitalize="none"
             onChangeText={handleOnChange}
           />
-          <FileUploadCard />
-          <RatingSelectorCard />
-          <FilterDropDown label="Tags" />
+          <FileUploadCard
+            maxFiles={1}
+            maxSizeMB={10}
+            multiple={false}
+            title="Visiting Card"
+            description="SVG, PNG, JPG or GIF (max 10MB)"
+          />
+          <RatingSelectorCard
+            labelStyle={{ fontSize: 14, fontWeight: '400' }}
+          />
+          <FilterDropDown
+            label="Tags"
+            labelStyle={{ fontSize: 14, fontWeight: '400' }}
+            options={options}
+          />
         </Card>
       </ScrollView>
       <View style={styles.footer}>
