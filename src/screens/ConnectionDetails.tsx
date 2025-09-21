@@ -23,7 +23,8 @@ const connectionData = {
   rep_name: 'Jane Doe',
   rep_email: 'email',
   rep_phone: '+1234567890',
-  avatarUrl: 'https://yourdomain.com/avatars/jane.jpg',
+  avatarUrl:
+    'https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg',
   tags: ['Fintech', 'Cloud', 'SaaS', 'Fintech', 'Cloud'],
   rating: 'Cold | Warm',
   visitingCardUrl:
