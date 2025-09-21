@@ -67,12 +67,13 @@ import EmojiNormalFace from '../../assets/svg/svgComponents/EmojiNormalFace';
 import EmojiWarmFace from '../../assets/svg/svgComponents/EmojiWarmFace';
 import EmojiColdFace from '../../assets/svg/svgComponents/EmojiColdFace';
 import VerifiedBadgeIcon from '../../assets/svg/svgComponents/VerifiedBadgeIcon';
+import DownloadIcon from '../../assets/svg/svgComponents/DownloadIcon';
 
 export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
   buildNumber: 1,
-  DEBUG: false,
+  DEBUG: true,
   TOKEN: 'authToken',
   RESEND_TIMER: 60,
   PLAYSTORE_URL: 'https://play.google.com/store/apps/details',
@@ -300,4 +301,5 @@ export {
   EmojiWarmFace,
   EmojiColdFace,
   VerifiedBadgeIcon,
+  DownloadIcon,
 };
