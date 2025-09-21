@@ -14,7 +14,7 @@ import {
   Code,
   CodeScanner,
 } from 'react-native-vision-camera';
-import ScreenBrightness from 'react-native-screen-brightness';
+// import ScreenBrightness from 'react-native-screen-brightness';
 
 import { COLORS } from '../utils/constants';
 import Toast from 'react-native-simple-toast';
@@ -56,18 +56,18 @@ const QRScannerModal = ({ onClose, onScanSuccess }: QRScannerModalProps) => {
       }
 
       // Boost brightness
-      try {
-        await ScreenBrightness.setBrightness(1);
-      } catch (error) {
-        console.warn('Failed to set screen brightness:', error);
-      }
-    })();
+    //   try {
+    //     // await ScreenBrightness.setBrightness(1);
+    //   } catch (error) {
+    //     console.warn('Failed to set screen brightness:', error);
+    //   }
+    // })();
 
-    return () => {
-      // Reset brightness
-      ScreenBrightness.setBrightness(0.5).catch(error =>
-        console.warn('Failed to reset screen brightness:', error),
-      );
+    // return () => {
+    //   // Reset brightness
+    //   ScreenBrightness.setBrightness(0.5).catch(error =>
+    //     console.warn('Failed to reset screen brightness:', error),
+    //   );
     };
   }, [hasPermission, requestPermission]);
 

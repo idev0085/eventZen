@@ -4,18 +4,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import BootSplash from 'react-native-bootsplash';
-import RatingCard from '../components/RatingSelectorCard';
-import ConnectionDetails from '../screens/ConnectionDetails';
 import ConnectionForm from '../screens/ConnectionForm';
 import QRScannerScreen from '../screens/QRScannerScreen';
 import QRScannerModal from '../components/QRScannerModal';
+import ConnectionDetails from '../screens/ConnectionDetails';
+import ConnectionEdit from '../screens/ConnectionEdit';
 
 const Stack = createStackNavigator();
 
 const TestScreen = ({ navigation }: any) => (
   <SafeAreaView style={{ flex: 1, marginTop: 50 }}>
-    {/* <ConnectionForm /> */}
     {/* <QRScannerScreen /> */}
+    <ConnectionEdit />
+    {/* <ConnectionDetails /> */}
   </SafeAreaView>
 );
 
