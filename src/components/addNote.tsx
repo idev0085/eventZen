@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     fontSize: TEXT_SIZES.md,
     fontFamily: 'Roboto-Bold',
-    marginBottom: 10,
+    marginBottom: 18,
   },
 });
