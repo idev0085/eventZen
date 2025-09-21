@@ -9,25 +9,29 @@ interface AddNoteProps {
   placeholder?: string;
   value?: string;
   onChangeText?: (text: string) => void;
+  editable?: boolean;
+  textInputStyle?: object;
 }
 export default function AddNote({
   heading,
   placeholder,
   value,
   onChangeText,
+  editable = true,
+  textInputStyle = {},
 }: AddNoteProps) {
   return (
     <Card style={styles.card}>
       <CustomText style={styles.textHeadng}>{heading}</CustomText>
       <SafeAreaView style={{ flex: 1 }}>
         <TextInput
-          style={styles.input}
+          style={[styles.input, textInputStyle]}
           placeholder={placeholder || 'Add a note...'}
           value={value}
           onChangeText={onChangeText}
           multiline
           underlineColorAndroid="transparent"
-          editable
+          editable={editable}
           numberOfLines={4}
           placeholderTextColor={'#B8B8B8'}
           textAlignVertical="top"
