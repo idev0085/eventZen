@@ -18,6 +18,7 @@ import Modal from 'react-native-modal';
 import Toast from 'react-native-simple-toast';
 import { useFileDownloader } from '../hooks/useFileDownloader';
 import { useProfile } from '../hooks/useApi';
+import QRScannerModal from '../components/QRScannerModal';
 
 const QRScannerScreen = ({ ...props }) => {
   const [visible, setVisible] = useState(false);
@@ -94,14 +95,14 @@ const QRScannerScreen = ({ ...props }) => {
         useNativeDriver
         style={styles.modal}
       >
-        {/* <QRScannerModal
+        <QRScannerModal
           onClose={closeModal}
           onScanSuccess={qrValue => {
             console.log('Scanned:', qrValue);
           }}
-        /> */}
+        />
 
-        <Text>hi</Text>
+        {/* <Text>hi</Text> */}
       </Modal>
     </>
   );

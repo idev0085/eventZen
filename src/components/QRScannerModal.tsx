@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import {
   Camera,
@@ -12,12 +14,9 @@ import {
   useCameraPermission,
   useCodeScanner,
   Code,
-  CodeScanner,
 } from 'react-native-vision-camera';
-// import ScreenBrightness from 'react-native-screen-brightness';
-
-import { COLORS } from '../utils/constants';
 import Toast from 'react-native-simple-toast';
+import { COLORS } from '../utils/constants';
 import Ionicons from '@react-native-vector-icons/ionicons';
 
 interface QRScannerModalProps {
@@ -30,10 +29,57 @@ const QRScannerModal = ({ onClose, onScanSuccess }: QRScannerModalProps) => {
   const { hasPermission, requestPermission } = useCameraPermission();
   const [isProcessing, setIsProcessing] = useState(false);
   const [torchOn, setTorchOn] = useState(false);
+  const [cameraActive, setCameraActive] = useState(false);
+
+  const requestAndroidPermission = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Camera Permission',
+            message: 'This app needs access to your camera to scan QR codes',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+      return true;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const initCamera = async () => {
+      try {
+        if (Platform.OS === 'android') {
+          await requestAndroidPermission();
+        }
+
+        if (!hasPermission) {
+          await requestPermission();
+        }
+
+        // Small delay to ensure camera is ready
+        setTimeout(() => setCameraActive(true), 300);
+      } catch (error) {
+        console.error('Camera permission error:', error);
+        Toast.show('Camera permission denied', Toast.LONG);
+      }
+    };
+
+    initCamera();
+
+    return () => setCameraActive(false);
+  }, [hasPermission, requestPermission]);
 
   const handleCodeScanned = useCallback(
     (codes: Code[]) => {
-      if (codes.length > 0 && !isProcessing) {
+      if (codes.length > 0 && !isProcessing && cameraActive) {
         const qrValue = codes[0].value;
         if (qrValue) {
           setIsProcessing(true);
@@ -41,55 +87,24 @@ const QRScannerModal = ({ onClose, onScanSuccess }: QRScannerModalProps) => {
         }
       }
     },
-    [isProcessing],
+    [isProcessing, cameraActive],
   );
 
-  const codeScanner: CodeScanner = {
-    codeTypes: ['qr'],
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr', 'code-128'],
     onCodeScanned: handleCodeScanned,
-  };
-
-  useEffect(() => {
-    (async () => {
-      if (!hasPermission) {
-        await requestPermission();
-      }
-
-      // Boost brightness
-    //   try {
-    //     // await ScreenBrightness.setBrightness(1);
-    //   } catch (error) {
-    //     console.warn('Failed to set screen brightness:', error);
-    //   }
-    // })();
-
-    // return () => {
-    //   // Reset brightness
-    //   ScreenBrightness.setBrightness(0.5).catch(error =>
-    //     console.warn('Failed to reset screen brightness:', error),
-    //   );
-    };
-  }, [hasPermission, requestPermission]);
+  });
 
   const handleQrDetected = useCallback(
     async (qrValue: string) => {
       try {
-        // API call with scanned QR
-        const response = await fetch('https://your-api.com/scan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ qr: qrValue }),
-        });
-
-        if (!response.ok) throw new Error('API call failed');
-
-        Toast.show('QR Scanned Successfully!', Toast.LONG);
+        Toast.show(`QR Code Detected!`, Toast.SHORT);
         onScanSuccess(qrValue);
-        onClose(); // close scanner
+        onClose();
       } catch (error) {
         console.error(error);
         Toast.show('Failed to process QR', Toast.LONG);
-        setIsProcessing(false); // allow retry
+        setIsProcessing(false);
       }
     },
     [onClose, onScanSuccess],
@@ -111,8 +126,14 @@ const QRScannerModal = ({ onClose, onScanSuccess }: QRScannerModalProps) => {
       <View style={styles.loading}>
         <ActivityIndicator size="large" color={COLORS.primary} />
         <Text style={{ marginTop: 10, color: COLORS.white }}>
-          Requesting camera permission...
+          Camera permission required
         </Text>
+        <TouchableOpacity
+          style={styles.permissionButton}
+          onPress={requestPermission}
+        >
+          <Text style={styles.permissionText}>Grant Permission</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -122,27 +143,37 @@ const QRScannerModal = ({ onClose, onScanSuccess }: QRScannerModalProps) => {
       <Camera
         style={StyleSheet.absoluteFill}
         device={device}
-        isActive={true}
+        isActive={cameraActive}
         codeScanner={codeScanner}
         torch={torchOn ? 'on' : 'off'}
+        audio={false}
+        video={true}
+        orientation="portrait"
       />
 
-      {/* Scanner Overlay */}
+      {/* Overlay */}
       <View style={styles.overlay}>
         <View style={styles.topOverlay} />
         <View style={styles.middleRow}>
           <View style={styles.sideOverlay} />
           <View style={styles.scanBox}>
-            <View style={styles.scanLine} />
+            <View style={styles.cornerTopLeft} />
+            <View style={styles.cornerTopRight} />
+            <View style={styles.cornerBottomLeft} />
+            <View style={styles.cornerBottomRight} />
           </View>
           <View style={styles.sideOverlay} />
         </View>
-        <View style={styles.bottomOverlay} />
+        <View style={styles.bottomOverlay}>
+          <Text style={styles.instructionText}>
+            Align QR code within the frame
+          </Text>
+        </View>
       </View>
 
       {/* Close Button */}
       <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-        <Ionicons name="close" size={28} color={COLORS.primary} />
+        <Ionicons name="close" size={28} color={COLORS.white} />
       </TouchableOpacity>
 
       {/* Torch Button */}
@@ -178,16 +209,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.black,
+    padding: 20,
+  },
+  permissionButton: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: COLORS.primary,
+    borderRadius: 8,
+  },
+  permissionText: {
+    color: COLORS.white,
+    fontWeight: 'bold',
   },
   closeButton: {
     position: 'absolute',
     top: 50,
     left: 20,
-    backgroundColor: COLORS.white,
+    backgroundColor: 'rgba(0,0,0,0.6)',
     borderRadius: 25,
     padding: 10,
-    elevation: 5,
     zIndex: 10,
   },
   torchButton: {
@@ -207,7 +248,7 @@ const styles = StyleSheet.create({
   topOverlay: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.6)',
   },
   middleRow: {
     flexDirection: 'row',
@@ -215,28 +256,70 @@ const styles = StyleSheet.create({
   },
   sideOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.6)',
   },
   scanBox: {
     width: 250,
     height: 250,
-    borderWidth: 2,
-    borderColor: COLORS.primary,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
     borderRadius: 10,
     backgroundColor: 'transparent',
-    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  scanLine: {
-    height: 2,
-    backgroundColor: COLORS.primary,
-    width: '100%',
+  cornerTopLeft: {
     position: 'absolute',
-    top: '50%',
+    top: 0,
+    left: 0,
+    width: 20,
+    height: 20,
+    borderLeftWidth: 3,
+    borderTopWidth: 3,
+    borderColor: COLORS.primary,
+  },
+  cornerTopRight: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 20,
+    height: 20,
+    borderRightWidth: 3,
+    borderTopWidth: 3,
+    borderColor: COLORS.primary,
+  },
+  cornerBottomLeft: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: 20,
+    height: 20,
+    borderLeftWidth: 3,
+    borderBottomWidth: 3,
+    borderColor: COLORS.primary,
+  },
+  cornerBottomRight: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 20,
+    height: 20,
+    borderRightWidth: 3,
+    borderBottomWidth: 3,
+    borderColor: COLORS.primary,
   },
   bottomOverlay: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 30,
+  },
+  instructionText: {
+    color: COLORS.white,
+    fontSize: 16,
+    textAlign: 'center',
   },
   processingOverlay: {
     ...StyleSheet.absoluteFillObject,
