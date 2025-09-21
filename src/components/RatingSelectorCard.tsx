@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { COLORS, TEXT_SIZES } from '../utils/constants';
+import { getEmoji } from '../utils/getEmojiUtil';
 
 type RatingOption = 'Cold' | 'Normal' | 'Warm';
 
@@ -24,19 +25,6 @@ const RatingSelectorCard: React.FC<RatingSelectorCardProps> = ({
     setSelectedRating(rating);
     if (onRatingChange) {
       onRatingChange(rating);
-    }
-  };
-
-  const getEmoji = (rating: RatingOption) => {
-    switch (rating) {
-      case 'Cold':
-        return '😰';
-      case 'Normal':
-        return '🙂';
-      case 'Warm':
-        return '😊';
-      default:
-        return '';
     }
   };
 
