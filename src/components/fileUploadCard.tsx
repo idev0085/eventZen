@@ -27,6 +27,8 @@ interface FileUploadCardProps {
   title: string;
   description: string;
   allowPdf?: boolean;
+  label?: string; // Added label prop
+  labelStyle?: object;
 }
 
 const FileUploadCard = ({
@@ -37,6 +39,8 @@ const FileUploadCard = ({
   title = 'Select file to upload',
   description = 'SVG, PNG, JPG or GIF (max 10 MB)',
   allowPdf = false,
+  label, // Added label
+  labelStyle,
 }: FileUploadCardProps) => {
   const [files, setFiles] = useState<Asset[]>([]);
 
@@ -83,6 +87,9 @@ const FileUploadCard = ({
 
   return (
     <View style={styles.wrapper}>
+      {/* Added label section */}
+      {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
+
       {/* Upload Box */}
       <TouchableOpacity style={styles.uploadBox} onPress={handlePick}>
         <View style={styles.placeholder}>
@@ -131,17 +138,18 @@ export default FileUploadCard;
 
 const styles = StyleSheet.create({
   wrapper: {
-    margin: 16,
+    flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
     borderRadius: 8,
   },
+  // Added label style
   label: {
     fontSize: TEXT_SIZES.sm,
     fontWeight: '600',
     marginBottom: 8,
     color: '#333',
   },
+  title: {},
   uploadBox: {
     borderWidth: 1,
     borderStyle: 'dashed',
