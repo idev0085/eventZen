@@ -1,26 +1,36 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { COLORS } from '../utils/constants';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { COLORS, Download, DownloadIcon, TEXT_SIZES } from '../utils/constants';
 import BackHeader from '../components/BackHeader';
 import LoadingOverlay from '../components/loadingOverlay';
 import UserCard from '../components/userCard';
 import ContactDetails from '../components/contactDetails';
-import AddNote from '../components/addNote';
 import Button from '../components/ui/button';
+import AddNote from '../components/addNote';
+import { getEmoji, RatingOption } from '../utils/getEmojiUtil';
 
 const connectionData = {
-  company_name: 'Company Name',
-  avatar:
-    'https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png',
-  name: 'Michael Chen',
-  role: 'Additional Director',
-  contact_details: {
-    email: 'digitalaptech@gmail.com',
-    phone: '+1 7346274598',
-    address:
-      'EN-34 (9th Floor), Block-EN, Sector – V, Salt Lake City, Kolkata – 700091, West Bengal, India.',
-    website: 'digitalaptech.com',
-  },
+  id: 'con-1',
+  companyName: 'Tech Innovations Inc.',
+  company_website: 'https://techinnovations.com',
+  rep_name: 'Jane Doe',
+  rep_email: 'email',
+  rep_phone: '+1234567890',
+  avatarUrl: 'https://yourdomain.com/avatars/jane.jpg',
+  tags: ['Fintech', 'Cloud', 'SaaS', 'Fintech', 'Cloud'],
+  rating: 'Cold | Warm',
+  visitingCardUrl:
+    'https://st.depositphotos.com/17620692/61016/v/450/depositphotos_610167492-stock-illustration-luxury-dark-blue-gold-background.jpg',
+  note: 'Follow up in two weeks.',
+  rep_address: '', // missing
+  rep_designation: '', // missing
 };
 
 const ConnectionDetails = () => {
@@ -31,41 +41,91 @@ const ConnectionDetails = () => {
     return <LoadingOverlay visible={isLoading} />;
   }
 
-  const handleCancel = () => {};
-  const handleSave = () => {};
+  const renderRating = (rating: RatingOption | string) => {
+    const ratingArr = rating?.split('|');
+
+    return (
+      <View style={styles.ratingContainer}>
+        {Array.isArray(ratingArr) && ratingArr.length
+          ? ratingArr.map(rate => (
+              <Text key={rate} style={styles.emojiStyle}>
+                {getEmoji(rate.trim())}
+              </Text>
+            ))
+          : ''}
+      </View>
+    );
+  };
+
+  const handleEdit = () => {};
 
   return (
     <>
       <BackHeader title="Connection Details" showBtn={true} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <UserCard
-          imageUrl={connectionData.avatar}
-          companyName={connectionData.company_name}
-          name={connectionData.name}
-          designation={connectionData.role}
+          imageUrl={connectionData.avatarUrl}
+          companyName={connectionData.companyName}
+          name={connectionData.rep_name}
+          designation={connectionData.rep_designation}
         />
         <ContactDetails
           heading="Contact Details"
-          email={connectionData.contact_details.email}
-          phone={connectionData.contact_details.phone}
-          address={connectionData.contact_details.address}
-          website={connectionData.contact_details.website}
+          email={connectionData.rep_email}
+          phone={connectionData.rep_phone}
+          address={connectionData.rep_address}
+          website={connectionData.company_website}
         />
+        {/* Tags Component */}
+        <View style={styles.section}>
+          <Text style={styles.sectionHeading}>Tag</Text>
+          <View style={styles.tagsContainer}>
+            {connectionData.tags.map((tag, index) => (
+              <View key={index} style={styles.tag}>
+                <Text style={styles.tagText}>{tag}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        {/* Ratings Component */}
+        <View style={styles.section}>
+          <Text style={styles.sectionHeading}>Ratings</Text>
+          {renderRating(connectionData.rating)}
+        </View>
+        {/* Render Visiting Card View Component*/}
+        <View style={styles.section}>
+          <View style={styles.downloadContainer}>
+            <Text style={styles.sectionHeading}>Visting Card</Text>
+            <TouchableOpacity style={styles.downloadIconTextStyle}>
+              <DownloadIcon />
+              <Text style={styles.downloadText}>Download</Text>
+            </TouchableOpacity>
+          </View>
+          <Image
+            source={{
+              uri: `${connectionData.visitingCardUrl}`,
+            }}
+            style={[
+              styles.downloadVisitingCard,
+              { width: '100%', height: 200 },
+            ]}
+          />
+        </View>
+        {/* Render Add Note View Component*/}
         <AddNote
           heading="Add Note"
-          onChangeText={setTextArea}
-          placeholder="Message"
+          value={connectionData.note}
+          editable={false}
+          textInputStyle={{ color: '#4E4E4E' }}
         />
 
-        {/* Button Row */}
-        <View style={styles.buttonRow}>
+        <View style={styles.footer}>
           <Button
-            title="Cancel"
-            variant="outlined"
-            onPress={handleCancel}
-            style={styles.buttonHalf}
+            title="Edit"
+            onPress={handleEdit}
+            style={{ borderRadius: 10, width: '100%' }}
+            textStyle={{ fontSize: TEXT_SIZES.sm, fontWeight: '400' }}
           />
-          <Button title="Save" onPress={handleSave} style={styles.buttonHalf} />
         </View>
       </ScrollView>
     </>
@@ -77,16 +137,76 @@ export default ConnectionDetails;
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: '#F4F4F4',
     paddingBottom: 20,
   },
-  buttonRow: {
+  section: {
+    backgroundColor: COLORS.white,
+    marginHorizontal: 14,
+    marginTop: 10,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  sectionHeading: {
+    fontSize: TEXT_SIZES.md,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+    marginBottom: 12,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  tag: {
+    backgroundColor: COLORS.white,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#CACACA',
+  },
+  tagText: {
+    fontSize: TEXT_SIZES.xs,
+    color: COLORS.textPrimary,
+    fontWeight: '500',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  ratingText: {
+    fontSize: TEXT_SIZES.md,
+    fontWeight: '600',
+  },
+  downloadContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
-    gap: 10,
+    alignItems: 'flex-start',
   },
-  buttonHalf: {
-    flex: 1,
+  downloadText: {
+    color: COLORS.primary,
+  },
+  downloadIconTextStyle: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  downloadVisitingCard: {
+    borderRadius: 10,
+  },
+  emojiStyle: {
+    fontSize: 34,
+    borderWidth: 1,
+    padding: 20,
+    borderRadius: 10,
+    borderColor: '#EEEEEE',
+  },
+  footer: {
+    backgroundColor: '#fff',
+    padding: 15,
   },
 });
