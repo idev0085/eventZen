@@ -73,7 +73,7 @@ export const APP_CONFIG = {
   name: 'EventZen',
   version: '1.0.0',
   buildNumber: 1,
-  DEBUG: true,
+  DEBUG: false,
   TOKEN: 'authToken',
   RESEND_TIMER: 60,
   PLAYSTORE_URL: 'https://play.google.com/store/apps/details',
