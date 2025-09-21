@@ -109,8 +109,10 @@ const ConnectionForm = () => {
             maxFiles={1}
             maxSizeMB={10}
             multiple={false}
-            title="Visiting Card"
+            title="Select file to upload"
             description="SVG, PNG, JPG or GIF (max 10MB)"
+            label="Visiting Card"
+            labelStyle={{ fontSize: 14, fontWeight: '400' }}
           />
           <RatingSelectorCard
             labelStyle={{ fontSize: 14, fontWeight: '400' }}
