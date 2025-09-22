@@ -32,6 +32,11 @@ export interface ICreateConnectionPayload {
   note: string;
 }
 
+export interface IUpdateConnectionNotePayload {
+  note: string;
+  connectionId: number;
+}
+
 // ! API Function
 
 //! SCan a Qr
@@ -59,4 +64,17 @@ export const createConnection = async (payload: ICreateConnectionPayload) => {
 export const getConnectionById = async id => {};
 
 //! update note
-export const updateConnectionNote = async payload => {};
+export const updateConnectionNote = async (
+  payload: IUpdateConnectionNotePayload,
+) => {
+  console.log(`📡 Updating note for connection ID: ${payload.connectionId}`);
+  const apiPayload = {
+    note: payload.note,
+    qrData: payload.connectionId,
+  };
+  const { data } = await apiClient.put(
+    '/api/connections/update/scan',
+    apiPayload,
+  );
+  return data;
+};
