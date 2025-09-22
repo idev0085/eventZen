@@ -29,6 +29,8 @@ import { ONESIGNAL_API_KEY, BASE_URL } from '../config';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useHomeData, useProfile, useUpdateOneSignal } from '../hooks/useApi';
 import { getToken } from '../utils/tokenManager';
+import TestCam from '../components/testCam';
+
 const HomeSessions = ({ ...props }) => {
   return (
     <>
@@ -50,7 +52,7 @@ const HomeSessions = ({ ...props }) => {
             time={formatTimeRange(session.start_time, session.end_time)}
             onPress={() =>
               props.navigation.navigate('SessionsDetailsScreen', {
-                id: session.id,
+                sessionId: session?.id,
               })
             }
             speakers={session?.speakers}
@@ -141,58 +143,7 @@ const HomeScreen = ({ ...props }) => {
 
   const isLoading = isHomeLoading || isProfileLoading;
 
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.homeScreenContainer}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefetchingHome}
-            onRefresh={refetchHomeData}
-            tintColor={COLORS.primary}
-          />
-        }
-      >
-        {isLoading ? (
-          <LoadingOverlay visible={true} />
-        ) : (
-          <>
-            <HomeHeader
-              userName={profileData?.name}
-              welcomeMessage="Welcome !"
-              profileImage={profileData?.imageUrl}
-              hasNewNotification={homeData?.notifications?.hasNew}
-              navigation={props.navigation}
-            />
-            {VIDEO && (
-              <YoutubePlayer
-                height={200}
-                play={playing}
-                videoId={VIDEO}
-                onChangeState={onStateChange}
-              />
-            )}
-
-            {upcomingEventDate && (
-              <UpcomingEvent eventDate={upcomingEventDate} />
-            )}
-            <QuickActionMenu navigations={props.navigation} />
-            {homeData?.home_sessions?.length > 0 && (
-              <HomeSessions data={homeData} navigation={props.navigation} />
-            )}
-            {homeData?.home_connections?.length > 0 && (
-              <ConnectionsCard
-                connections={homeData?.home_connections}
-                onStartNetworking={handleOnStartNetworking}
-              />
-            )}
-            {homeData?.myStats && <MyStats data={homeData?.myStats} />}
-          </>
-        )}
-      </ScrollView>
-      <FloatingScannerCTA />
-    </View>
-  );
+  return <TestCam />;
 };
 
 export default HomeScreen;
