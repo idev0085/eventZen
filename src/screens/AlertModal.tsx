@@ -1,52 +1,45 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-  Image,
-  ImageSourcePropType,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Modal from 'react-native-modal';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { SessionTimeOut, COLORS } from '../utils/constants';
+
+interface AlertModalProps {
+  isVisible?: boolean;
+  onClose: () => void;
+  onButtonPress: () => void;
+  heading: string;
+  description: string;
+  buttonText: string;
+}
 export default function AlertModal({
-  image = SessionTimeOut,
+  isVisible,
+  onClose,
+  onButtonPress,
   heading = 'Scanning Failed',
-  description = 'Unable to scan QR code. Switch to manual entry to join the event.',
+  description = 'User not found. Would you like to add them manually?',
   buttonText = 'Enter Manually',
-}) {
-  const [visible, setVisible] = useState(false);
-
-  const openModal = () => setVisible(true);
-  const closeModal = () => setVisible(false);
-
+}: AlertModalProps) {
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={openModal} style={styles.openButton}>
-        <Text style={{ color: '#fff' }}>Open Modal</Text>
-      </TouchableOpacity>
-      <Modal
-        isVisible={visible}
-        onBackdropPress={closeModal}
-        useNativeDriver
-        style={styles.modal}
-      >
-        <View style={styles.modalContent}>
-          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-            <Text style={{ fontSize: 20, color: COLORS.primary }}>X</Text>
-          </TouchableOpacity>
-          <View style={styles.iconContainer}>
-            <SessionTimeOut />
-          </View>
-          <Text style={styles.heading}>{heading}</Text>
-          <Text style={styles.modalText}>{description}</Text>
-          <TouchableOpacity style={styles.blueButton} onPress={closeModal}>
-            <Text style={styles.blueButtonText}>{buttonText}</Text>
-          </TouchableOpacity>
+    <Modal
+      isVisible={isVisible}
+      onBackdropPress={onClose}
+      useNativeDriver
+      style={styles.modal}
+    >
+      <View style={styles.modalContent}>
+        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+          <Text style={{ fontSize: 20, color: COLORS.primary }}>X</Text>
+        </TouchableOpacity>
+        <View style={styles.iconContainer}>
+          <SessionTimeOut />
         </View>
-      </Modal>
-    </SafeAreaView>
+        <Text style={styles.heading}>{heading}</Text>
+        <Text style={styles.modalText}>{description}</Text>
+        <TouchableOpacity style={styles.blueButton} onPress={onButtonPress}>
+          <Text style={styles.blueButtonText}>{buttonText}</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
   );
 }
 

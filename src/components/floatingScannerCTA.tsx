@@ -3,41 +3,69 @@ import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScannerActionIcon } from '../utils/constants';
 import QRScannerModal from './QRScannerModal';
 
-const FloatingScannerCTA = () => {
-  const [visible, setVisible] = useState(false);
+import { useScanConnection } from '../hooks/useConnections';
+import { useNavigation } from '@react-navigation/native';
 
-  const handlePress = () => {
-    setVisible(true);
+import LoadingOverlay from './loadingOverlay';
+import AlertModal from '../screens/AlertModal';
+
+const FloatingScannerCTA = () => {
+  const [isScannerVisible, setScannerVisible] = useState(false);
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const navigation = useNavigation();
+
+  const { mutate: performScan, isPending: isScanning } = useScanConnection({
+    onScanError: () => {
+      setScannerVisible(false);
+      setAlertVisible(true);
+    },
+  });
+
+  const handleScanSuccess = (qrValue: string) => {
+    console.log('Scanned:', qrValue);
+    setScannerVisible(false);
+    performScan(qrValue);
   };
 
-  const closeModal = () => {
-    setVisible(false);
+  const handleManualEntry = () => {
+    setAlertVisible(false);
+    navigation.navigate('ConnectionForm');
   };
 
   return (
     <>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => setScannerVisible(true)}
+        >
           <ScannerActionIcon />
         </TouchableOpacity>
       </View>
 
+      {/* QR Scanner Modal */}
       <Modal
-        visible={visible}
+        visible={isScannerVisible}
         animationType="slide"
         transparent={true}
-        onRequestClose={closeModal}
+        onRequestClose={() => setScannerVisible(false)}
       >
         <View style={styles.modalContainer}>
           <QRScannerModal
-            onClose={closeModal}
-            onScanSuccess={qrValue => {
-              console.log('Scanned:', qrValue);
-              closeModal();
-            }}
+            onClose={() => setScannerVisible(false)}
+            onScanSuccess={handleScanSuccess}
           />
         </View>
       </Modal>
+
+      {/* Scan Failed Alert Modal */}
+      <AlertModal
+        isVisible={isAlertVisible}
+        onClose={() => setAlertVisible(false)}
+        onButtonPress={handleManualEntry}
+      />
+
+      {isScanning && <LoadingOverlay visible={true} />}
     </>
   );
 };
