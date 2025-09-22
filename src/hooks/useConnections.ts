@@ -1,10 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createConnection,
+  getConnectionDetails,
   ICreateConnectionPayload,
   IUpdateConnectionNotePayload,
+  IUpdateConnectionPayload,
   scanConnection,
+  updateConnection,
   updateConnectionNote,
 } from '../api/connectionsApi';
 import Toast from 'react-native-simple-toast';
@@ -65,6 +68,38 @@ export const useUpdateConnectionNote = () => {
     },
     onError: (error: any) => {
       const message = error.response?.data?.message || 'Failed to update note!';
+      Toast.show(message, Toast.LONG);
+    },
+  });
+};
+
+export const useConnectionDetails = (connectionId: string | number) => {
+  return useQuery({
+    queryKey: ['connection', connectionId],
+    queryFn: () => getConnectionDetails(connectionId),
+    enabled: !!connectionId,
+  });
+};
+
+export const useUpdateConnection = () => {
+  const queryClient = useQueryClient();
+  const navigation = useNavigation();
+
+  return useMutation({
+    mutationFn: (payload: IUpdateConnectionPayload) =>
+      updateConnection(payload),
+    onSuccess: (updatedData, variables) => {
+      Toast.show('Connection updated successfully!', Toast.LONG);
+
+      queryClient.invalidateQueries({ queryKey: ['connections'] });
+
+      queryClient.invalidateQueries({ queryKey: ['connection', variables.id] });
+
+      navigation.goBack();
+    },
+    onError: (error: any) => {
+      const message =
+        error.response?.data?.message || 'Failed to update connection!';
       Toast.show(message, Toast.LONG);
     },
   });

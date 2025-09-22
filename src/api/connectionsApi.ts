@@ -37,6 +37,30 @@ export interface IUpdateConnectionNotePayload {
   connectionId: number;
 }
 
+export interface IConnectionDetails {
+  id: string;
+  companyName: string;
+  company_website: string;
+  rep_name: string;
+  rep_email: string;
+  rep_phone: string;
+  avatarUrl: string;
+  tags: string[];
+  rating: 'Cold' | 'Normal' | 'Warm';
+  visitingCardUrl: string;
+  note: string;
+  rep_address?: string;
+  rep_designation?: string;
+}
+
+export interface IUpdateConnectionPayload {
+  id: string | number;
+  tags: string[];
+  rating: 'Cold' | 'Normal' | 'Warm';
+  visitingCardImage: string; // Base64 image string
+  note: string;
+}
+
 // ! API Function
 
 //! SCan a Qr
@@ -60,9 +84,6 @@ export const createConnection = async (payload: ICreateConnectionPayload) => {
   return data;
 };
 
-//! get a connection details
-export const getConnectionById = async id => {};
-
 //! update note
 export const updateConnectionNote = async (
   payload: IUpdateConnectionNotePayload,
@@ -76,5 +97,20 @@ export const updateConnectionNote = async (
     '/api/connections/update/scan',
     apiPayload,
   );
+  return data;
+};
+
+export const getConnectionDetails = async (
+  connectionId: string | number,
+): Promise<IConnectionDetails> => {
+  console.log(`📡 Fetching details for connection ID: ${connectionId}`);
+  const { data } = await apiClient.get(`/api/connections/${connectionId}`);
+  return data;
+};
+
+export const updateConnection = async (payload: IUpdateConnectionPayload) => {
+  const { id, ...updateData } = payload;
+  console.log(`📡 Updating connection ID: ${id}`);
+  const { data } = await apiClient.put(`/api/connections/${id}`, updateData);
   return data;
 };
