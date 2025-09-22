@@ -1,23 +1,44 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScannerActionIcon } from '../utils/constants';
-import Toast from 'react-native-simple-toast';
+import QRScannerModal from './QRScannerModal';
 
 const FloatingScannerCTA = () => {
-  const navigation = useNavigation();
+  const [visible, setVisible] = useState(false);
 
   const handlePress = () => {
-    // navigation.navigate('ScannerScreen' as never);
-    Toast.show('Feature is in development stage', Toast.LONG);
+    setVisible(true);
+  };
+
+  const closeModal = () => {
+    setVisible(false);
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={handlePress}>
-        <ScannerActionIcon />
-      </TouchableOpacity>
-    </View>
+    <>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.button} onPress={handlePress}>
+          <ScannerActionIcon />
+        </TouchableOpacity>
+      </View>
+
+      <Modal
+        visible={visible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeModal}
+      >
+        <View style={styles.modalContainer}>
+          <QRScannerModal
+            onClose={closeModal}
+            onScanSuccess={qrValue => {
+              console.log('Scanned:', qrValue);
+              closeModal();
+            }}
+          />
+        </View>
+      </Modal>
+    </>
   );
 };
 
@@ -38,5 +59,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
   },
 });
