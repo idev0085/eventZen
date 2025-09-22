@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View, Alert } from 'react-native';
+import Toast from 'react-native-simple-toast';
+
+// Components
 import BackHeader from '../components/BackHeader';
 import { COLORS, TEXT_SIZES } from '../utils/constants';
 import DropdownField from '../components/dropDownField';
@@ -10,21 +13,77 @@ import RatingSelectorCard from '../components/RatingSelectorCard';
 import FilterDropDown from '../components/filterDropDown';
 import Button from '../components/ui/button';
 
+// Hooks
+import { useCreateConnection } from '../hooks/useConnections';
+
+const options = [
+  'Data',
+  'Startup',
+  'Technology',
+  'Cloud',
+  'Business',
+  'Security',
+  'Networking',
+];
+
 const ConnectionForm = () => {
-  const [title, setTitle] = useState('Mr');
+  // Step 1: Hooks ko initialize karo
+  const { mutate: createConnection, isPending } = useCreateConnection();
 
-  // const options = [];
-  const options = [
-    'Electronics',
-    'Clothing',
-    'Home & Garden',
-    'Sports & Outdoors',
-    'Books & Media',
-  ];
+  // Step 2: Poore form ke liye ek single state object
+  const [formState, setFormState] = useState({
+    title: 'Mr',
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    company_name: '',
+    job_title: '',
+    website: '',
+    address: '',
+    visiting_card_image: '',
+    rating: 'Normal',
+    tag: [],
+    note: '',
+  });
 
-  const handleOnChange = () => {};
+  const handleInputChange = (field: string, value: any) => {
+    setFormState(prev => ({ ...prev, [field]: value }));
+  };
 
-  const handleSave = () => {};
+  const handleSave = () => {
+    // Basic Validation
+    if (!formState.first_name || !formState.last_name || !formState.email) {
+      Toast.show('First Name, Last Name, and Email are required.', Toast.LONG);
+      return;
+    }
+
+    // Email Validation (Simple Regex)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formState.email)) {
+      Toast.show('Please enter a valid email address.', Toast.LONG);
+      return;
+    }
+
+    const payload = {
+      title: formState.title,
+      first_name: formState.first_name,
+      last_name: formState.last_name,
+      email: formState.email,
+      phone: formState.phone,
+      company_name: formState.company_name,
+      job_title: formState.job_title,
+      address: formState.address,
+      visiting_card_image: formState.visiting_card_image,
+      rating: formState.rating,
+      tag: formState.tag,
+      note: formState.note,
+      // 'website' // field not found
+    };
+
+    createConnection(payload);
+  };
+
   return (
     <>
       <BackHeader title="Add Connection" showBtn={true} />
@@ -37,73 +96,64 @@ const ConnectionForm = () => {
           <DropdownField
             label="Title"
             required
-            selectedValue={title}
-            onValueChange={setTitle}
+            selectedValue={formState.title}
+            onValueChange={value => handleInputChange('title', value)}
             options={['Mr', 'Mrs', 'Ms']}
           />
           <TextBox
             label="First Name"
-            placeholder={''}
+            placeholder={'Enter first name'}
             required={true}
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={handleOnChange}
+            value={formState.first_name}
+            onChangeText={text => handleInputChange('first_name', text)}
           />
           <TextBox
             label="Last Name"
-            placeholder={''}
+            placeholder={'Enter last name'}
             required={true}
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={handleOnChange}
+            value={formState.last_name}
+            onChangeText={text => handleInputChange('last_name', text)}
           />
           <TextBox
             label="Email"
-            placeholder={''}
+            placeholder={'Enter email address'}
             required={true}
-            editable={true}
+            keyboardType="email-address"
             autoCapitalize="none"
-            onChangeText={handleOnChange}
+            value={formState.email}
+            onChangeText={text => handleInputChange('email', text)}
           />
           <TextBox
             label="Phone Number"
-            placeholder={''}
-            required={true}
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={handleOnChange}
+            placeholder={'Enter phone number'}
+            keyboardType="phone-pad"
+            value={formState.phone}
+            onChangeText={text => handleInputChange('phone', text)}
           />
           <TextBox
             label="Company Name"
-            placeholder={''}
-            required={true}
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={handleOnChange}
+            placeholder={'Enter company name'}
+            value={formState.company_name}
+            onChangeText={text => handleInputChange('company_name', text)}
           />
           <TextBox
             label="Job Title"
-            placeholder={''}
-            required={true}
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={handleOnChange}
+            placeholder={'Enter job title'}
+            value={formState.job_title}
+            onChangeText={text => handleInputChange('job_title', text)}
           />
           <TextBox
             label="Website"
-            placeholder={''}
-            required={true}
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={handleOnChange}
+            placeholder={'Enter website URL'}
+            keyboardType="url"
+            value={formState.website}
+            onChangeText={text => handleInputChange('website', text)}
           />
           <TextBox
             label="Address"
-            placeholder={''}
-            required={true}
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={handleOnChange}
+            placeholder={'Enter address'}
+            value={formState.address}
+            onChangeText={text => handleInputChange('address', text)}
           />
           <FileUploadCard
             maxFiles={1}
@@ -113,21 +163,42 @@ const ConnectionForm = () => {
             description="SVG, PNG, JPG or GIF (max 10MB)"
             label="Visiting Card"
             labelStyle={{ fontSize: 14, fontWeight: '400' }}
+            // Jab file select ho, toh base64 string state mein save karo
+            onFileChange={base64String =>
+              handleInputChange('visiting_card_image', base64String)
+            }
           />
           <RatingSelectorCard
             labelStyle={{ fontSize: 14, fontWeight: '400' }}
+            // Jab rating change ho, state update karo
+            onRatingChange={newRating => handleInputChange('rating', newRating)}
+            initialRating={formState.rating}
           />
           <FilterDropDown
             label="Tags"
             labelStyle={{ fontSize: 14, fontWeight: '400' }}
+            // options={areTagsLoading ? [] : availableTags.map(tag => tag.name)}
             options={options}
+            onSelectionChange={selectedTags =>
+              handleInputChange('tag', selectedTags)
+            }
+          />
+          <TextBox
+            label="Note"
+            placeholder={'Add a note...'}
+            multiline
+            numberOfLines={4}
+            value={formState.note}
+            onChangeText={text => handleInputChange('note', text)}
+            style={{ height: 100, textAlignVertical: 'top' }}
           />
         </Card>
       </ScrollView>
       <View style={styles.footer}>
         <Button
-          title="Save"
+          title={isPending ? 'Saving...' : 'Save'}
           onPress={handleSave}
+          disabled={isPending}
           style={{ borderRadius: 10, width: '100%' }}
           textStyle={{ fontSize: TEXT_SIZES.sm, fontWeight: '400' }}
         />

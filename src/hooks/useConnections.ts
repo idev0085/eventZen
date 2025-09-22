@@ -41,7 +41,7 @@ export const useCreateConnection = () => {
     onSuccess: () => {
       Toast.show('Connection added successfully!', Toast.LONG);
       queryClient.invalidateQueries({ queryKey: ['connections'] });
-      navigation.navigate('ConnectionsScreen');
+      navigation.navigate('ConnectionScreen');
     },
     onError: (error: any) => {
       const message =
