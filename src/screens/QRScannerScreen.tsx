@@ -46,9 +46,9 @@ const QRScannerScreen = ({ ...props }) => {
     });
   };
 
-  if (isLoading) {
-    <LoadingOverlay visible={true} />;
-  }
+  // if (isLoading) {
+  //   <LoadingOverlay visible={true} />;
+  // }
 
   return (
     <>

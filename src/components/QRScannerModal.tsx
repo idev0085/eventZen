@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   closeButton: {
     position: 'absolute',
     top: 50,
-    left: 100,
+    right: 10,
     backgroundColor: 'rgba(0,0,0,0.6)',
     borderRadius: 25,
     padding: 10,
