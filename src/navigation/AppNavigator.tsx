@@ -25,6 +25,11 @@ import SponsorsScreen from '../screens/SponsorsScreen';
 import HelpSupportScreen from '../screens/HelpAndSupportScreen';
 import ExhibitorsScreenDetails from '../screens/ExhibitorsScreenDetails';
 import SponsorsDetailsScreen from '../screens/SponsorsDetailsScreen';
+import ConnectionForm from '../screens/ConnectionForm';
+import ConnectionDetails from '../screens/ConnectionDetails';
+import ConnectionFound from '../screens/ConnectionFound';
+import ConnectionEdit from '../screens/ConnectionEdit';
+import ConnectionScreen from '../screens/ConnectionsScreen';
 
 const AppStack = createStackNavigator();
 
@@ -89,6 +94,12 @@ function AppNavigator() {
         name="SponsorsDetailsScreen"
         component={SponsorsDetailsScreen}
       />
+      {/* Connection screens */}
+      <AppStack.Screen name="ConnectionForm" component={ConnectionForm} />
+      <AppStack.Screen name="ConnectionDetails" component={ConnectionDetails} />
+      <AppStack.Screen name="ConnectionFound" component={ConnectionFound} />
+      <AppStack.Screen name="ConnectionEdit" component={ConnectionEdit} />
+      <AppStack.Screen name="ConnectionScreen" component={ConnectionScreen} />
     </AppStack.Navigator>
   );
 }
