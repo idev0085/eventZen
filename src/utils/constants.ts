@@ -227,6 +227,7 @@ export const PNG_IMAGES = {
   LoginBg: require('../../assets/images/background.png'),
   ProfileBg: require('../../assets/images/profile_bg.png'),
   OtpBg: require('../../assets/images/otp_bg.png'),
+  Otplogo: require('../../assets/images/Otplogo.png'),
 };
 
 // react-native svg components

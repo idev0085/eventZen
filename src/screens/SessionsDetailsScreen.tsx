@@ -259,19 +259,19 @@ export default function SessionsDetailsScreen() {
       <ScrollView style={styles.container}>
         <Card style={styles.card}>
           <OverView session={session} />
-          {session.description && (
+          {session?.description && (
             <Details type={'description'} context={session.description} />
           )}
-          {session.demoes && (
+          {session?.demoes && (
             <Details type={'demos'} context={session.demoes} />
           )}
-          {session.panels && (
+          {session?.panels && (
             <Details type={'panels'} context={session.panels} />
           )}
-          {session.speakers?.length > 0 && (
+          {session?.speakers?.length > 0 && (
             <Speakers type={'speakers'} list={session.speakers} />
           )}
-          {session.status !== 'Completed' && (
+          {session?.status !== 'Completed' && (
             <FooterBtn
               addFav={() => addFav(sessionId)}
               isFav={isFav}

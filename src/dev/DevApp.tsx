@@ -6,7 +6,7 @@ import LoginScreen from '../screens/LoginScreen';
 import BootSplash from 'react-native-bootsplash';
 import ConnectionForm from '../screens/ConnectionForm';
 import QRScannerScreen from '../screens/QRScannerScreen';
-import QRScannerModal from '../components/QRScannerModal';
+//import QRScannerModal from '../components/QRScannerModal';
 import ConnectionDetails from '../screens/ConnectionDetails';
 import ConnectionEdit from '../screens/ConnectionEdit';
 
