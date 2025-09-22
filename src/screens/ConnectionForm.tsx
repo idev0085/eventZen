@@ -4,7 +4,7 @@ import Toast from 'react-native-simple-toast';
 
 // Components
 import BackHeader from '../components/BackHeader';
-import { COLORS, TEXT_SIZES } from '../utils/constants';
+import { COLORS, dropDownFilterOptions, TEXT_SIZES } from '../utils/constants';
 import DropdownField from '../components/dropDownField';
 import Card from '../components/card';
 import TextBox from '../components/ui/textBox';
@@ -15,16 +15,6 @@ import Button from '../components/ui/button';
 
 // Hooks
 import { useCreateConnection } from '../hooks/useConnections';
-
-const options = [
-  'Data',
-  'Startup',
-  'Technology',
-  'Cloud',
-  'Business',
-  'Security',
-  'Networking',
-];
 
 const ConnectionForm = () => {
   // Step 1: Hooks ko initialize karo
@@ -178,7 +168,7 @@ const ConnectionForm = () => {
             label="Tags"
             labelStyle={{ fontSize: 14, fontWeight: '400' }}
             // options={areTagsLoading ? [] : availableTags.map(tag => tag.name)}
-            options={options}
+            options={dropDownFilterOptions}
             onSelectionChange={selectedTags =>
               handleInputChange('tag', selectedTags)
             }

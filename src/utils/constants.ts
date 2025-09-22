@@ -230,6 +230,16 @@ export const PNG_IMAGES = {
   Otplogo: require('../../assets/images/Otplogo.png'),
 };
 
+export const dropDownFilterOptions = [
+  'Data',
+  'Startup',
+  'Technology',
+  'Cloud',
+  'Business',
+  'Security',
+  'Networking',
+];
+
 // react-native svg components
 
 export {
