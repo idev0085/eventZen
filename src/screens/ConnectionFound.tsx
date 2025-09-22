@@ -6,62 +6,60 @@ import UserCard from '../components/userCard';
 import ContactDetailsCard from '../components/contactDetailsCard';
 import AddNote from '../components/addNote';
 import Button from '../components/ui/button';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useUpdateConnectionNote } from '../hooks/useConnections';
 
 const ConnectionFound = () => {
   const [textArea, setTextArea] = useState('');
-  const connectionFoundData = {
-    message: 'Connection found!',
-    id: 5,
-    name: 'Caleb Paquette',
-    company: 'Langosh Group',
-    designation: 'Internist',
-    company_website: 'https://example.com/benjamin.miller',
-    email: 'caleb.paquette@example.com',
-    phone: '5450496515',
-    avatar:
-      'https://png.pngtree.com/png-clipart/20200224/original/pngtree-cartoon-color-simple-male-avatar-png-image_5230557.jpg',
-    visiting_card_image:
-      'http://localhost:8000/storage/users/2025-09-08-1978261425-1757320798.png?v=1757329459',
-    tags: 'Cloud,Fintech,SaaS',
-    rating: 'Cold',
-    address:
-      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit dolorum aliquam quaerat.',
-    bio: 'In quos libero laborum quidem ullam quas. At assumenda quam culpa commodi. Fugiat id omnis iure inventore modi ab.',
-    note: 'This is a note',
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { connection } = route.params;
+
+  // Naya hook use karo
+  const { mutate: updateNote, isPending } = useUpdateConnectionNote();
+
+  const [note, setNote] = useState(connection.note || '');
+
+  const handleSave = () => {
+    updateNote({
+      note: note,
+      connectionId: connection.id,
+    });
   };
-  const handleSave = () => {};
-  const handleCancel = () => {};
 
   return (
     <>
       <BackHeader title="Connection Details" showBtn={true} />
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView>
         <UserCard
-          imageUrl={connectionFoundData.avatar}
-          companyName={connectionFoundData.company}
-          name={connectionFoundData.name}
-          designation={connectionFoundData.designation}
+          imageUrl={connection.avatar}
+          companyName={connection.company}
+          name={connection.name}
+          designation={connection.designation}
         />
         <ContactDetailsCard
-          email={connectionFoundData.email}
-          phone={connectionFoundData.phone}
-          address={connectionFoundData.address}
-          website={connectionFoundData.company_website}
+          email={connection.email}
+          phone={connection.phone}
+          address={connection.address}
+          website={connection.company_website}
         />
-        <AddNote heading="Add Note" onChangeText={setTextArea} />
+        <AddNote heading="Add Note" value={note} onChangeText={setNote} />
       </ScrollView>
       <View style={styles.buttonRow}>
         <Button
           title="Cancel"
           variant="outlined"
-          onPress={handleCancel}
+          onPress={() => {
+            navigation.goBack();
+          }}
           style={styles.buttonHalf}
         />
-        <Button title="Save" onPress={handleSave} style={styles.buttonHalf} />
+        <Button
+          title={isPending ? 'Saving...' : 'Save'}
+          onPress={handleSave}
+          style={styles.buttonHalf}
+          disabled={isPending}
+        />
       </View>
     </>
   );
