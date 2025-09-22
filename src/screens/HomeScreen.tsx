@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Alert,
   View,
   Text,
   RefreshControl,
@@ -29,7 +28,6 @@ import { ONESIGNAL_API_KEY, BASE_URL } from '../config';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useHomeData, useProfile, useUpdateOneSignal } from '../hooks/useApi';
 import { getToken } from '../utils/tokenManager';
-import TestCam from '../components/testCam';
 
 const HomeSessions = ({ ...props }) => {
   return (
@@ -143,7 +141,58 @@ const HomeScreen = ({ ...props }) => {
 
   const isLoading = isHomeLoading || isProfileLoading;
 
-  return <TestCam />;
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        style={styles.homeScreenContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetchingHome}
+            onRefresh={refetchHomeData}
+            tintColor={COLORS.primary}
+          />
+        }
+      >
+        {isLoading ? (
+          <LoadingOverlay visible={true} />
+        ) : (
+          <>
+            <HomeHeader
+              userName={profileData?.name}
+              welcomeMessage="Welcome !"
+              profileImage={profileData?.imageUrl}
+              hasNewNotification={homeData?.notifications?.hasNew}
+              navigation={props.navigation}
+            />
+            {VIDEO && (
+              <YoutubePlayer
+                height={200}
+                play={playing}
+                videoId={VIDEO}
+                onChangeState={onStateChange}
+              />
+            )}
+
+            {upcomingEventDate && (
+              <UpcomingEvent eventDate={upcomingEventDate} />
+            )}
+            <QuickActionMenu navigations={props.navigation} />
+            {homeData?.home_sessions?.length > 0 && (
+              <HomeSessions data={homeData} navigation={props.navigation} />
+            )}
+            {homeData?.home_connections?.length > 0 && (
+              <ConnectionsCard
+                connections={homeData?.home_connections}
+                onStartNetworking={handleOnStartNetworking}
+              />
+            )}
+            {homeData?.myStats && <MyStats data={homeData?.myStats} />}
+          </>
+        )}
+      </ScrollView>
+      <FloatingScannerCTA />
+    </View>
+  );
 };
 
 export default HomeScreen;
