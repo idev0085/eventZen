@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { COLORS } from '../utils/constants';
 import ListItem from '../components/listItem';
 import Card from '../components/card';
@@ -8,10 +8,11 @@ import BackHeader from '../components/BackHeader';
 import CustomText from '../components/ui/text';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useConnections } from '../hooks/useApi';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ConnectionScreen({ ...props }) {
   const [searchQuery, setSearchQuery] = useState('');
-
+  const navigation = useNavigation();
   const {
     data: connectionData,
     isLoading,
@@ -45,14 +46,18 @@ export default function ConnectionScreen({ ...props }) {
         {isLoading ? (
           <LoadingOverlay visible={true} />
         ) : filteredData.length > 0 ? (
-          filteredData.map(item => (
+          filteredData.map((item): any => (
             <Card key={item.id} style={styles.card}>
               <ListItem
                 title={item.name}
                 designation={item.connection_role}
                 companyName={item.company_name}
                 avatar={{ uri: item.connection_image }}
-                onPress={() => Alert.alert('Development Work in progress')}
+                onPress={() =>
+                  navigation.navigate('ConnectionDetails', {
+                    connectionId: item.id,
+                  })
+                }
               />
             </Card>
           ))

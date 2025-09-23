@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { COLORS, TEXT_SIZES } from '../utils/constants';
 import { getEmoji } from '../utils/getEmojiUtil';
 
-type RatingOption = 'Cold' | 'Normal' | 'Warm';
+type RatingOption = string;
 
 interface RatingSelectorCardProps {
   initialRating?: RatingOption;

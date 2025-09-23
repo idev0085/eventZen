@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScannerActionIcon } from '../utils/constants';
 import QRScannerModal from './QRScannerModal';
-
 import { useScanConnection } from '../hooks/useConnections';
 import { useNavigation } from '@react-navigation/native';
-
 import LoadingOverlay from './loadingOverlay';
 import AlertModal from '../screens/AlertModal';
 
@@ -24,7 +22,7 @@ const FloatingScannerCTA = () => {
   const handleScanSuccess = (qrValue: string) => {
     console.log('Scanned:', qrValue);
     setScannerVisible(false);
-    performScan(qrValue);
+    performScan(JSON.parse(qrValue).id);
   };
 
   const handleManualEntry = () => {
@@ -43,7 +41,6 @@ const FloatingScannerCTA = () => {
         </TouchableOpacity>
       </View>
 
-      {/* QR Scanner Modal */}
       <Modal
         visible={isScannerVisible}
         animationType="slide"
@@ -58,7 +55,6 @@ const FloatingScannerCTA = () => {
         </View>
       </Modal>
 
-      {/* Scan Failed Alert Modal */}
       <AlertModal
         isVisible={isAlertVisible}
         onClose={() => setAlertVisible(false)}
@@ -77,6 +73,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     right: 20,
+    zIndex: 10,
   },
   button: {
     backgroundColor: '#0E69E3',

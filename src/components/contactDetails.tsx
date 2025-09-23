@@ -26,6 +26,7 @@ interface ContactDetailsProps {
   isViewExhibitorDetails?: boolean;
   enableEmailIcon?: boolean;
   enablePhoneIcon?: boolean;
+  labelTextStyle?: object;
 }
 const getIconFromName = (name: string) => {
   switch (name?.toLowerCase()) {
@@ -57,10 +58,13 @@ export default function ContactDetails({
   isViewExhibitorDetails = false,
   enableEmailIcon = true,
   enablePhoneIcon = true,
+  labelTextStyle = {},
 }: ContactDetailsProps) {
   return (
     <Card style={styles.card}>
-      <CustomText style={styles.textHeadng}>{heading}</CustomText>
+      <CustomText style={[styles.textHeadng, labelTextStyle]}>
+        {heading}
+      </CustomText>
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <CustomText style={styles.textName}>Email ID</CustomText>
@@ -197,7 +201,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     backgroundColor: '#fff',
-    padding: 10,
+    padding: 20,
     borderRadius: 10,
   },
   textHeadng: {

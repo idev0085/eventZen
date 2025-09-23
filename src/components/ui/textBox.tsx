@@ -23,8 +23,9 @@ interface TextBoxProps {
   multiline?: boolean;
   numberOfLines?: number;
   textStyle?: string;
-  rightIcon?: React.ReactNode; // Add this prop
-  onRightIconPress?: () => void; // Optional: handle icon press
+  rightIcon?: React.ReactNode;
+  onRightIconPress?: () => void;
+  containerStyle?: object;
 }
 
 const TextBox: React.FC<TextBoxProps> = ({
@@ -43,11 +44,12 @@ const TextBox: React.FC<TextBoxProps> = ({
   numberOfLines = 1,
   rightIcon,
   onRightIconPress,
+  containerStyle,
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       {label && (
-        <Text style={labelStyle}>
+        <Text style={[styles.label, labelStyle]}>
           {label}
           {required && <Text style={styles.asterisk}> *</Text>}
         </Text>
@@ -90,9 +92,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   label: {
-    marginBottom: 4,
-    fontSize: 16,
+    marginBottom: 10,
+    fontSize: 14,
     color: COLORS.text,
+    fontWeight: '500',
   },
   asterisk: {
     color: 'red',

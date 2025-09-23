@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,84 +12,92 @@ import {
   CloudUploadIcon,
   COLORS,
   JPGIcon,
-  PDFIcon,
   PNGIcon,
   TEXT_SIZES,
 } from '../utils/constants';
 import { launchImageLibrary, Asset } from 'react-native-image-picker';
 
 interface FileUploadCardProps {
-  multiple: boolean;
-  maxFiles: number;
+  maxFiles?: number;
   maxSizeMB?: number;
-  onChange?: (files: Asset[]) => void;
+  onFileChange: (base64String: string | null) => void;
   title: string;
   description: string;
-  allowPdf?: boolean;
-  label?: string; // Added label prop
+  label?: string;
   labelStyle?: object;
 }
 
 const FileUploadCard = ({
-  multiple = false,
   maxFiles = 1,
   maxSizeMB = 10,
-  onChange,
   title = 'Select file to upload',
   description = 'SVG, PNG, JPG or GIF (max 10 MB)',
-  allowPdf = false,
-  label, // Added label
+  label,
   labelStyle,
+  onFileChange,
 }: FileUploadCardProps) => {
   const [files, setFiles] = useState<Asset[]>([]);
 
   const handlePick = async () => {
     if (files.length >= maxFiles) {
-      Alert.alert('Limit reached', `You can upload max ${maxFiles} files`);
+      Alert.alert(
+        'Limit reached',
+        `You can only upload a maximum of ${maxFiles} file.`,
+      );
       return;
     }
 
     const result = await launchImageLibrary({
-      mediaType: allowPdf ? 'mixed' : 'photo',
-      selectionLimit: multiple ? maxFiles - files.length : 1,
+      mediaType: 'photo',
+      selectionLimit: 1,
+      includeBase64: true,
     });
 
-    if (result.assets) {
-      const valid = result.assets.filter(
-        f => !f.fileSize || f.fileSize <= maxSizeMB * 1024 * 1024,
-      );
-      setFiles(prev => [...prev, ...valid]);
-      onChange?.([...files, ...valid]);
+    if (result.didCancel || result.errorCode) {
+      if (result.errorCode) {
+        console.log('ImagePicker Error: ', result.errorMessage);
+        Toast.show('Could not open image library.', Toast.LONG);
+      }
+      return;
+    }
+
+    if (result.assets && result.assets[0]) {
+      const selectedAsset = result.assets[0];
+
+      if (
+        selectedAsset.fileSize &&
+        selectedAsset.fileSize > maxSizeMB * 1024 * 1024
+      ) {
+        Alert.alert(
+          'File too large',
+          `Please select a file smaller than ${maxSizeMB}MB.`,
+        );
+        return;
+      }
+
+      setFiles([selectedAsset]);
+
+      if (selectedAsset.base64) {
+        onFileChange(selectedAsset.base64);
+      }
     }
   };
 
   const removeFile = (index: number) => {
-    const updated = files.filter((_, i) => i !== index);
-
-    setFiles(updated);
-    onChange?.(updated);
+    setFiles([]);
+    onFileChange(null);
   };
 
   const getFileType = (file: Asset) => {
     const ext = file.fileName?.split('.').pop()?.toLowerCase();
-
-    if (ext?.includes('pdf')) {
-      return <PDFIcon />;
-    } else if (['jpg', 'jpeg'].includes(ext || '')) {
-      return <JPGIcon />;
-    } else if (ext?.includes('png')) {
-      return <PNGIcon />;
-    } else {
-      return;
-    }
+    if (ext === 'jpg' || ext === 'jpeg') return <JPGIcon />;
+    if (ext === 'png') return <PNGIcon />;
+    return null;
   };
 
   return (
     <View style={styles.wrapper}>
-      {/* Added label section */}
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
-
-      {/* Upload Box */}
       <TouchableOpacity style={styles.uploadBox} onPress={handlePick}>
         <View style={styles.placeholder}>
           <View style={styles.uploadIcon}>
@@ -105,31 +112,29 @@ const FileUploadCard = ({
         </View>
       </TouchableOpacity>
 
-      <ScrollView style={{ marginTop: 12 }}>
-        {files.map((file, i) => (
-          <View
-            key={i}
-            style={[styles.list, { marginBottom: files.length === 1 ? 0 : 6 }]}
-          >
-            <View>{getFileType(file)}</View>
+      {files.length > 0 && (
+        <ScrollView style={{ marginTop: 12 }}>
+          {files.map((file, i) => (
             <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
+              key={i}
+              style={[
+                styles.list,
+                { marginBottom: files.length === 1 ? 0 : 6 },
+              ]}
             >
-              <Text style={styles.fileName} numberOfLines={1}>
-                {file.fileName}
-              </Text>
-              <TouchableOpacity onPress={() => removeFile(i)}>
-                <CloseIcon width={18} height={18} />
-              </TouchableOpacity>
+              <View>{getFileType(file)}</View>
+              <View style={styles.fileInfoContainer}>
+                <Text style={styles.fileName} numberOfLines={1}>
+                  {file.fileName}
+                </Text>
+                <TouchableOpacity onPress={() => removeFile(i)}>
+                  <CloseIcon width={18} height={18} />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        ))}
-      </ScrollView>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -138,18 +143,15 @@ export default FileUploadCard;
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
     backgroundColor: '#fff',
     borderRadius: 8,
   },
-  // Added label style
   label: {
     fontSize: TEXT_SIZES.sm,
     fontWeight: '600',
     marginBottom: 8,
     color: '#333',
   },
-  title: {},
   uploadBox: {
     borderWidth: 1,
     borderStyle: 'dashed',
@@ -195,22 +197,6 @@ const styles = StyleSheet.create({
     fontSize: TEXT_SIZES.sm,
     fontWeight: '500',
   },
-  previewWrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  previewImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 8,
-    resizeMode: 'cover',
-    marginBottom: 8,
-  },
-  changeText: {
-    color: COLORS.tinyDot,
-    fontSize: TEXT_SIZES.xs,
-    fontWeight: '500',
-  },
   list: {
     padding: 18,
     flexDirection: 'row',
@@ -222,5 +208,11 @@ const styles = StyleSheet.create({
   fileName: {
     color: COLORS.primary,
     fontSize: TEXT_SIZES.xs,
+  },
+  fileInfoContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

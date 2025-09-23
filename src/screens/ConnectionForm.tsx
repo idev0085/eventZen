@@ -15,10 +15,13 @@ import Button from '../components/ui/button';
 
 // Hooks
 import { useCreateConnection } from '../hooks/useConnections';
+import { useTags } from '../hooks/useApi';
 
 const ConnectionForm = () => {
   // Step 1: Hooks ko initialize karo
   const { mutate: createConnection, isPending } = useCreateConnection();
+
+  const { data: availableTags, isLoading: areTagsLoading } = useTags();
 
   // Step 2: Poore form ke liye ek single state object
   const [formState, setFormState] = useState({
@@ -36,6 +39,7 @@ const ConnectionForm = () => {
     tag: [],
     note: '',
   });
+  console.log('🚀 ~ ConnectionForm ~ formState:', formState);
 
   const handleInputChange = (field: string, value: any) => {
     setFormState(prev => ({ ...prev, [field]: value }));
@@ -68,7 +72,7 @@ const ConnectionForm = () => {
       rating: formState.rating,
       tag: formState.tag,
       note: formState.note,
-      // 'website' // field not found
+      // website: formState.website,
     };
 
     createConnection(payload);
@@ -152,23 +156,22 @@ const ConnectionForm = () => {
             title="Select file to upload"
             description="SVG, PNG, JPG or GIF (max 10MB)"
             label="Visiting Card"
-            labelStyle={{ fontSize: 14, fontWeight: '400' }}
-            // Jab file select ho, toh base64 string state mein save karo
+            labelStyle={{ fontSize: 14, fontWeight: '500' }}
             onFileChange={base64String =>
               handleInputChange('visiting_card_image', base64String)
             }
           />
           <RatingSelectorCard
-            labelStyle={{ fontSize: 14, fontWeight: '400' }}
+            labelStyle={{ fontSize: 14, fontWeight: '500' }}
             // Jab rating change ho, state update karo
             onRatingChange={newRating => handleInputChange('rating', newRating)}
             initialRating={formState.rating}
           />
           <FilterDropDown
             label="Tags"
-            labelStyle={{ fontSize: 14, fontWeight: '400' }}
-            // options={areTagsLoading ? [] : availableTags.map(tag => tag.name)}
-            options={dropDownFilterOptions}
+            labelStyle={{ fontSize: 14, fontWeight: '500', marginBottom: 10 }}
+            options={areTagsLoading ? [] : availableTags || []}
+            selectedItems={formState.tag}
             onSelectionChange={selectedTags =>
               handleInputChange('tag', selectedTags)
             }
@@ -181,6 +184,7 @@ const ConnectionForm = () => {
             value={formState.note}
             onChangeText={text => handleInputChange('note', text)}
             style={{ height: 100, textAlignVertical: 'top' }}
+            containerStyle={{ marginTop: 10 }}
           />
         </Card>
       </ScrollView>
