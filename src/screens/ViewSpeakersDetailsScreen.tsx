@@ -71,9 +71,9 @@ export default function ViewSpeakersDetailsScreen({ ...props }) {
             />
 
             <Card style={styles.card}>
-              <CustomText style={styles.textHeadng}>Company Details</CustomText>
+              <CustomText style={styles.textHeadng}>Bio</CustomText>
               <CustomText style={styles.textMeta}>
-                {speakerData?.company_details}
+                {speakerData?.bio}
               </CustomText>
             </Card>
           </>
