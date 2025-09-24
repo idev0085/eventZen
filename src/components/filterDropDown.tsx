@@ -7,91 +7,89 @@ import {
   View,
 } from 'react-native';
 import { COLORS, TEXT_SIZES } from '../utils/constants';
-import { Ionicons } from '@react-native-vector-icons/ionicons';
+import Ionicons from '@react-native-vector-icons/ionicons';
 
 interface FilterDropDownProps {
   label?: string;
   options?: string[];
   labelStyle?: object;
+  selectedItems: string[];
+  onSelectionChange: (selected: string[]) => void;
 }
 
 const FilterDropDown = ({
   label,
   options = [],
   labelStyle,
+  selectedItems = [],
+  onSelectionChange,
 }: FilterDropDownProps) => {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<string[]>([]);
 
-  // Safe array operations
   const safeOptions = Array.isArray(options) ? options : [];
   const optionsLength = safeOptions.length;
 
   const toggleSelect = (item: string) => {
-    if (selected.includes(item)) {
-      setSelected(selected.filter(s => s !== item));
-    } else {
-      setSelected([...selected, item]);
-    }
+    const newSelection = selectedItems.includes(item)
+      ? selectedItems.filter(s => s !== item)
+      : [...selectedItems, item];
+
+    onSelectionChange(newSelection);
   };
 
-  const handleSelectAll = (list: string[]) =>
-    setSelected([...new Set([...selected, ...list])]);
+  const handleSelectAll = (list: string[]) => {
+    const newSelection = [...new Set([...selectedItems, ...list])];
+    onSelectionChange(newSelection);
+  };
 
-  const handleDeselectAll = (list: string[]) =>
-    setSelected(selected.filter(s => !list.includes(s)));
+  const handleDeselectAll = (list: string[]) => {
+    const newSelection = selectedItems.filter(s => !list.includes(s));
+    onSelectionChange(newSelection);
+  };
 
-  const unselected = safeOptions.filter(opt => !selected.includes(opt));
+  const unselected = safeOptions.filter(opt => !selectedItems.includes(opt));
 
   return (
     <View style={styles.wrapper}>
-      {/* label */}
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
       <TouchableOpacity
         style={styles.dropDownHeader}
         onPress={() => setOpen(!open)}
-        disabled={optionsLength === 0} // Disable if no options
+        disabled={optionsLength === 0}
       >
         <Text style={styles.headerText}>
-          {selected.length ? selected.length : 0} Selected
+          {selectedItems.length ? selectedItems.length : 0} Selected
         </Text>
-
         <Ionicons
           name={open ? 'chevron-up' : 'chevron-down'}
           color="#1f1f1f"
           size={20}
         />
       </TouchableOpacity>
-
-      {/* Show message if no options */}
       {optionsLength === 0 && (
         <Text style={styles.noOptionsText}>No options available</Text>
       )}
-
-      {/* Drop-down body */}
       {open && optionsLength > 0 && (
         <View style={styles.dropDownBody}>
-          {/* selected section */}
-          {selected.length > 0 && (
+          {selectedItems.length > 0 && (
             <View
               style={[
                 styles.section,
-                {
-                  borderBottomLeftRadius: 0,
-                  borderBottomRightRadius: 0,
-                },
+                { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 },
               ]}
             >
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>
-                  SELECTED ({selected.length})
+                  SELECTED ({selectedItems.length})
                 </Text>
-                <TouchableOpacity onPress={() => handleDeselectAll(selected)}>
+                <TouchableOpacity
+                  onPress={() => handleDeselectAll(selectedItems)}
+                >
                   <Text style={styles.sectionAction}>Deselect All</Text>
                 </TouchableOpacity>
               </View>
               <FlatList
-                data={selected}
+                data={selectedItems}
                 keyExtractor={item => item}
                 renderItem={({ item }) => (
                   <TouchableOpacity
@@ -110,14 +108,13 @@ const FilterDropDown = ({
               />
             </View>
           )}
-          {/* unselected Section */}
           <View
             style={[
               styles.section,
               {
-                borderTopRightRadius: selected.length ? 0 : 8,
-                borderTopLeftRadius: selected.length ? 0 : 8,
-                borderTopWidth: selected.length ? 0 : 1,
+                borderTopRightRadius: selectedItems.length ? 0 : 8,
+                borderTopLeftRadius: selectedItems.length ? 0 : 8,
+                borderTopWidth: selectedItems.length ? 0 : 1,
               },
             ]}
           >
@@ -127,9 +124,7 @@ const FilterDropDown = ({
               </Text>
               {unselected.length > 0 && (
                 <TouchableOpacity onPress={() => handleSelectAll(unselected)}>
-                  <Text style={styles.sectionAction}>{`${
-                    selected.length !== optionsLength ? 'Select All' : ''
-                  }`}</Text>
+                  <Text style={styles.sectionAction}>Select All</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -162,9 +157,7 @@ export default FilterDropDown;
 
 const styles = StyleSheet.create({
   wrapper: {
-    margin: 10,
     backgroundColor: '#fff',
-    marginHorizontal: 2,
     borderRadius: 8,
   },
   label: {

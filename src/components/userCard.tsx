@@ -7,14 +7,14 @@ interface UserCardProps {
   imageUrl: string;
   companyName: string;
   name: string;
-  designation?: string;
+  role?: string;
 }
 
 const UserCard: React.FC<UserCardProps> = ({
   imageUrl,
   companyName,
   name,
-  designation,
+  role,
 }) => {
   return (
     <View style={styles.card}>
@@ -34,7 +34,7 @@ const UserCard: React.FC<UserCardProps> = ({
           </View>
         )}
         <Text style={styles.name}>{name ?? 'User Unknown'}</Text>
-        <Text style={styles.designation}>{designation}</Text>
+        <Text style={styles.designation}>{role}</Text>
       </View>
     </View>
   );
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   designation: {
-    fontSize: TEXT_SIZES.xs,
+    fontSize: TEXT_SIZES.sm,
     color: COLORS.textPrimary,
   },
 });

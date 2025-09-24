@@ -1,4 +1,4 @@
-export type RatingOption = 'Cold' | 'Normal' | 'Warm';
+export type RatingOption = string;
 
 export const getEmoji = (rating: RatingOption) => {
   switch (rating) {

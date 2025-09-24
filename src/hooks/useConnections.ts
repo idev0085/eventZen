@@ -28,6 +28,14 @@ export const useScanConnection = (options: { onScanError: () => void }) => {
     },
     onError: (error: any) => {
       console.error('🚀 ~ useScanConnection ~ error:', error);
+      if (error.response && error.response.status === 404) {
+        Toast.show('User not found for this QR code.', Toast.LONG);
+      } else {
+        Toast.show(
+          'An error occurred during scan. Please try again.',
+          Toast.LONG,
+        );
+      }
       options.onScanError();
     },
   });

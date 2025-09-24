@@ -8,6 +8,7 @@ interface ContactDetailsCardProps {
   phone: string;
   address: string;
   website?: string;
+  labelTextStyle?: object;
   enablePhoneIcon?: boolean;
   enableEmailIcon?: boolean;
   onPressPhone?: () => void;
@@ -25,26 +26,35 @@ const ContactDetailsCard = ({
   onPressPhone,
   onPressIcon,
   onPressWebsite,
+  labelTextStyle,
 }: ContactDetailsCardProps) => {
   return (
     <View style={styles.contactContainer}>
-      <CustomText style={styles.headerText}>Contact Details</CustomText>
-      <View>
+      <CustomText style={[styles.headerText, labelTextStyle]}>
+        Contact Details
+      </CustomText>
+      {email && (
         <View>
-          <CustomText style={styles.subHeaderText}>Email</CustomText>
+          <View>
+            <CustomText style={styles.subHeaderText}>Email</CustomText>
+          </View>
+          <CustomText style={styles.subHeaderValueText}>{email}</CustomText>
         </View>
-        <CustomText style={styles.subHeaderValueText}>{email}</CustomText>
-      </View>
-      <View>
+      )}
+      {phone && (
         <View>
-          <CustomText style={styles.subHeaderText}>Phone No.</CustomText>
+          <View>
+            <CustomText style={styles.subHeaderText}>Phone No.</CustomText>
+          </View>
+          <CustomText style={styles.subHeaderValueText}>{phone}</CustomText>
         </View>
-        <CustomText style={styles.subHeaderValueText}>{phone}</CustomText>
-      </View>
-      <View>
-        <CustomText style={styles.subHeaderText}>Address</CustomText>
-        <CustomText style={styles.subHeaderValueText}>{address}</CustomText>
-      </View>
+      )}
+      {address && (
+        <View>
+          <CustomText style={styles.subHeaderText}>Address</CustomText>
+          <CustomText style={styles.subHeaderValueText}>{address}</CustomText>
+        </View>
+      )}
       {website && (
         <View>
           <CustomText style={styles.subHeaderText}>Website</CustomText>

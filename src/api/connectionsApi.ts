@@ -50,7 +50,7 @@ export interface IConnectionDetails {
   visitingCardUrl: string;
   note: string;
   rep_address?: string;
-  rep_designation?: string;
+  connection_role?: string;
 }
 
 export interface IUpdateConnectionPayload {
@@ -67,17 +67,26 @@ export interface IUpdateConnectionPayload {
 export const scanConnection = async (
   qrData: string,
 ): Promise<IScannedConnection> => {
-  console.log(`📡 Scanning with QR Data: ${qrData}`);
-  const { data } = await apiClient.post('/api/connection/scan', { qrData });
+  console.log(`📡 Scanning with raw QR Data: "${qrData}"`);
+
+  const numericQrData = parseInt(qrData, 10);
+  if (isNaN(numericQrData)) {
+    throw new Error('Invalid QR code. Scanned data is not a user ID.');
+  }
+
+  const { data } = await apiClient.post('/api/connections/scan', {
+    qrData: numericQrData,
+  });
 
   if (!data || !data.id) {
-    throw new Error(data.message || 'Scan Failed!');
+    throw new Error(data.message || 'Scan failed!');
   }
   return data;
 };
 
 //! Create a connection
 export const createConnection = async (payload: ICreateConnectionPayload) => {
+  console.log('🚀 ~ createConnection ~ payload:', payload);
   console.log('📡 Creating new connection...');
   const { data } = await apiClient.post('/api/connections/create', payload);
 
@@ -110,6 +119,7 @@ export const getConnectionDetails = async (
 
 export const updateConnection = async (payload: IUpdateConnectionPayload) => {
   const { id, ...updateData } = payload;
+  console.log('🚀 ~ updateConnection ~ updateData:', updateData);
   console.log(`📡 Updating connection ID: ${id}`);
   const { data } = await apiClient.put(`/api/connections/${id}`, updateData);
   return data;

@@ -11,6 +11,7 @@ interface AddNoteProps {
   onChangeText?: (text: string) => void;
   editable?: boolean;
   textInputStyle?: object;
+  labelTextStyle?: object;
 }
 export default function AddNote({
   heading,
@@ -19,10 +20,13 @@ export default function AddNote({
   onChangeText,
   editable = true,
   textInputStyle = {},
+  labelTextStyle = {},
 }: AddNoteProps) {
   return (
     <Card style={styles.card}>
-      <CustomText style={styles.textHeadng}>{heading}</CustomText>
+      <CustomText style={[styles.textHeadng, labelTextStyle]}>
+        {heading}
+      </CustomText>
       <SafeAreaView style={{ flex: 1 }}>
         <TextInput
           style={[styles.input, textInputStyle]}
