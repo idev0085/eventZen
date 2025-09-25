@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { COLORS, DownloadIcon, TEXT_SIZES } from '../utils/constants';
@@ -74,6 +75,7 @@ const ConnectionDetails = () => {
     navigation.navigate('ConnectionEdit', { connection: connectionData });
   };
 
+  console.log('connectionData', connectionData);
   return (
     <>
       <BackHeader title="Connection Details" showBtn={true} />
@@ -91,6 +93,15 @@ const ConnectionDetails = () => {
           phone={connectionData.rep_phone}
           address={connectionData.rep_address}
           website={connectionData.company_website}
+          onPressEmail={() => {
+            Linking.openURL(`mailto:${connectionData?.contact_details?.email}`);
+          }}
+          onPressPhone={() => {
+            Linking.openURL(`tel:${connectionData?.contact_details?.phone}`);
+          }}
+          onPressSocialLink={url => {
+            Linking.openURL(url);
+          }}
         />
         <View style={styles.section}>
           <Text style={styles.sectionHeading}>Tag</Text>

@@ -198,7 +198,7 @@ export default function UserList({
             {exhibitorsData?.name}
           </CustomText>
           <CustomText style={styles.viewSpeakerText}>
-            {exhibitorsData?.location}
+            Booth No. {exhibitorsData?.location}
           </CustomText>
         </View>
       </TouchableOpacity>

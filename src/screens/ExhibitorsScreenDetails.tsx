@@ -4,6 +4,7 @@ import {
   RefreshControl,
   useWindowDimensions,
   Image,
+  Linking,
 } from 'react-native';
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
@@ -81,11 +82,11 @@ const ExhibitorsScreenDetails = () => {
       >
         <UserList key={'1'} exhibitorsData={exhibitorsData} isSingle={true} />
 
-        {exhibitorsData?.banner && (
+        {exhibitorsData?.banner && exhibitorsData?.banner !== '' && (
           <View style={styles.businessCard}>
             <Image
               source={{ uri: exhibitorsData.banner }}
-              style={{ width: width - 20, height: 200, borderRadius: 10 }}
+              style={{ width: width - 40, height: 200, borderRadius: 10 }}
               resizeMode="contain"
             />
           </View>
@@ -99,6 +100,15 @@ const ExhibitorsScreenDetails = () => {
           website={exhibitorsData?.website}
           socialLinks={exhibitorsData?.social_links}
           isViewExhibitorDetails={true}
+          onPressEmail={() => {
+            Linking.openURL(`mailto:${exhibitorsData?.contact_details?.email}`);
+          }}
+          onPressPhone={() => {
+            Linking.openURL(`tel:${exhibitorsData?.contact_details?.phone}`);
+          }}
+          onPressSocialLink={url => {
+            Linking.openURL(url);
+          }}
         />
 
         <Card style={styles.card}>
@@ -162,6 +172,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: COLORS.white,
+    padding: 10,
   },
   textLabel: { fontSize: 16, fontFamily: 'Roboto-Bold', color: COLORS.text },
   textMeta: {

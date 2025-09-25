@@ -149,7 +149,8 @@ const Speakers = ({ type, list }) => {
 };
 const FooterBtn = ({ ...props }) => {
   const favText = props.isFav ? 'Remove from Favorite' : 'Add to Favorite';
-  const agendaText = props.isInAgenda ? 'Update Agenda' : 'Create Agenda';
+  const agendaText =
+    props.isInAgenda && props.agenda !== '' ? 'Update Agenda' : 'Create Agenda';
   return (
     <View style={styles.footerBtnWrapper}>
       <Button
@@ -210,7 +211,8 @@ export default function SessionsDetailsScreen() {
         token,
       );
       Toast.show(response?.message, Toast.LONG);
-      setIsFav(!session?.isFavorite);
+      setIsFav(!isFav);
+      console;
     } catch (error) {
       console.log('error', error);
     }
@@ -230,7 +232,6 @@ export default function SessionsDetailsScreen() {
         token,
       );
       Toast.show(response?.message, Toast.LONG);
-      setIsFav(!session?.isFavorite);
     } catch (error) {
       console.log('error', error);
     } finally {
@@ -277,6 +278,7 @@ export default function SessionsDetailsScreen() {
               isFav={isFav}
               togglenModalCreateAgenda={togglenModalCreateAgenda}
               isInAgenda={session?.isInAgenda}
+              agenda={session?.agenda}
             />
           )}
         </Card>

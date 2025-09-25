@@ -78,7 +78,7 @@ const EnterLoginOTPScreen = (props: any) => {
     <View>
       <Image
         source={PNG_IMAGES.OtpBg}
-        style={[styles.backgroundImage, { width: width, height: height / 3 }]}
+        style={[styles.backgroundImage, { width: width, height: height / 4 }]}
         resizeMode="cover"
       />
       <View
@@ -86,13 +86,13 @@ const EnterLoginOTPScreen = (props: any) => {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'absolute',
-          left: width / 2 - 100,
-          top: width / 3 - 50,
+          left: width / 2 - 75,
+          top: width / 3 - 40,
         }}
       >
         <Image
           source={PNG_IMAGES.Otplogo}
-          style={[styles.background, { width: 200, height: 100 }]}
+          style={[styles.background, { width: 150, height: 80 }]}
           resizeMode="contain"
         />
       </View>
@@ -104,7 +104,7 @@ const EnterLoginOTPScreen = (props: any) => {
       <Card style={styles.card}>
         <View style={styles.contentContainer}>
           <View style={styles.contentImage}>
-            <OtpImageBackground />
+            <OtpImageBackground height={100} width={100} />
           </View>
           <CustomText style={styles.subTitle}>
             We have sent OTP to email address
@@ -117,7 +117,7 @@ const EnterLoginOTPScreen = (props: any) => {
               <OtpEdit />
             </TouchableOpacity>
           </View>
-          <View style={{ marginTop: 20 }}>
+          <View style={{ marginTop: 20, paddingLeft: 20, paddingRight: 20 }}>
             <OtpInput
               numberOfDigits={4}
               focusColor="black"
@@ -207,13 +207,13 @@ const styles = StyleSheet.create({
     elevation: 3,
     padding: 20,
     borderRadius: 20,
-    top: '70%',
+    top: '80%',
   },
   contentContainer: {
     alignItems: 'center',
   },
   contentImage: {
-    marginVertical: 40,
+    //  marginVertical: 40,
   },
   subTitle: {
     fontSize: TEXT_SIZES.xs,

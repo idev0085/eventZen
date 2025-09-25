@@ -5,6 +5,7 @@ import {
   RefreshControl,
   useWindowDimensions,
   Image,
+  Linking,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BackHeader from '../components/BackHeader';
@@ -85,7 +86,7 @@ const SponsorsDetailsScreen = () => {
               source={{
                 uri: sponsorData?.banner,
               }}
-              style={{ width: width - 20, height: 200, borderRadius: 10 }}
+              style={{ width: width - 40, height: 200, borderRadius: 10 }}
               resizeMode="contain"
             />
           </View>
@@ -97,11 +98,17 @@ const SponsorsDetailsScreen = () => {
           phone={sponsorData?.phone}
           address={sponsorData?.location}
           website={sponsorData?.website}
-          onPressEmail={() => {}}
-          onPressPhone={() => {}}
-          onPressWebsite={() => {}}
           socialLinks={sponsorData?.social_links}
           isViewExhibitorDetails={true}
+          onPressEmail={() => {
+            Linking.openURL(`mailto:${sponsorData?.contact_details?.email}`);
+          }}
+          onPressPhone={() => {
+            Linking.openURL(`tel:${sponsorData?.contact_details?.phone}`);
+          }}
+          onPressSocialLink={url => {
+            Linking.openURL(url);
+          }}
         />
 
         <Card style={styles.card}>
@@ -167,6 +174,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: COLORS.white,
+    padding: 10,
   },
   textLabel: {
     fontSize: 16,
