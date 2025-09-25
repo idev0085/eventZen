@@ -1,22 +1,8 @@
-import React, { useState } from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BackHeader from '../components/BackHeader';
-import {
-  CloseIcon,
-  COLORS,
-  JPGIcon,
-  PNGIcon,
-  TEXT_SIZES,
-} from '../utils/constants';
+import { COLORS, JPGIcon, PNGIcon, TEXT_SIZES } from '../utils/constants';
 import UserCard from '../components/userCard';
 import ContactDetailsCard from '../components/contactDetailsCard';
 import RatingSelectorCard from '../components/RatingSelectorCard';
@@ -137,7 +123,7 @@ const ConnectionEdit = () => {
               handleInputChange('visitingCardImage', '');
             }}
             autoUpload={false}
-            showInitialFiles={false}
+            showInitialFiles={true}
             label="Upload"
             type="connection"
           />
