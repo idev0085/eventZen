@@ -1,8 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BackHeader from '../components/BackHeader';
-import { COLORS, TEXT_SIZES } from '../utils/constants';
+import {
+  CloseIcon,
+  COLORS,
+  JPGIcon,
+  PNGIcon,
+  TEXT_SIZES,
+} from '../utils/constants';
 import UserCard from '../components/userCard';
 import ContactDetailsCard from '../components/contactDetailsCard';
 import RatingSelectorCard from '../components/RatingSelectorCard';
@@ -12,6 +26,7 @@ import AddNote from '../components/addNote';
 import Button from '../components/ui/button';
 import { useUpdateConnection } from '../hooks/useConnections';
 import { useTags } from '../hooks/useApi';
+import { useDeleteFile, useUploadFile } from '../hooks/useFiles';
 
 const ConnectionEdit = () => {
   const route = useRoute();
@@ -37,6 +52,41 @@ const ConnectionEdit = () => {
       ...formData,
     };
     updateConnection(payload);
+  };
+
+  const queryKeyToInvalidate = ['connection', connection.id];
+
+  const { mutateAsync: uploadFileAsync, isPending: isUploading } =
+    useUploadFile({ queryKeyToInvalidate });
+
+  const { mutateAsync: deleteFileAsync, isPending: isDeleting } = useDeleteFile(
+    { queryKeyToInvalidate },
+  );
+
+  const handleFileUpload = async (fileBase64: string) => {
+    const payload = {
+      detailsId: connection.id,
+      type: 'connection' as const,
+      file: fileBase64,
+    };
+    return await uploadFileAsync(payload);
+  };
+
+  const handleFileDelete = async (fileId: string) => {
+    const payload = {
+      detailsId: connection.id,
+      type: 'connection' as const,
+      fileId,
+    };
+    return await deleteFileAsync(payload);
+  };
+
+  // TODO: Refactored it later
+  const getFileTypeIcon = (fileName: string) => {
+    const ext = fileName?.split('.').pop()?.toLowerCase();
+    if (ext === 'jpg' || ext === 'jpeg') return <JPGIcon />;
+    if (ext === 'png') return <PNGIcon />;
+    return null;
   };
 
   return (
@@ -76,15 +126,20 @@ const ConnectionEdit = () => {
         <View style={styles.section}>
           <FileUploadCard
             maxFiles={1}
-            maxSizeMB={10}
-            multiple={false}
-            title="Upload new Visiting Card"
-            description="SVG, PNG, JPG or GIF (max 10MB)"
-            label="Visiting Card"
-            labelStyle={{ fontSize: 14, fontWeight: '700' }}
-            onFileChange={base64String =>
-              handleInputChange('visitingCardImage', base64String || '')
-            }
+            maxSizeMB={5}
+            title="Upload Visiting Card"
+            labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
+            description="JPG or PNG (max 5MB)"
+            onUpload={(fileBase64: string) => {
+              handleInputChange('visitingCardImage', fileBase64);
+            }}
+            onDelete={() => {
+              handleInputChange('visitingCardImage', '');
+            }}
+            autoUpload={false}
+            showInitialFiles={false}
+            label="Upload"
+            type="connection"
           />
         </View>
         <AddNote
@@ -131,5 +186,26 @@ const styles = StyleSheet.create({
   footer: {
     backgroundColor: '#fff',
     padding: 15,
+  },
+  list: {
+    padding: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E3EDFF',
+    borderRadius: 10,
+    gap: 5,
+    marginBottom: 6,
+  },
+  fileName: {
+    color: COLORS.primary,
+    fontSize: TEXT_SIZES.xs,
+    flex: 1,
+  },
+  fileInfoContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
   },
 });

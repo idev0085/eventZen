@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
   },
-  downloadText: { color: COLORS.primary },
+  downloadText: { color: COLORS.primary, fontWeight: '500' },
   downloadIconTextStyle: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   downloadVisitingCard: { borderRadius: 10 },
   footer: { backgroundColor: '#fff', padding: 15 },

@@ -1,33 +1,68 @@
+import React from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   RefreshControl,
   useWindowDimensions,
   Image,
 } from 'react-native';
-import React from 'react';
 import { useRoute } from '@react-navigation/native';
 import BackHeader from '../components/BackHeader';
 import { useSponsorDetails } from '../hooks/useApi';
-import { DrawerLayoutAndroid, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { COLORS } from '../utils/constants';
 import Card from '../components/card';
 import UserList from '../components/userList';
 import ContactDetails from '../components/contactDetails';
 import CustomText from '../components/ui/text';
 import FileUploadCard from '../components/fileUploadCard';
+import { useDeleteFile, useUploadFile } from '../hooks/useFiles';
+import LoadingOverlay from '../components/loadingOverlay';
+
 const SponsorsDetailsScreen = () => {
   const route = useRoute();
   const { sponsorId } = route.params as { sponsorId: number };
   const { height, width } = useWindowDimensions();
   const {
     data: sponsorData,
+    isLoading: isDetailsLoading,
     refetch: refetchData,
     isRefetching: isRefetching,
   } = useSponsorDetails(sponsorId);
 
-  console.log('sponsorData', sponsorData);
+  const { mutateAsync: uploadFileAsync, isPending: isUploading } =
+    useUploadFile({
+      queryKeyToInvalidate: ['sponsor', sponsorId],
+    });
+
+  const { mutateAsync: deleteFileAsync, isPending: isDeleting } = useDeleteFile(
+    {
+      queryKeyToInvalidate: ['sponsor', sponsorId],
+    },
+  );
+
+  const handleFileUpload = async (fileOrFormData: string | FormData) => {
+    // uploadFile accepts file:string|FormData per updated filesApi
+    const payload = {
+      detailsId: sponsorId,
+      type: 'sponsor' as const,
+      file: fileOrFormData,
+    };
+    // returns server response (or throws)
+    return await uploadFileAsync(payload);
+  };
+
+  const handleFileDelete = async (fileId: string) => {
+    const payload = {
+      detailsId: sponsorId,
+      type: 'sponsor' as const,
+      fileId,
+    };
+    return await deleteFileAsync(payload);
+  };
+  if (isDetailsLoading && !sponsorData) {
+    return <LoadingOverlay visible={true} />;
+  }
 
   return (
     <>
@@ -74,12 +109,30 @@ const SponsorsDetailsScreen = () => {
           <CustomText style={styles.textMeta}>{sponsorData?.bio}</CustomText>
         </Card>
 
-        <FileUploadCard
-          title={'Upload'}
-          onChange={() => {}}
-          files={[]}
-          maxFiles={5}
-        />
+        <Card style={styles.card}>
+          <FileUploadCard
+            maxFiles={3}
+            maxSizeMB={10}
+            title="Select Multiple files to upload"
+            labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
+            description="SVG, PNG, JPG or GIF (max 10MB)"
+            onUpload={handleFileUpload}
+            onDelete={handleFileDelete}
+            initialFiles={
+              sponsorData?.uploaded_files?.map(f => ({
+                id: f.fileID.toString(),
+                name: f.name,
+                url: f.url,
+              })) || []
+            }
+            autoUpload={true}
+            isUploading={isUploading}
+            isDeleting={isDeleting}
+            showInitialFiles={true}
+            label="Upload"
+            type="sponsor"
+          />
+        </Card>
       </ScrollView>
     </>
   );
@@ -102,7 +155,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    paddingLeft: 30,
     borderRadius: 10,
     backgroundColor: COLORS.white,
   },
@@ -120,7 +172,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Bold',
     color: COLORS.text,
-    marginTop: 20,
   },
   textMeta: {
     fontSize: 15,
