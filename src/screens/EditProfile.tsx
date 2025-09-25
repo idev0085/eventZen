@@ -373,7 +373,7 @@ const EditProfile = () => {
         <Button
           title={isUpdating ? 'Saving...' : 'Save'}
           onPress={handleSave}
-          style={{ width: '80%' }}
+          style={{ width: '95%' }}
           textStyle={styles.btnTextStyle}
           disabled={isUpdating}
         />

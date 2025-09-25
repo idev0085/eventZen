@@ -87,7 +87,7 @@ const ViewProfile = ({ navigation }) => {
               data: profileData,
             })
           }
-          style={{ width: '80%' }}
+          style={{ width: '95%' }}
           textStyle={styles.btnTextStyle}
         />
       </View>
@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
   },
   tagContainer: {
     marginTop: 10,
-    marginBottom: 10,
   },
   tagsWrapper: {
     flexDirection: 'row',
