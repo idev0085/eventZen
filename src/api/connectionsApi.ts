@@ -86,7 +86,6 @@ export const scanConnection = async (
 
 //! Create a connection
 export const createConnection = async (payload: ICreateConnectionPayload) => {
-  console.log('🚀 ~ createConnection ~ payload:', payload);
   console.log('📡 Creating new connection...');
   const { data } = await apiClient.post('/api/connections/create', payload);
 
@@ -119,7 +118,6 @@ export const getConnectionDetails = async (
 
 export const updateConnection = async (payload: IUpdateConnectionPayload) => {
   const { id, ...updateData } = payload;
-  console.log('🚀 ~ updateConnection ~ updateData:', updateData);
   console.log(`📡 Updating connection ID: ${id}`);
   const { data } = await apiClient.put(`/api/connections/${id}`, updateData);
   return data;
