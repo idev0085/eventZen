@@ -3,8 +3,8 @@ import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import RNBlobUtil from 'react-native-blob-util';
 
 const androidRequest = async () => {
+  if (Platform.OS !== 'android') return true;
   try {
-    // For Android 13+ (API 33+), we need READ_MEDIA_IMAGES for media files
     if (Number(Platform.Version) >= 33) {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
@@ -17,8 +17,6 @@ const androidRequest = async () => {
       );
       return granted === PermissionsAndroid.RESULTS.GRANTED;
     }
-
-    // For Android 10-12, request WRITE_EXTERNAL_STORAGE
     if (Number(Platform.Version) >= 29) {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -31,8 +29,7 @@ const androidRequest = async () => {
       );
       return granted === PermissionsAndroid.RESULTS.GRANTED;
     }
-
-    return true; // For Android <10, no special permission needed
+    return true;
   } catch (err) {
     console.error('Permission request error: ', err);
     return false;
@@ -48,53 +45,56 @@ export function useFileDownloader() {
       return;
     }
 
-    const canWrite = await androidRequest();
-    if (!canWrite) {
-      Alert.alert('Permission Denied', 'Please allow storage access.');
-      return;
+    if (Platform.OS === 'android') {
+      const canWrite = await androidRequest();
+      if (!canWrite) {
+        Alert.alert('Permission Denied', 'Please allow storage access.');
+        return;
+      }
     }
 
     setIsDownloading(true);
 
     try {
-      // First, download the file to a temporary location
       const { config, fs } = RNBlobUtil;
 
-      // Create a temporary file in cache directory
-      const tempPath = `${
-        fs.dirs.CacheDir
-      }/${fileName}_${Date.now()}.${fileType}`;
+      let savePath = '';
+      if (Platform.OS === 'android') {
+        if (Number(Platform.Version) >= 29) {
+          // Use cache for temp, then MediaStore
+          savePath = `${fs.dirs.CacheDir}/${fileName}_${Date.now()}.${fileType}`;
+        } else {
+          // Save directly to Downloads
+          savePath = `/storage/emulated/0/Download/${fileName}.${fileType}`;
+        }
+      } else {
+        // iOS: Save to Documents directory
+        savePath = `${fs.dirs.DocumentDir}/${fileName}.${fileType}`;
+      }
 
-      // Download to temporary location
+      // Download the file
       const response = await config({
         fileCache: true,
-        path: tempPath,
+        path: savePath,
       }).fetch('GET', url);
 
-      // Now use MediaStore API to copy to public Downloads directory
-      if (Number(Platform.Version) >= 29) {
+      if (Platform.OS === 'android' && Number(Platform.Version) >= 29) {
         // Android 10+ - Use MediaStore API
         await RNBlobUtil.MediaCollection.copyToMediaStore(
           {
             name: `${fileName}.${fileType}`,
-            parentFolder: '', // Save to root of Downloads
+            parentFolder: '',
             mimeType: getMimeType(fileType),
           },
-          'Download', // Media Collection type
-          response.path(), // Source file path
+          'Download',
+          response.path(),
         );
-
-        // Clean up temporary file
         await fs.unlink(response.path());
-      } else {
-        // Android 9 and below - Use direct path
-        const publicPath = `/storage/emulated/0/Download/${fileName}.${fileType}`;
-        await fs.mv(response.path(), publicPath);
       }
 
       Alert.alert(
         'Download Complete',
-        `File saved to Downloads: ${fileName}.${fileType}`,
+        `File saved to ${Platform.OS === 'android' ? 'Downloads' : 'Documents'}: ${fileName}.${fileType}`,
       );
     } catch (err) {
       console.error('Download failed:', err);

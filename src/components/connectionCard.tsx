@@ -36,7 +36,7 @@ const ConnectionsCard: React.FC<ConnectionsCardProps> = ({
         <View style={styles.cardContainer}>
           {/* Profile Pictures Section */}
           <View style={styles.profilesContainer}>
-            {connections.slice(0, 7).map((connection, index) => (
+            {connections?.slice(0, 7).map((connection, index) => (
               <Image
                 key={connection.id}
                 source={{ uri: connection?.avatarUrl }}

@@ -94,10 +94,10 @@ const ConnectionDetails = () => {
           address={connectionData.rep_address}
           website={connectionData.company_website}
           onPressEmail={() => {
-            Linking.openURL(`mailto:${connectionData?.contact_details?.email}`);
+            Linking.openURL(`mailto:${connectionData?.rep_email}`);
           }}
           onPressPhone={() => {
-            Linking.openURL(`tel:${connectionData?.contact_details?.phone}`);
+            Linking.openURL(`tel:${connectionData?.rep_phone}`);
           }}
           onPressSocialLink={url => {
             Linking.openURL(url);

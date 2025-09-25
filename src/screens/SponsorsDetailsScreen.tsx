@@ -101,10 +101,10 @@ const SponsorsDetailsScreen = () => {
           socialLinks={sponsorData?.social_links}
           isViewExhibitorDetails={true}
           onPressEmail={() => {
-            Linking.openURL(`mailto:${sponsorData?.contact_details?.email}`);
+            Linking.openURL(`mailto:${sponsorData?.email}`);
           }}
           onPressPhone={() => {
-            Linking.openURL(`tel:${sponsorData?.contact_details?.phone}`);
+            Linking.openURL(`tel:${sponsorData?.phone}`);
           }}
           onPressSocialLink={url => {
             Linking.openURL(url);
