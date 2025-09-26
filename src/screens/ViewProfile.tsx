@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Alert } from 'react-native';
 import { COLORS } from '../utils/constants';
 import Icon from '../components/icon';
 import Card from '../components/card';
@@ -9,8 +9,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useProfile } from '../hooks/useApi';
-
+import { getToken } from '../utils/tokenManager';
+import { ONESIGNAL_API_KEY, BASE_URL } from '../config';
+import Toast from 'react-native-simple-toast';
+import { apiCall } from '../utils/helpers';
+import { useAuth } from '../hooks/useAuth';
 const ViewProfile = ({ navigation }) => {
+  const { logout } = useAuth();
   const { data: profileData, isLoading } = useProfile();
   console.log('🚀 ~ ViewProfile ~ profileData:', profileData);
 
@@ -18,6 +23,35 @@ const ViewProfile = ({ navigation }) => {
     return <LoadingOverlay visible={true} />;
   }
   // // Fetch profile data
+
+  //create a fuction for deleteAccount
+  const deleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your account? This action cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            await deleteAccountApiCall();
+            logout();
+          },
+        },
+      ],
+      { cancelable: true },
+    );
+  };
+
+  const deleteAccountApiCall = async () => {
+    const token = await getToken();
+    try {
+      await apiCall(BASE_URL + '/api/delete-account', 'GET', undefined, token);
+    } catch (error) {
+      Toast.show('Failed to delete account. Please try again.', Toast.LONG);
+    }
+  };
 
   return (
     <>
@@ -77,6 +111,10 @@ const ViewProfile = ({ navigation }) => {
             numberOfLines={10}
             editable={false} // make it read-only
           />
+
+          <CustomText style={styles.textLogout} onPress={deleteAccount}>
+            Delete Account
+          </CustomText>
         </Card>
       </ScrollView>
       <View style={styles.btnContainer}>
@@ -172,5 +210,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Roboto-Regular',
     color: COLORS.white,
+  },
+  textLogout: {
+    color: COLORS.logoutError,
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: COLORS.background,
   },
 });
