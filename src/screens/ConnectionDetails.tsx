@@ -75,7 +75,6 @@ const ConnectionDetails = () => {
     navigation.navigate('ConnectionEdit', { connection: connectionData });
   };
 
-  console.log('connectionData', connectionData);
   return (
     <>
       <BackHeader title="Connection Details" showBtn={true} />
