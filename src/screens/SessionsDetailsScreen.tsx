@@ -255,7 +255,6 @@ export default function SessionsDetailsScreen() {
     createAgenda(sessionId, agendaText);
   };
 
-  console.log('Session Details:', session);
   return (
     <>
       <BackHeader title="Session Details" />
@@ -403,6 +402,7 @@ const styles = StyleSheet.create({
   },
   footerBtnWrapper: {
     flex: 1,
+    alignItems: 'center',
   },
   footerContainer: {
     flexDirection: 'row',
