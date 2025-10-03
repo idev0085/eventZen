@@ -1,22 +1,16 @@
-import React, { use, useEffect, useState } from 'react';
-import { Alert, StyleSheet, View, RefreshControl, Text } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, RefreshControl } from 'react-native';
 import { COLORS } from '../utils/constants';
 
-import SessionListItem from '../components/sessionListItem';
-import { DrawerLayoutAndroid, ScrollView } from 'react-native-gesture-handler';
-import Card from '../components/card';
+import { ScrollView } from 'react-native-gesture-handler';
 import SearchUI from '../components/Search';
-import CustomText from '../components/ui/text';
 import BackHeader from '../components/BackHeader';
-import { BASE_URL } from '../config';
-import { apiCall, formatTimeRange } from '../utils/helpers';
-import { getToken } from '../utils/tokenManager';
+
 import LoadingOverlay from '../components/loadingOverlay';
 import UserList from '../components/userList';
 import { useSpeakers } from '../hooks/useApi';
 
 export default function SpeakersScreen({ ...props }) {
-  const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -35,18 +29,10 @@ export default function SpeakersScreen({ ...props }) {
   const viewDetails = id => {
     props.navigation.navigate('ViewSpeakersDetailsScreen', { userId: id });
   };
-  //   const viewSpeaker = () => {
-  //     Alert.alert('Development Work in progress');
-  //   };
-  //console.log('apiData', apiData, getToken());
+
   return (
     <>
-      <BackHeader
-        title="Speakers"
-        showBtn={true}
-        //   rightFunction={rightFunction}
-        //   rightLabel={'Read All'}
-      />
+      <BackHeader title="Speakers" showBtn={true} />
       <SearchUI
         value={searchQuery}
         placeholder="Search Speakers..."

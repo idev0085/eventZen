@@ -1,7 +1,6 @@
 import { StyleSheet, Touchable, TouchableOpacity, View } from 'react-native';
-import Card from '../components/card';
 import CustomText from '../components/ui/text';
-import { GreenBadge, COLORS, Level } from '../utils/constants';
+import { COLORS, Level } from '../utils/constants';
 import Icon from '../components/icon';
 import { timeAgo } from '../utils/helpers';
 interface UserListProps {
@@ -110,14 +109,16 @@ export default function UserList({
           </View>
         </View>
         <View style={styles.rightContainerAttendees}>
-          <CustomText style={styles.textName}>{attendeesData?.name}</CustomText>
+          <CustomText style={styles.textName}>
+            {attendeesData?.name || '-'}
+          </CustomText>
 
           <CustomText style={styles.textDesignation}>
-            {attendeesData?.role}
+            {attendeesData?.role || '-'}
           </CustomText>
 
           <CustomText style={styles.viewSpeakerText} onPress={viewSpeaker}>
-            {attendeesData?.company_name}
+            {attendeesData?.company_name || '-'}
           </CustomText>
 
           <View style={styles.rolesWrapper}>
@@ -151,14 +152,16 @@ export default function UserList({
           </View>
         </View>
         <View style={styles.rightContainerAttendees}>
-          <CustomText style={styles.textName}>{speakersData?.name}</CustomText>
+          <CustomText style={styles.textName}>
+            {speakersData?.name || '-'}
+          </CustomText>
 
           <CustomText style={styles.textDesignation}>
-            {speakersData?.role}
+            {speakersData?.role || '-'}
           </CustomText>
 
           <CustomText style={styles.viewSpeakerText} onPress={viewSpeaker}>
-            {speakersData?.company_name}
+            {speakersData?.company_name || '-'}
           </CustomText>
 
           <View style={styles.rolesWrapper}>
@@ -195,10 +198,10 @@ export default function UserList({
         </View>
         <View style={styles.rightContainerExhibitors}>
           <CustomText style={styles.textName}>
-            {exhibitorsData?.name}
+            {exhibitorsData?.name || '-'}
           </CustomText>
           <CustomText style={styles.viewSpeakerText}>
-            Booth No. {exhibitorsData?.location}
+            Booth No. {exhibitorsData?.location || '-'}
           </CustomText>
         </View>
       </TouchableOpacity>
@@ -223,7 +226,9 @@ export default function UserList({
           </View>
         </View>
         <View style={styles.rightContainerExhibitors}>
-          <CustomText style={styles.textName}>{sponsorsData?.name}</CustomText>
+          <CustomText style={styles.textName}>
+            {sponsorsData?.name || '-'}
+          </CustomText>
           <View style={{ margin: 5 }} />
           {sponsorsData?.level === 'Gold' && (
             <Level
