@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BackHeader from '../components/BackHeader';
-import { useSponsorDetails } from '../hooks/useApi';
+import { useSponsorDetails, useProfile } from '../hooks/useApi';
 import { ScrollView } from 'react-native-gesture-handler';
 import { COLORS } from '../utils/constants';
 import Card from '../components/card';
@@ -30,6 +30,12 @@ const SponsorsDetailsScreen = () => {
     refetch: refetchData,
     isRefetching: isRefetching,
   } = useSponsorDetails(sponsorId);
+
+  const {
+    data: profileData,
+    isLoading: isProfileLoading,
+    isSuccess,
+  } = useProfile();
 
   const { mutateAsync: uploadFileAsync, isPending: isUploading } =
     useUploadFile({
@@ -116,30 +122,32 @@ const SponsorsDetailsScreen = () => {
           <CustomText style={styles.textMeta}>{sponsorData?.bio}</CustomText>
         </Card>
 
-        <Card style={styles.card}>
-          <FileUploadCard
-            maxFiles={3}
-            maxSizeMB={10}
-            title="Select Multiple files to upload"
-            labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
-            description="SVG, PNG, JPG or GIF (max 10MB)"
-            onUpload={handleFileUpload}
-            onDelete={handleFileDelete}
-            initialFiles={
-              sponsorData?.uploaded_files?.map(f => ({
-                id: f.fileID.toString(),
-                name: f.name,
-                url: f.url,
-              })) || []
-            }
-            autoUpload={true}
-            isUploading={isUploading}
-            isDeleting={isDeleting}
-            showInitialFiles={true}
-            label="Upload"
-            type="sponsor"
-          />
-        </Card>
+        {profileData?.is_sponsor_id === sponsorId && (
+          <Card style={styles.card}>
+            <FileUploadCard
+              maxFiles={3}
+              maxSizeMB={10}
+              title="Select Multiple files to upload"
+              labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
+              description="SVG, PNG, JPG or GIF (max 10MB)"
+              onUpload={handleFileUpload}
+              onDelete={handleFileDelete}
+              initialFiles={
+                sponsorData?.uploaded_files?.map(f => ({
+                  id: f.fileID.toString(),
+                  name: f.name,
+                  url: f.url,
+                })) || []
+              }
+              autoUpload={true}
+              isUploading={isUploading}
+              isDeleting={isDeleting}
+              showInitialFiles={true}
+              label="Upload"
+              type="sponsor"
+            />
+          </Card>
+        )}
       </ScrollView>
     </>
   );

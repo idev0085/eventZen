@@ -77,7 +77,7 @@ export const APP_CONFIG = {
   TOKEN: 'authToken',
   RESEND_TIMER: 60,
   PLAYSTORE_URL: 'https://play.google.com/store/apps/details',
-  ANDROID_PACKAGE_NAME: 'com.eventzen',
+  ANDROID_PACKAGE_NAME: 'com.canadianSME.app',
 };
 
 export const COLORS = {
