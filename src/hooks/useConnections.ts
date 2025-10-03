@@ -18,16 +18,11 @@ export const useScanConnection = (options: { onScanError: () => void }) => {
   return useMutation({
     mutationFn: (qrData: string) => scanConnection(qrData),
     onSuccess: foundConnectionData => {
-      console.log(
-        '🚀 ~ useScanConnection ~ foundConnectionData:',
-        foundConnectionData,
-      );
       navigation.navigate('ConnectionFound', {
         connection: foundConnectionData,
       });
     },
     onError: (error: any) => {
-      console.error('🚀 ~ useScanConnection ~ error:', error);
       if (error.response && error.response.status === 404) {
         Toast.show('User not found for this QR code.', Toast.LONG);
       } else {
@@ -102,6 +97,7 @@ export const useUpdateConnection = () => {
       queryClient.invalidateQueries({ queryKey: ['connections'] });
 
       queryClient.invalidateQueries({ queryKey: ['connection', variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['connection'] });
 
       navigation.goBack();
     },
