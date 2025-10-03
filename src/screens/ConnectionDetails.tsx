@@ -20,6 +20,8 @@ import { getEmoji, RatingOption } from '../utils/getEmojiUtil';
 import { useConnectionDetails } from '../hooks/useConnections';
 import { useFileDownloader } from '../hooks/useFileDownloader';
 import Toast from 'react-native-simple-toast';
+import Card from '../components/card';
+import CustomText from '../components/ui/text';
 
 const ConnectionDetails = () => {
   const route = useRoute();
@@ -138,12 +140,12 @@ const ConnectionDetails = () => {
             ]}
           />
         </View>
-        <AddNote
-          heading="Note"
-          value={connectionData.note}
-          editable={false}
-          textInputStyle={{ color: '#4E4E4E' }}
-        />
+        <Card style={styles.section}>
+          <CustomText style={styles.textLabel}>Add Note</CustomText>
+          <CustomText style={styles.textMeta}>
+            {connectionData.note ? connectionData.note : '-'}
+          </CustomText>
+        </Card>
       </ScrollView>
       <View style={styles.footer}>
         <Button
@@ -224,5 +226,12 @@ const styles = StyleSheet.create({
     fontSize: TEXT_SIZES.sm,
     color: COLORS.textPrimary,
     marginTop: 4,
+  },
+  textLabel: { fontSize: 16, fontFamily: 'Roboto-Bold', color: COLORS.text },
+  textMeta: {
+    fontSize: 14,
+    fontFamily: 'Roboto-Regular',
+    color: COLORS.textPrimary,
+    marginTop: 10,
   },
 });

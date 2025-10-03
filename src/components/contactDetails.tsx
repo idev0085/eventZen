@@ -68,7 +68,9 @@ export default function ContactDetails({
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <CustomText style={styles.textName}>Email ID</CustomText>
-          <CustomText style={styles.textDesignation}>{email}</CustomText>
+          <CustomText style={styles.textDesignation}>
+            {email ? email : '-'}
+          </CustomText>
         </View>
         {enableEmailIcon ? (
           <View style={styles.rightContainer}>
@@ -81,7 +83,9 @@ export default function ContactDetails({
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <CustomText style={styles.textName}>Phone No</CustomText>
-          <CustomText style={styles.textDesignation}>{phone}</CustomText>
+          <CustomText style={styles.textDesignation}>
+            {phone ? phone : '-'}
+          </CustomText>
         </View>
         {enablePhoneIcon ? (
           <View style={styles.rightContainer}>
