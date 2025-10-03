@@ -26,6 +26,8 @@ interface TextBoxProps {
   rightIcon?: React.ReactNode;
   onRightIconPress?: () => void;
   containerStyle?: object;
+  keyboardType?: string;
+  maxLength?: number;
 }
 
 const TextBox: React.FC<TextBoxProps> = ({
@@ -45,6 +47,8 @@ const TextBox: React.FC<TextBoxProps> = ({
   rightIcon,
   onRightIconPress,
   containerStyle,
+  keyboardType,
+  maxLength,
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -71,6 +75,8 @@ const TextBox: React.FC<TextBoxProps> = ({
           multiline={multiline}
           numberOfLines={numberOfLines}
           placeholderTextColor={COLORS.placeholder}
+          keyboardType={keyboardType}
+          maxLength={maxLength}
         />
         {rightIcon && (
           <TouchableOpacity
