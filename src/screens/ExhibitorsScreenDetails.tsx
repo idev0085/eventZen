@@ -10,7 +10,7 @@ import React from 'react';
 import { useRoute } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
-import { useExhibitorDetails } from '../hooks/useApi';
+import { useExhibitorDetails, useProfile } from '../hooks/useApi';
 import { COLORS } from '../utils/constants';
 import Card from '../components/card';
 import UserList from '../components/userList';
@@ -24,6 +24,12 @@ const ExhibitorsScreenDetails = () => {
   const route = useRoute();
   const { exhibitorId } = route.params as { exhibitorId: number };
   const { height, width } = useWindowDimensions();
+
+  const {
+    data: profileData,
+    isLoading: isProfileLoading,
+    isSuccess,
+  } = useProfile();
 
   const {
     data: exhibitorsData,
@@ -115,31 +121,32 @@ const ExhibitorsScreenDetails = () => {
           <CustomText style={styles.textLabel}>Bio</CustomText>
           <CustomText style={styles.textMeta}>{exhibitorsData?.bio}</CustomText>
         </Card>
-
-        <Card style={styles.card}>
-          <FileUploadCard
-            maxFiles={3}
-            maxSizeMB={10}
-            title="Select Multiple files to upload"
-            labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
-            description="SVG, PNG, JPG or GIF (max 10MB)"
-            onUpload={handleFileUpload}
-            onDelete={handleFileDelete}
-            initialFiles={
-              exhibitorsData?.uploaded_files?.map(f => ({
-                id: f.fileID.toString(),
-                name: f.name,
-                url: f.url,
-              })) || []
-            }
-            autoUpload={true}
-            isUploading={isUploading}
-            isDeleting={isDeleting}
-            showInitialFiles={true}
-            label="Upload"
-            type="exhibitor"
-          />
-        </Card>
+        {profileData?.is_exhibitor_id === exhibitorId && (
+          <Card style={styles.card}>
+            <FileUploadCard
+              maxFiles={3}
+              maxSizeMB={10}
+              title="Select Multiple files to upload"
+              labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
+              description="SVG, PNG, JPG or GIF (max 10MB)"
+              onUpload={handleFileUpload}
+              onDelete={handleFileDelete}
+              initialFiles={
+                exhibitorsData?.uploaded_files?.map(f => ({
+                  id: f.fileID.toString(),
+                  name: f.name,
+                  url: f.url,
+                })) || []
+              }
+              autoUpload={true}
+              isUploading={isUploading}
+              isDeleting={isDeleting}
+              showInitialFiles={true}
+              label="Upload"
+              type="exhibitor"
+            />
+          </Card>
+        )}
       </ScrollView>
     </>
   );

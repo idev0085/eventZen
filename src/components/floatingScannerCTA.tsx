@@ -23,7 +23,7 @@ const FloatingScannerCTA = () => {
   const handleScanSuccess = (qrValue: string) => {
     console.log('Scanned:', qrValue);
     setScannerVisible(false);
-    if (JSON.parse(qrValue).app !== APP_CONFIG.QR_APP_IDENTIFIER) {
+    if (JSON.parse(qrValue).app !== APP_CONFIG.ANDROID_PACKAGE_NAME) {
       Toast.show('Invalid QR Code!', Toast.LONG);
       return;
     } else if (JSON.parse(qrValue).id) {
