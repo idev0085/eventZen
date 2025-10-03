@@ -72,7 +72,6 @@ const ConnectionForm = () => {
       note: formState.note,
       // website: formState.website,
     };
-
     createConnection(payload);
   };
 
@@ -125,6 +124,7 @@ const ConnectionForm = () => {
                 value={formState.phone}
                 onChangeText={text => handleInputChange('phone', text)}
                 style={{ height: 50 }}
+                maxLength={10}
               />
               <TextBox
                 label="Company Name"
@@ -157,15 +157,24 @@ const ConnectionForm = () => {
               />
               <FileUploadCard
                 maxFiles={1}
-                maxSizeMB={10}
-                multiple={false}
+                maxSizeMB={5}
                 title="Select file to upload"
-                description="SVG, PNG, JPG or GIF (max 10MB)"
+                labelStyle={{
+                  fontSize: 16,
+                  fontWeight: '700',
+                  marginBottom: 18,
+                }}
+                description="JPG or PNG (max 5MB)"
+                onUpload={(fileBase64: string) => {
+                  handleInputChange('visiting_card_image', fileBase64);
+                }}
+                onDelete={() => {
+                  handleInputChange('visiting_card_image', '');
+                }}
+                autoUpload={false}
+                showInitialFiles={true}
                 label="Visiting Card"
-                labelStyle={{ fontSize: 14, fontWeight: '500' }}
-                onFileChange={base64String =>
-                  handleInputChange('visiting_card_image', base64String)
-                }
+                type="connection"
               />
               <RatingSelectorCard
                 labelStyle={{ fontSize: 14, fontWeight: '500' }}
