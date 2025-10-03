@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BackHeader from '../components/BackHeader';
 import { COLORS, JPGIcon, PNGIcon, TEXT_SIZES } from '../utils/constants';
@@ -13,6 +13,7 @@ import Button from '../components/ui/button';
 import { useUpdateConnection } from '../hooks/useConnections';
 import { useTags } from '../hooks/useApi';
 import { useDeleteFile, useUploadFile } from '../hooks/useFiles';
+import KeyboardAvoidingContainer from '../components/keyboardAvoidingContainer';
 
 const ConnectionEdit = () => {
   const route = useRoute();
@@ -77,8 +78,8 @@ const ConnectionEdit = () => {
 
   return (
     <>
-      <BackHeader title="Edit Connection" showBtn={true} />
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <KeyboardAvoidingContainer>
+        <BackHeader title="Edit Connection" showBtn={true} />
         <UserCard
           imageUrl={connection.avatarUrl}
           companyName={connection.companyName}
@@ -134,16 +135,16 @@ const ConnectionEdit = () => {
           value={formData.note}
           onChangeText={text => handleInputChange('note', text)}
         />
-      </ScrollView>
-      <View style={styles.footer}>
-        <Button
-          title={isPending ? 'Saving...' : 'Save'}
-          onPress={handleSave}
-          disabled={isPending}
-          style={{ borderRadius: 10, width: '100%' }}
-          textStyle={{ fontSize: TEXT_SIZES.sm, fontWeight: '400' }}
-        />
-      </View>
+        <View style={styles.footer}>
+          <Button
+            title={isPending ? 'Saving...' : 'Save'}
+            onPress={handleSave}
+            disabled={isPending}
+            style={{ borderRadius: 10, width: '100%' }}
+            textStyle={{ fontSize: TEXT_SIZES.sm, fontWeight: '400' }}
+          />
+        </View>
+      </KeyboardAvoidingContainer>
     </>
   );
 };
