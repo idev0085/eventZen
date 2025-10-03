@@ -16,6 +16,8 @@ import {
   useIsAuthenticated,
 } from './src/stores/authStore';
 import { checkForUpdates } from './src/utils/checkForUpdate';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+// import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,13 +70,15 @@ export default function App() {
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <SafeAreaView style={{ flex: 1 }}>
-            <StatusBar
-              barStyle={ThemeService.getStatusBarStyle()}
-              backgroundColor="transparent"
-              translucent={Platform.OS === 'android'}
-            />
-            <AppContent />
-            {/* <SessionExpiredModal /> */}
+            <KeyboardProvider>
+              <StatusBar
+                barStyle={ThemeService.getStatusBarStyle()}
+                backgroundColor="transparent"
+                translucent={Platform.OS === 'android'}
+              />
+              <AppContent />
+              {/* <SessionExpiredModal /> */}
+            </KeyboardProvider>
           </SafeAreaView>
         </GestureHandlerRootView>
       </SafeAreaProvider>
