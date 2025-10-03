@@ -1,6 +1,5 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Alert,
   StyleSheet,
   View,
   TouchableOpacity,
@@ -24,14 +23,16 @@ import CustomText from '../components/ui/text';
 import Icon from '../components/icon';
 import Button from '../components/ui/button';
 import BackHeader from '../components/BackHeader';
-import { BASE_URL } from '../config';
-import { apiCall, formatTimeRange } from '../utils/helpers';
-import { getToken } from '../utils/tokenManager';
+import { formatTimeRange } from '../utils/helpers';
 import LoadingOverlay from '../components/loadingOverlay';
-import { useSessionDetails } from '../hooks/useApi';
+import {
+  useSessionDetails,
+  useToggleFavorite,
+  useUpdateAgenda,
+} from '../hooks/useApi';
 import Toast from 'react-native-simple-toast';
 import Modal from 'react-native-modal';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 const ICON_SIZE = 20;
 
 const OverView = ({ session }) => {
@@ -147,24 +148,34 @@ const Speakers = ({ type, list }) => {
     </View>
   );
 };
-const FooterBtn = ({ ...props }) => {
-  const favText = props.isFav ? 'Remove from Favorite' : 'Add to Favorite';
-  const agendaText =
-    props.isInAgenda && props.agenda !== '' ? 'Update Agenda' : 'Create Agenda';
+
+const FooterBtn = ({
+  onToggleFav,
+  onToggleAgenda,
+  isFav,
+  isInAgenda,
+  agendaText,
+  isPending,
+}) => {
+  const favText = isFav ? 'Remove from Favorite' : 'Add to Favorite';
+  const agendaButtonText =
+    isInAgenda && agendaText ? 'Update Agenda' : 'Create Agenda';
+
   return (
     <View style={styles.footerBtnWrapper}>
       <View style={styles.footerContainer}>
         <Button
           title={favText}
           variant={'primary'}
-          onPress={props.addFav}
+          onPress={onToggleFav}
+          disabled={isPending}
           textStyle={styles.footerBtnText}
         />
-
         <Button
-          title={agendaText}
+          title={agendaButtonText}
           variant={'secondary'}
-          onPress={props.togglenModalCreateAgenda}
+          onPress={onToggleAgenda}
+          disabled={isPending}
           textStyle={styles.footerBtnText}
         />
       </View>
@@ -180,13 +191,19 @@ export default function SessionsDetailsScreen() {
   const { sessionId } = route.params as { sessionId: number };
   const { data: session, isLoading, isError } = useSessionDetails(sessionId);
 
+  const { mutate: toggleFavorite, isPending: isTogglingFav } =
+    useToggleFavorite();
+
+  const { mutate: updateAgenda, isPending: isUpdatingAgenda } =
+    useUpdateAgenda();
+
   useEffect(() => {
     console.log('Session ID:', sessionId);
     setIsFav(session?.isFavorite);
     setAgendaText(session?.agenda);
   }, [session]);
 
-  if (isLoading) {
+  if (isLoading && !session) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <LoadingOverlay visible={true} />
@@ -203,45 +220,6 @@ export default function SessionsDetailsScreen() {
     );
   }
 
-  const addFav = async (sessionId: number) => {
-    const token = await getToken();
-    try {
-      const response = await apiCall(
-        BASE_URL + `/api/sessions/${sessionId}/favourite`,
-        'GET',
-        undefined,
-        token,
-      );
-      Toast.show(response?.message, Toast.LONG);
-      setIsFav(!isFav);
-      console;
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
-  const createAgenda = async (sessionId: number, agendaText: string) => {
-    const token = await getToken();
-    const obj = {
-      message: agendaText,
-      isInAgenda: true,
-    };
-    try {
-      const response = await apiCall(
-        BASE_URL + `/api/sessions/${sessionId}/agenda`,
-        'POST',
-        obj,
-        token,
-      );
-      Toast.show(response?.message, Toast.LONG);
-    } catch (error) {
-      console.log('error', error);
-    } finally {
-      setOpenModal(false);
-      setAgendaText('');
-    }
-  };
-
   const togglenModalCreateAgenda = () => {
     // Alert.alert('Development Work in progress');
     setOpenModal(!openModal);
@@ -249,10 +227,21 @@ export default function SessionsDetailsScreen() {
 
   const handleSaveAgenda = () => {
     if (!agendaText.trim()) {
-      Toast.show('Agenda cannot be empty.', Toast.SHORT);
+      Toast.show('Agenda note cannot be empty.', Toast.SHORT);
       return;
     }
-    createAgenda(sessionId, agendaText);
+    updateAgenda(
+      { sessionId, message: agendaText },
+      {
+        onSuccess: () => {
+          setOpenModal(false);
+        },
+      },
+    );
+  };
+
+  const handleToggleFavorite = () => {
+    toggleFavorite({ sessionId, isFav: !session?.isFavorite });
   };
 
   return (
@@ -275,11 +264,12 @@ export default function SessionsDetailsScreen() {
           )}
           {session?.status !== 'Completed' && (
             <FooterBtn
-              addFav={() => addFav(sessionId)}
-              isFav={isFav}
-              togglenModalCreateAgenda={togglenModalCreateAgenda}
+              onToggleFav={handleToggleFavorite}
+              onToggleAgenda={() => setOpenModal(true)}
+              isFav={session?.isFavorite}
               isInAgenda={session?.isInAgenda}
-              agenda={session?.agenda}
+              agendaText={session?.agenda}
+              isPending={isTogglingFav || isUpdatingAgenda}
             />
           )}
         </Card>

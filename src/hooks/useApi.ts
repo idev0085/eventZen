@@ -18,10 +18,17 @@ import {
   getExhibitors,
   getSponsors,
   getExhibitorById,
-  getSponsorById
+  getSponsorById,
 } from '../api/authApi';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
+import {
+  IUpdateAgendaPayload,
+  IToggleFavoritePayload,
+  toggleFavorite,
+  updateAgenda,
+  getMyAgenda,
+} from '../api/sessionsApi';
 
 // Profile hooks
 export const useProfile = () => {
@@ -70,6 +77,45 @@ export const useSessions = () => {
   return useQuery({
     queryKey: ['sessions'],
     queryFn: getSessions,
+  });
+};
+
+export const useToggleFavorite = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: IToggleFavoritePayload) => toggleFavorite(payload),
+    onSuccess: (data, variables) => {
+      Toast.show(data.message, Toast.LONG);
+      queryClient.invalidateQueries({ queryKey: ['sessions'] });
+      queryClient.invalidateQueries({ queryKey: ['session'] });
+      queryClient.invalidateQueries({
+        queryKey: ['session', variables.sessionId],
+      });
+    },
+  });
+};
+
+export const useUpdateAgenda = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: IUpdateAgendaPayload) => updateAgenda(payload),
+    onSuccess: (data, variables) => {
+      Toast.show(data.message, Toast.LONG);
+      queryClient.invalidateQueries({ queryKey: ['sessions'] });
+
+      queryClient.invalidateQueries({
+        queryKey: ['session', variables.sessionId],
+      });
+    },
+  });
+};
+
+export const useMyAgenda = () => {
+  return useQuery({
+    queryKey: ['myAgenda'],
+    queryFn: getMyAgenda,
   });
 };
 
@@ -162,7 +208,7 @@ export const useSponsors = () => {
     queryKey: ['sponsors'],
     queryFn: getSponsors,
   });
-}
+};
 
 export const useExhibitorDetails = (exhibitorId: string | number) => {
   return useQuery({

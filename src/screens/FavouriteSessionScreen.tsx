@@ -1,39 +1,35 @@
 import React from 'react';
-import { StyleSheet, View, RefreshControl, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  RefreshControl,
+  ScrollView,
+  Text,
+} from 'react-native';
 import { COLORS, TEXT_SIZES } from '../utils/constants';
 import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
-import CustomText from '../components/ui/text';
 import BackHeader from '../components/BackHeader';
 import { formatTimeRange, getFullNameFormatDate } from '../utils/helpers';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useSessions } from '../hooks/useApi';
 
-export default function FavouriteSessionScreen({ ...props }) {
-  const [favouriteSessions, setFavouriteSessions] = React.useState([]);
+export default function FavouriteSessionScreen({ navigation }) {
   const {
     data: sessionData,
     isLoading,
     refetch: refetchSessionData,
-    isRefetching: isRefetchingHome,
+    isRefetching,
   } = useSessions();
 
-  React.useEffect(() => {
-    if (sessionData && sessionData.length > 0) {
-      const favSessions = sessionData
-        .map(day => {
-          return {
-            ...day,
-            session_list: day.session_list.filter(
-              session => session.isFavorite === true,
-            ),
-          };
-        })
-        .filter(day => day.session_list.length > 0);
-      setFavouriteSessions(favSessions);
-    } else {
-      setFavouriteSessions([]);
-    }
+  const favouriteSessions = React.useMemo(() => {
+    if (!sessionData) return [];
+    return sessionData
+      .map(day => ({
+        ...day,
+        session_list: day.session_list.filter(session => session.isFavorite),
+      }))
+      .filter(day => day.session_list.length > 0);
   }, [sessionData]);
 
   if (isLoading) {
@@ -47,58 +43,53 @@ export default function FavouriteSessionScreen({ ...props }) {
         style={styles.container}
         refreshControl={
           <RefreshControl
-            refreshing={isRefetchingHome}
+            refreshing={isRefetching}
             onRefresh={refetchSessionData}
             tintColor={COLORS.primary}
           />
         }
       >
-        {Array.isArray(favouriteSessions) && favouriteSessions.length
-          ? favouriteSessions.map((day, index) => (
-              <View key={day.date || index}>
-                <CustomText
-                  style={{
-                    fontSize: TEXT_SIZES.md,
-                    fontWeight: 'bold',
-                    margin: 10,
-                  }}
-                >
-                  {getFullNameFormatDate(day?.date)}
-                </CustomText>
-                {day?.session_list?.map(session => (
-                  <Card key={session.id} style={styles.cardOngoing}>
-                    <SessionListItem
-                      title={session?.title}
-                      time={formatTimeRange(
-                        session?.start_time,
-                        session?.end_time,
-                      )}
-                      onPress={() =>
-                        props.navigation.navigate('SessionsDetailsScreen', {
-                          sessionId: session.id,
-                        })
-                      }
-                      speakers={session?.speakers}
-                      workshopNo={session?.workshop_no}
-                      status={session?.status}
-                      isFavorite={session?.isFavorite}
-                      my_agenda=""
-                    />
-                  </Card>
-                ))}
-              </View>
-            ))
-          : null}
+        {favouriteSessions.length > 0 ? (
+          favouriteSessions.map((day, index) => (
+            <View key={day.date || index}>
+              <Text style={styles.dateHeader}>
+                {getFullNameFormatDate(day?.date)}
+              </Text>
+              {day.session_list.map(session => (
+                <Card key={session.id} style={styles.cardOngoing}>
+                  <SessionListItem
+                    title={session?.title}
+                    time={formatTimeRange(
+                      session?.start_time,
+                      session?.end_time,
+                    )}
+                    onPress={() =>
+                      navigation.navigate('SessionsDetailsScreen', {
+                        sessionId: session.id,
+                      })
+                    }
+                    speakers={session?.speakers}
+                    workshopNo={session?.workshop_no}
+                    status={session?.status}
+                    isFavorite={session?.isFavorite}
+                  />
+                </Card>
+              ))}
+            </View>
+          ))
+        ) : (
+          <Text style={styles.noResultsText}>
+            You have no favorite sessions yet.
+          </Text>
+        )}
       </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
+  container: { flex: 1, backgroundColor: COLORS.background },
+  dateHeader: { fontSize: TEXT_SIZES.md, fontWeight: 'bold', margin: 10 },
   cardOngoing: {
     marginHorizontal: 10,
     alignSelf: 'center',
@@ -112,7 +103,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingRight: 30,
     borderRadius: 10,
-    // borderWidth: 1,
-    // borderColor: COLORS.primary,
+  },
+  noResultsText: {
+    textAlign: 'center',
+    marginTop: 50,
+    fontSize: 16,
+    color: COLORS.textLight,
   },
 });
