@@ -114,7 +114,7 @@ const ConnectionEdit = () => {
           <FileUploadCard
             maxFiles={1}
             maxSizeMB={5}
-            title="Upload Visiting Card"
+            title="Select file to upload"
             labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
             description="JPG or PNG (max 5MB)"
             onUpload={(fileBase64: string) => {
