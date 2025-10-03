@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
   textBoxStyle: {
     marginTop: 10,
     marginBottom: 10,
-    height: 40,
+    height: 50,
     fontSize: 15,
     fontFamily: 'Roboto-Regular',
     color: COLORS.text,
