@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import BackHeader from '../components/BackHeader';
-import { COLORS, TEXT_SIZES } from '../utils/constants';
+import { COLORS } from '../utils/constants';
 import UserCard from '../components/userCard';
 import ContactDetailsCard from '../components/contactDetailsCard';
 import AddNote from '../components/addNote';
 import Button from '../components/ui/button';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useUpdateConnectionNote } from '../hooks/useConnections';
+import KeyboardAvoidingContainer from '../components/keyboardAvoidingContainer';
 
 const ConnectionFound = () => {
-  const [textArea, setTextArea] = useState('');
   const route = useRoute();
   const navigation = useNavigation();
   const { connection } = route.params;
 
-  // Naya hook use karo
   const { mutate: updateNote, isPending } = useUpdateConnectionNote();
 
   const [note, setNote] = useState(connection.note || '');
@@ -29,8 +28,8 @@ const ConnectionFound = () => {
 
   return (
     <>
-      <BackHeader title="Connection Details" showBtn={true} />
-      <ScrollView>
+      <KeyboardAvoidingContainer>
+        <BackHeader title="Connection Details" showBtn={true} />
         <UserCard
           imageUrl={connection.avatar}
           companyName={connection.company}
@@ -44,23 +43,23 @@ const ConnectionFound = () => {
           website={connection.company_website}
         />
         <AddNote heading="Add Note" value={note} onChangeText={setNote} />
-      </ScrollView>
-      <View style={styles.buttonRow}>
-        <Button
-          title="Cancel"
-          variant="outlined"
-          onPress={() => {
-            navigation.goBack();
-          }}
-          style={styles.buttonHalf}
-        />
-        <Button
-          title={isPending ? 'Saving...' : 'Save'}
-          onPress={handleSave}
-          style={styles.buttonHalf}
-          disabled={isPending}
-        />
-      </View>
+        <View style={styles.buttonRow}>
+          <Button
+            title="Cancel"
+            variant="outlined"
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={styles.buttonHalf}
+          />
+          <Button
+            title={isPending ? 'Saving...' : 'Save'}
+            onPress={handleSave}
+            style={styles.buttonHalf}
+            disabled={isPending}
+          />
+        </View>
+      </KeyboardAvoidingContainer>
     </>
   );
 };
@@ -82,6 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
     gap: 10,
+    backgroundColor: '#fff',
   },
   buttonHalf: {
     flex: 1,
