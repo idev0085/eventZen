@@ -78,6 +78,7 @@ export const APP_CONFIG = {
   RESEND_TIMER: 60,
   PLAYSTORE_URL: 'https://play.google.com/store/apps/details',
   ANDROID_PACKAGE_NAME: 'com.eventzen',
+  QR_APP_IDENTIFIER: 'com.canadianSME.app',
 };
 
 export const COLORS = {

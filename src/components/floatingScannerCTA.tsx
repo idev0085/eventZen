@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { ScannerActionIcon } from '../utils/constants';
+import { APP_CONFIG, ScannerActionIcon } from '../utils/constants';
 import QRScannerModal from './QRScannerModal';
 import { useScanConnection } from '../hooks/useConnections';
 import { useNavigation } from '@react-navigation/native';
 import LoadingOverlay from './loadingOverlay';
 import AlertModal from '../screens/AlertModal';
+import Toast from 'react-native-simple-toast';
 
 const FloatingScannerCTA = () => {
   const [isScannerVisible, setScannerVisible] = useState(false);
@@ -22,7 +23,14 @@ const FloatingScannerCTA = () => {
   const handleScanSuccess = (qrValue: string) => {
     console.log('Scanned:', qrValue);
     setScannerVisible(false);
-    performScan(JSON.parse(qrValue).id);
+    if (JSON.parse(qrValue).app !== APP_CONFIG.QR_APP_IDENTIFIER) {
+      Toast.show('Invalid QR Code!', Toast.LONG);
+      return;
+    } else if (JSON.parse(qrValue).id) {
+      performScan(JSON.parse(qrValue).id);
+    } else {
+      Toast.show('', Toast.LONG);
+    }
   };
 
   const handleManualEntry = () => {

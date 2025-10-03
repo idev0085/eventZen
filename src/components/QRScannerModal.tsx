@@ -98,7 +98,6 @@ const QRScannerModal = ({ onClose, onScanSuccess }: QRScannerModalProps) => {
   const handleQrDetected = useCallback(
     async (qrValue: string) => {
       try {
-        Toast.show(`QR Code Detected!`, Toast.SHORT);
         onScanSuccess(qrValue);
         onClose();
       } catch (error) {
