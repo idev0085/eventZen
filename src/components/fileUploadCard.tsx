@@ -16,7 +16,7 @@ import {
   PNGIcon,
   TEXT_SIZES,
 } from '../utils/constants';
-import { launchImageLibrary, Asset } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 
 export interface UploadedFile {
@@ -34,13 +34,6 @@ interface LocalFileState {
   error?: string | null;
 }
 
-/**
- * onUpload:
- *  - For single-mode (maxFiles === 1 && !autoUpload) we will call onUpload(base64String)
- *  - For multiple auto-upload (autoUpload === true && maxFiles > 1) we will call onUpload(formData)
- *
- * onDelete: expects a function that returns a Promise (so component can wait & update UI accordingly).
- */
 interface FileUploadCardProps {
   maxFiles?: number;
   maxSizeMB?: number;
@@ -48,13 +41,13 @@ interface FileUploadCardProps {
   description?: string;
   label?: string;
   labelStyle?: object;
-  initialFiles?: UploadedFile[]; // initial list from server (controlled)
-  autoUpload?: boolean; // auto-upload immediately on selection
-  onUpload: (payload: string | FormData) => Promise<any> | void; // parent handler (upload)
-  onDelete: (fileId: string) => Promise<any> | void; // parent handler (delete)
-  showInitialFiles?: boolean; // whether to show initialFiles list (controlled)
-  isUploading?: boolean; // optional global flag
-  isDeleting?: boolean; // optional global flag
+  initialFiles?: UploadedFile[];
+  autoUpload?: boolean;
+  onUpload: (payload: string | FormData) => Promise<any> | void;
+  onDelete: (fileId: string) => Promise<any> | void;
+  showInitialFiles?: boolean;
+  isUploading?: boolean;
+  isDeleting?: boolean;
   type?: 'sponsor' | 'connection' | 'exhibitor' | '';
 }
 
@@ -74,11 +67,6 @@ const FileUploadCard = ({
   isDeleting = false,
   type = '',
 }: FileUploadCardProps) => {
-  if (!type && autoUpload) {
-    Toast.show('Please specify the type', Toast.SHORT);
-    return;
-  }
-  // local state holds both initialFiles and newly added files
   const [localFiles, setLocalFiles] = useState<LocalFileState[]>(
     () =>
       (initialFiles || []).map(f => ({
@@ -101,7 +89,6 @@ const FileUploadCard = ({
       error: null,
     }));
     setLocalFiles(mapped);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(initialFiles)]);
 
   const remainingSlots = Math.max(0, maxFiles - localFiles.length);
@@ -115,13 +102,12 @@ const FileUploadCard = ({
       return;
     }
 
-    // selection limit: remaining slots
     const selectionLimit = remainingSlots > 0 ? remainingSlots : 1;
 
     const result = await launchImageLibrary({
       mediaType: 'photo',
       selectionLimit,
-      includeBase64: !autoUpload || maxFiles === 1, // include base64 if we need base64 (single mode)
+      includeBase64: !autoUpload || maxFiles === 1,
     });
 
     if (result.didCancel) return;
@@ -133,12 +119,10 @@ const FileUploadCard = ({
 
     if (!result.assets || result.assets.length === 0) return;
 
-    // process each selected asset
     for (const asset of result.assets) {
       try {
         if (!asset) continue;
 
-        // safety checks
         if (asset.fileSize && asset.fileSize > maxSizeMB * 1024 * 1024) {
           Toast.show(
             `Please select an image smaller than ${maxSizeMB}MB.`,
@@ -150,113 +134,78 @@ const FileUploadCard = ({
         const displayName =
           asset.fileName || asset.uri?.split('/').pop() || 'unknown';
 
-        // Optimistically add to local state as uploading
-        const localEntryIndex = setLocalFileUploading(displayName);
-
         if (autoUpload && maxFiles > 1) {
-          // MULTIPLE AUTO-UPLOAD: send as FormData (multipart) — server expected file via formdata
-          // Create FormData for this asset. Use uri, name and type for RN.
-          const form = new FormData();
+          const localEntryIndex = setLocalFileUploading(displayName);
 
-          // On Android uri comes as "file://..." or content://...
-          // For iOS/Android we use the asset.uri directly
+          const form = new FormData();
           form.append('file', {
-            // @ts-ignore - React Native FormData file shape
+            // @ts-ignore
             uri: asset.uri,
             name: asset.fileName || `${Date.now()}.jpg`,
             type: asset.type || 'image/jpeg',
           });
-
-          // also append type param expected by backend
           form.append('type', type);
 
-          // call parent onUpload with FormData
-          let uploadResult;
           try {
-            uploadResult = await onUpload(form);
-          } catch (err) {
-            // If parent returns a rejected promise, we catch it here
-            console.error('Upload failed', err);
-            markLocalFileError(localEntryIndex, 'Upload failed');
-            Toast.show('Upload failed. Please try again.', Toast.LONG);
-            continue;
-          }
-
-          // if upload succeeded and server returned fileId/fileUrl, update local state
-          // we try to read common response fields if present
-          if (uploadResult && (uploadResult.fileId || uploadResult.fileUrl)) {
-            const returnedId =
-              uploadResult.fileId || uploadResult.fileID || uploadResult.id;
-            const returnedUrl = uploadResult.fileUrl || uploadResult.url;
-            setLocalFiles(prev => {
-              const copy = [...prev];
-              if (localEntryIndex >= 0 && localEntryIndex < copy.length) {
-                copy[localEntryIndex] = {
-                  ...copy[localEntryIndex],
-                  uploading: false,
-                  id: returnedId || copy[localEntryIndex].id,
-                  url: returnedUrl || copy[localEntryIndex].url,
-                };
-              }
-              return copy;
-            });
-          } else {
-            // if parent didn't return data, mark as uploaded but not having server id
-            markLocalFileUploaded(localEntryIndex);
-          }
-        } else {
-          // SINGLE or manual mode => we need base64 (send JSON)
-          if (!asset.base64) {
-            // fallback: if base64 missing, warn user
-            Toast.show(
-              'Unable to read file data. Please try another file.',
-              Toast.LONG,
-            );
-            markLocalFileErrorByName(displayName, 'No file data');
-            continue;
-          }
-          const mimeType = asset.type || 'image/jpeg';
-          const base64WithPrefix = `data:${mimeType};base64,${asset.base64}`;
-
-          // For single upload the parent expects base64 string
-          try {
-            const res = await onUpload(base64WithPrefix);
-            // parent may return server response; we try to update localFiles with returned id/url
-            const index = setLocalFileUploading(displayName);
-            if (res && (res.fileId || res.fileUrl)) {
+            const uploadResult = await onUpload(form);
+            if (uploadResult && (uploadResult.fileId || uploadResult.fileUrl)) {
+              const returnedId =
+                uploadResult.fileId || uploadResult.fileID || uploadResult.id;
+              const returnedUrl = uploadResult.fileUrl || uploadResult.url;
               setLocalFiles(prev => {
                 const copy = [...prev];
-                if (index >= 0 && index < copy.length) {
-                  copy[index] = {
-                    ...copy[index],
+                if (localEntryIndex >= 0 && localEntryIndex < copy.length) {
+                  copy[localEntryIndex] = {
+                    ...copy[localEntryIndex],
                     uploading: false,
-                    id: res.fileId || res.id || copy[index].id,
-                    url: res.fileUrl || res.url || copy[index].url,
+                    id: returnedId || copy[localEntryIndex].id,
+                    url: returnedUrl || copy[localEntryIndex].url,
                   };
                 }
                 return copy;
               });
             } else {
-              // If no response needed, just mark uploaded
-              markLocalFileUploaded(index);
+              markLocalFileUploaded(localEntryIndex);
             }
           } catch (err) {
-            console.error('Upload error', err);
+            console.error('Upload failed', err);
+            markLocalFileError(localEntryIndex, 'Upload failed');
             Toast.show('Upload failed. Please try again.', Toast.LONG);
-            markLocalFileErrorByName(displayName, 'Upload failed');
+          }
+        } else {
+          if (!asset.base64) {
+            Toast.show(
+              'Unable to read file data. Please try another file.',
+              Toast.LONG,
+            );
             continue;
           }
+
+          const mimeType = asset.type || 'image/jpeg';
+          const base64WithPrefix = `data:${mimeType};base64,${asset.base64}`;
+
+          onUpload(base64WithPrefix);
+
+          setLocalFiles([
+            {
+              id: Date.now().toString(),
+              name: displayName,
+              url: asset.uri,
+              uploading: false,
+              deleting: false,
+              error: null,
+            },
+          ]);
         }
       } catch (err) {
         console.error('handlePick error', err);
         Toast.show('Something went wrong. Please try again.', Toast.LONG);
       }
-    } // end loop assets
+    }
   };
 
-  // helpers to manage localFiles state
+  // Helpers
   const setLocalFileUploading = (name: string) => {
-    // add file entry and return its index
     const newEntry: LocalFileState = {
       name,
       uploading: true,
@@ -264,8 +213,7 @@ const FileUploadCard = ({
       error: null,
     };
     setLocalFiles(prev => [...prev, newEntry]);
-    // index is last
-    return localFiles.length; // note: localFiles isn't updated synchronously; caller should handle via returned index carefully
+    return localFiles.length;
   };
 
   const markLocalFileError = (index: number, errMsg: string) => {
@@ -288,34 +236,20 @@ const FileUploadCard = ({
     });
   };
 
-  const markLocalFileErrorByName = (name: string, errMsg: string) => {
-    setLocalFiles(prev => {
-      const copy = [...prev];
-      const idx = copy.findIndex(x => x.name === name && x.uploading);
-      if (idx >= 0)
-        copy[idx] = { ...copy[idx], uploading: false, error: errMsg };
-      return copy;
-    });
-  };
-
-  // Delete handler triggered by cross icon
   const handleDeletePress = async (file: LocalFileState) => {
     if (!file) return;
-    // If file has a server id, call parent onDelete. If it doesn't, just remove local entry.
+
     if (!file.id) {
-      // not uploaded to server yet or single local file → just remove
       setLocalFiles(prev => prev.filter(f => f !== file));
       return;
     }
 
-    // mark deleting
     setLocalFiles(prev =>
       prev.map(f => (f.id === file.id ? { ...f, deleting: true } : f)),
     );
 
     try {
-      await onDelete(file.id!); // expect parent to return a Promise (mutateAsync preferred)
-      // on success remove entry
+      await onDelete(file.id!);
       setLocalFiles(prev => prev.filter(f => f.id !== file.id));
       Toast.show('File deleted successfully!', Toast.SHORT);
     } catch (err) {
