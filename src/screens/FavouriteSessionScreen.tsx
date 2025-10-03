@@ -17,6 +17,7 @@ export default function FavouriteSessionScreen({ ...props }) {
     refetch: refetchSessionData,
     isRefetching: isRefetchingHome,
   } = useSessions();
+
   React.useEffect(() => {
     if (sessionData && sessionData.length > 0) {
       const favSessions = sessionData
@@ -35,6 +36,10 @@ export default function FavouriteSessionScreen({ ...props }) {
     }
   }, [sessionData]);
 
+  if (isLoading) {
+    return <LoadingOverlay visible={true} />;
+  }
+
   return (
     <>
       <BackHeader title="Favorite Sessions" showBtn={true} />
@@ -48,44 +53,42 @@ export default function FavouriteSessionScreen({ ...props }) {
           />
         }
       >
-        {isLoading ? (
-          <LoadingOverlay visible={true} />
-        ) : (
-          favouriteSessions?.map((day, index) => (
-            <View key={day.date || index}>
-              <CustomText
-                style={{
-                  fontSize: TEXT_SIZES.md,
-                  fontWeight: 'bold',
-                  margin: 10,
-                }}
-              >
-                {getFullNameFormatDate(day?.date)}
-              </CustomText>
-              {day?.session_list?.map(session => (
-                <Card key={session.id} style={styles.cardOngoing}>
-                  <SessionListItem
-                    title={session?.title}
-                    time={formatTimeRange(
-                      session?.start_time,
-                      session?.end_time,
-                    )}
-                    onPress={() =>
-                      props.navigation.navigate('SessionsDetailsScreen', {
-                        sessionId: session.id,
-                      })
-                    }
-                    speakers={session?.speakers}
-                    workshopNo={session?.workshop_no}
-                    status={session?.status}
-                    isFavorite={session?.isFavorite}
-                    my_agenda=""
-                  />
-                </Card>
-              ))}
-            </View>
-          ))
-        )}
+        {Array.isArray(favouriteSessions) && favouriteSessions.length
+          ? favouriteSessions.map((day, index) => (
+              <View key={day.date || index}>
+                <CustomText
+                  style={{
+                    fontSize: TEXT_SIZES.md,
+                    fontWeight: 'bold',
+                    margin: 10,
+                  }}
+                >
+                  {getFullNameFormatDate(day?.date)}
+                </CustomText>
+                {day?.session_list?.map(session => (
+                  <Card key={session.id} style={styles.cardOngoing}>
+                    <SessionListItem
+                      title={session?.title}
+                      time={formatTimeRange(
+                        session?.start_time,
+                        session?.end_time,
+                      )}
+                      onPress={() =>
+                        props.navigation.navigate('SessionsDetailsScreen', {
+                          sessionId: session.id,
+                        })
+                      }
+                      speakers={session?.speakers}
+                      workshopNo={session?.workshop_no}
+                      status={session?.status}
+                      isFavorite={session?.isFavorite}
+                      my_agenda=""
+                    />
+                  </Card>
+                ))}
+              </View>
+            ))
+          : null}
       </ScrollView>
     </>
   );
