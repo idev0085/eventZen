@@ -153,19 +153,21 @@ const FooterBtn = ({ ...props }) => {
     props.isInAgenda && props.agenda !== '' ? 'Update Agenda' : 'Create Agenda';
   return (
     <View style={styles.footerBtnWrapper}>
-      <Button
-        title={favText}
-        variant={'primary'}
-        onPress={props.addFav}
-        textStyle={styles.footerBtnText}
-      />
+      <View style={styles.footerContainer}>
+        <Button
+          title={favText}
+          variant={'primary'}
+          onPress={props.addFav}
+          textStyle={styles.footerBtnText}
+        />
 
-      <Button
-        title={agendaText}
-        variant={'secondary'}
-        onPress={props.togglenModalCreateAgenda}
-        textStyle={styles.footerBtnText}
-      />
+        <Button
+          title={agendaText}
+          variant={'secondary'}
+          onPress={props.togglenModalCreateAgenda}
+          textStyle={styles.footerBtnText}
+        />
+      </View>
     </View>
   );
 };
@@ -337,12 +339,12 @@ export default function SessionsDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    marginHorizontal: 10,
   },
   card: {
     marginHorizontal: 10,
     alignSelf: 'center',
-    width: '90%',
+    width: '100%',
     justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -352,13 +354,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     backgroundColor: COLORS.white,
+    // backgroundColor: 'red',
   },
   sessionMeta: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 10,
-    // width: '50%',
   },
   speakerImage: {
     // height: 60,
@@ -401,15 +402,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   footerBtnWrapper: {
+    flex: 1,
+  },
+  footerContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    gap: 5,
   },
   footerBtnText: {
     color: COLORS.white,
     fontFamily: 'Roboto-Regular',
-    fontSize: 14,
-    // padding: 5,
+    fontSize: 12,
+    fontWeight: '500',
   },
   statusText: {
     fontSize: 14,
@@ -420,11 +423,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Roboto-Regular',
     color: COLORS.success,
+    marginLeft: 5,
   },
   statusTextUpcoming: {
     fontSize: 14,
     fontFamily: 'Roboto-Regular',
     color: COLORS.warning,
+    marginLeft: 5,
   },
   modal: {
     justifyContent: 'center',
