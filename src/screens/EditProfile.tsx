@@ -6,7 +6,6 @@ import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import TextBox from '../components/ui/textBox';
 import Button from '../components/ui/button';
-import { ScrollView } from 'react-native-gesture-handler';
 import BackHeader from '../components/BackHeader';
 import Toast from 'react-native-simple-toast';
 import {
@@ -17,6 +16,7 @@ import {
 } from '../hooks/useApi';
 import LoadingOverlay from '../components/loadingOverlay';
 import { pickImage } from '../utils/imagePicker';
+import KeyboardAvoidingContainer from '../components/keyboardAvoidingContainer';
 
 const EditProfile = () => {
   const { data: profileData, isLoading: isProfileLoading } = useProfile();
@@ -222,8 +222,8 @@ const EditProfile = () => {
 
   return (
     <>
-      <BackHeader title="Edit Profile" />
-      <ScrollView>
+      <KeyboardAvoidingContainer>
+        <BackHeader title="Edit Profile" />
         <Card style={styles.card}>
           <TouchableOpacity
             style={styles.imageBox}
@@ -368,16 +368,16 @@ const EditProfile = () => {
             editable={true}
           />
         </Card>
-      </ScrollView>
-      <View style={styles.btnContainer}>
-        <Button
-          title={isUpdating ? 'Saving...' : 'Save'}
-          onPress={handleSave}
-          style={{ width: '95%' }}
-          textStyle={styles.btnTextStyle}
-          disabled={isUpdating}
-        />
-      </View>
+        <View style={styles.btnContainer}>
+          <Button
+            title={isUpdating ? 'Saving...' : 'Save'}
+            onPress={handleSave}
+            style={{ width: '95%' }}
+            textStyle={styles.btnTextStyle}
+            disabled={isUpdating}
+          />
+        </View>
+      </KeyboardAvoidingContainer>
     </>
   );
 };
