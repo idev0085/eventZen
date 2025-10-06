@@ -128,7 +128,8 @@ const HomeScreen = ({ ...props }) => {
   //   setPlaying(prev => !prev);
   // }, []);
   const handleOnStartNetworking = () => {
-    Toast.show('Start Networking Live', Toast.LONG);
+    props.navigation.navigate('AttendeesScreen');
+    // Toast.show('Start Networking Live', Toast.LONG);
   };
 
   const VIDEO = getVideoId(homeData?.banner?.videoUrl);

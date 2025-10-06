@@ -25,7 +25,29 @@ import { apiCall } from '../utils/helpers';
 //   );
 // };
 
-const WebViewer = ({ htmlData }) => {
+type WebViewerProps = {
+  htmlData?: string;
+  locationURL?: string;
+};
+
+const WebViewer = ({ htmlData, locationURL }: WebViewerProps) => {
+  if (locationURL) {
+    return (
+      <View style={{ flex: 1 }}>
+        <WebView
+          originWhitelist={['*']}
+          source={{ uri: locationURL }}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          // textZoom={200}
+          scalesPageToFit={true}
+
+          // renderLoading={LoadingIndicatorView}
+          // containerStyle={{ flex: 1, padding: 20, backgroundColor: 'white' }}
+        />
+      </View>
+    );
+  }
   return (
     <WebView
       originWhitelist={['*']}
@@ -64,7 +86,11 @@ const CMSScreen = ({ ...props }) => {
     <>
       {props?.page === 'about' && <WebViewer htmlData={htmlData} />}
 
-      {props?.page === 'location' && <WebViewer htmlData={htmlData} />}
+      {props?.page === 'location' && (
+        <WebViewer
+          locationURL={'https://sme.nodejsdapldevelopments.com/venue/app'}
+        />
+      )}
 
       {props?.page === 'privacy-policy' && <WebViewer htmlData={htmlData} />}
 
