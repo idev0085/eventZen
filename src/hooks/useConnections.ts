@@ -67,7 +67,7 @@ export const useUpdateConnectionNote = () => {
     onSuccess: () => {
       Toast.show('Note updated successfully!', Toast.LONG);
       queryClient.invalidateQueries({ queryKey: ['connections'] });
-      navigation.navigate('ConnectionScreen');
+      navigation.navigate('BottomTabNavigator', {initialRouteName: 'Connection'});
     },
     onError: (error: any) => {
       const message = error.response?.data?.message || 'Failed to update note!';

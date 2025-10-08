@@ -15,6 +15,8 @@ import { EditProfileIcon, COLORS } from '../utils/constants';
 import { WebView } from 'react-native-webview';
 import { BASE_URL } from '../config';
 import { apiCall } from '../utils/helpers';
+import Orientation from 'react-native-orientation-locker';
+
 // const LoadingIndicatorView = () => {
 //   return (
 //     <ActivityIndicator
@@ -41,6 +43,8 @@ const WebViewer = ({ htmlData, locationURL }: WebViewerProps) => {
           domStorageEnabled={true}
           // textZoom={200}
           scalesPageToFit={true}
+          //style={{ width: width, height: height, backgroundColor: 'red' }}
+          //allowsFullscreenVideo={true}
 
           // renderLoading={LoadingIndicatorView}
           // containerStyle={{ flex: 1, padding: 20, backgroundColor: 'white' }}
@@ -64,6 +68,19 @@ const WebViewer = ({ htmlData, locationURL }: WebViewerProps) => {
 
 const CMSScreen = ({ ...props }) => {
   const [htmlData, setHtmlData] = useState('');
+
+  useEffect(() => {
+    // Lock to landscape when the component mounts
+    if (props?.page === 'location') {
+      Orientation.lockToLandscape();
+    }
+
+    return () => {
+      // Unlock to portrait (or default) when the component unmounts
+      Orientation.lockToPortrait(); // Or Orientation.unlockAllOrientations();
+    };
+  }, [props?.page]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {

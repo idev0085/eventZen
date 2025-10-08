@@ -17,10 +17,16 @@ import HomeDrawerNavigator from './HomeDrawerNavigator';
 
 const Tab = createBottomTabNavigator();
 
-const BottomTabNavigator = () => {
+interface BottomTabNavigatorProps {
+  initialRouteName?: string;
+}
+
+const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
+  initialRouteName = 'Home',
+}) => {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName={initialRouteName}
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarActiveTintColor: COLORS.primary,

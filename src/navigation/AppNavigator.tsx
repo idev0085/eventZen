@@ -33,12 +33,18 @@ import ConnectionScreen from '../screens/ConnectionsScreen';
 
 const AppStack = createStackNavigator();
 
+function BottomTabNavigatorWrapper({ route }) {
+  // Get initialRouteName from params, fallback to 'Home'
+  const initialRouteName = route?.params?.initialRouteName || 'Home';
+  return <BottomTabNavigator initialRouteName={initialRouteName} />;
+}
+
 function AppNavigator() {
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
       <AppStack.Screen
         name="BottomTabNavigator"
-        component={BottomTabNavigator}
+        component={BottomTabNavigatorWrapper}
       />
       <AppStack.Screen name="CMSScreen" component={CMSScreen} />
       <AppStack.Screen name="CompanyDetails" component={CompanyDetailsScreen} />
