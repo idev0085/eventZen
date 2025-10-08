@@ -215,7 +215,7 @@ export const GENERATED_CONNECTIONS = [
 ];
 
 export const API_ENDPOINTS = {
-  BASE_URL: 'https://api.eventzen.com',
+  BASE_URL: 'https://eventzen.io',
   AUTH: '/auth',
   USER: '/user',
   REQUEST_TIMEOUT: 15000,
