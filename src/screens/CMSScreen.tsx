@@ -33,6 +33,16 @@ type WebViewerProps = {
 };
 
 const WebViewer = ({ htmlData, locationURL }: WebViewerProps) => {
+  const enableTextZoomJS = `
+    var meta = document.createElement('meta');
+    meta.setAttribute('name', 'viewport');
+    meta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=2, user-scalable=yes');
+    document.getElementsByTagName('head')[0].appendChild(meta);
+
+    var style = document.createElement('style');
+    style.innerHTML = "body, * { font-family: 'Roboto-Regular', 'Roboto', Arial, sans-serif !important; }";
+    document.head.appendChild(style);
+  `;
   if (locationURL) {
     return (
       <View style={{ flex: 1 }}>
@@ -58,10 +68,12 @@ const WebViewer = ({ htmlData, locationURL }: WebViewerProps) => {
       source={{ html: htmlData }}
       javaScriptEnabled={true}
       domStorageEnabled={true}
-      textZoom={200}
-      scalesPageToFit={true}
+      // textZoom={200}
+      //scalesPageToFit={true}
       // renderLoading={LoadingIndicatorView}
       containerStyle={{ flex: 1, padding: 20, backgroundColor: 'white' }}
+      injectedJavaScript={enableTextZoomJS}
+      onMessage={event => {}}
     />
   );
 };

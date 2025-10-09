@@ -15,7 +15,7 @@ const FloatingScannerCTA = () => {
 
   const { mutate: performScan, isPending: isScanning } = useScanConnection({
     onScanError: () => {
-      setScannerVisible(false);
+      // setScannerVisible(false);
       setAlertVisible(true);
     },
   });

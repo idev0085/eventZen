@@ -86,7 +86,11 @@ export default function UserList({
             </CustomText>
           )}
         </View>
-        {!notificationData?.isRead && <View style={styles.badgeNew}></View>}
+        {!notificationData?.isRead ? (
+          <View style={styles.badgeNew}></View>
+        ) : (
+          <View style={styles.badgeBlank}></View>
+        )}
       </View>
     );
   }
@@ -109,26 +113,33 @@ export default function UserList({
           </View>
         </View>
         <View style={styles.rightContainerAttendees}>
-          <CustomText style={styles.textName}>
-            {attendeesData?.name || '-'}
-          </CustomText>
+          {attendeesData?.name && (
+            <CustomText style={styles.textName}>
+              {attendeesData?.name}
+            </CustomText>
+          )}
 
-          <CustomText style={styles.textDesignation}>
-            {attendeesData?.role || '-'}
-          </CustomText>
+          {attendeesData?.role && (
+            <CustomText style={styles.textDesignation}>
+              {attendeesData?.role}
+            </CustomText>
+          )}
 
-          <CustomText style={styles.viewSpeakerText} onPress={viewSpeaker}>
-            {attendeesData?.company_name || '-'}
-          </CustomText>
+          {attendeesData?.company_name && (
+            <CustomText style={styles.viewSpeakerText} onPress={viewSpeaker}>
+              {attendeesData?.company_name}
+            </CustomText>
+          )}
 
-          <View style={styles.rolesWrapper}>
-            {attendeesData?.roles.length > 0 &&
-              attendeesData?.roles?.map((role, index) => (
+          {attendeesData?.roles.length > 0 && (
+            <View style={styles.rolesWrapper}>
+              {attendeesData?.roles?.map((role, index) => (
                 <View key={index} style={styles.roleBox}>
                   <CustomText style={styles.textMeta}>{role}</CustomText>
                 </View>
               ))}
-          </View>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     );
@@ -152,26 +163,33 @@ export default function UserList({
           </View>
         </View>
         <View style={styles.rightContainerAttendees}>
-          <CustomText style={styles.textName}>
-            {speakersData?.name || '-'}
-          </CustomText>
+          {speakersData?.name && (
+            <CustomText style={styles.textName}>
+              {speakersData?.name}
+            </CustomText>
+          )}
 
-          <CustomText style={styles.textDesignation}>
-            {speakersData?.role || '-'}
-          </CustomText>
+          {speakersData?.role && (
+            <CustomText style={styles.textDesignation}>
+              {speakersData?.role}
+            </CustomText>
+          )}
 
-          <CustomText style={styles.viewSpeakerText} onPress={viewSpeaker}>
-            {speakersData?.company_name || '-'}
-          </CustomText>
+          {speakersData?.company_name && (
+            <CustomText style={styles.viewSpeakerText} onPress={viewSpeaker}>
+              {speakersData?.company_name}
+            </CustomText>
+          )}
 
-          <View style={styles.rolesWrapper}>
-            {speakersData?.roles.length > 0 &&
-              speakersData?.roles?.map((role, index) => (
+          {speakersData?.roles?.length > 0 && (
+            <View style={styles.rolesWrapper}>
+              {speakersData?.roles?.map((role, index) => (
                 <View key={index} style={styles.roleBox}>
                   <CustomText style={styles.textMeta}>{role}</CustomText>
                 </View>
               ))}
-          </View>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     );
@@ -197,12 +215,17 @@ export default function UserList({
           </View>
         </View>
         <View style={styles.rightContainerExhibitors}>
-          <CustomText style={styles.textName}>
-            {exhibitorsData?.name || '-'}
-          </CustomText>
-          <CustomText style={styles.viewSpeakerText}>
-            Booth No. {exhibitorsData?.location || '-'}
-          </CustomText>
+          {exhibitorsData?.name && (
+            <CustomText style={styles.textName}>
+              {exhibitorsData?.name}
+            </CustomText>
+          )}
+
+          {exhibitorsData?.location && (
+            <CustomText style={styles.viewSpeakerText}>
+              Booth No. {exhibitorsData?.location}
+            </CustomText>
+          )}
         </View>
       </TouchableOpacity>
     );
@@ -226,9 +249,12 @@ export default function UserList({
           </View>
         </View>
         <View style={styles.rightContainerExhibitors}>
-          <CustomText style={styles.textName}>
-            {sponsorsData?.name || '-'}
-          </CustomText>
+          {sponsorsData?.name && (
+            <CustomText style={styles.textName}>
+              {sponsorsData?.name}
+            </CustomText>
+          )}
+
           <View style={{ margin: 5 }} />
           {sponsorsData?.level === 'Gold' && (
             <Level
@@ -345,6 +371,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     borderRadius: 5,
     marginRight: 5,
+  },
+  badgeBlank: {
+    width: 10,
+    height: 10,
   },
   spreakerBox: {
     flexDirection: 'row',
