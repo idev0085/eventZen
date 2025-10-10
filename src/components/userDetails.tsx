@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Linking } from 'react-native';
 import Card from '../components/card';
 import CustomText from '../components/ui/text';
 import { GreenBadge, COLORS } from '../utils/constants';
@@ -7,6 +7,7 @@ interface UserDetailsProps {
   name?: string;
   designation?: string;
   company?: string;
+  company_website?: string;
   image?: string;
   isAttendeeDetails?: boolean;
   roles?: string[];
@@ -15,6 +16,7 @@ export default function CompanyDetails({
   name,
   designation,
   company,
+  company_website,
   image,
   isAttendeeDetails = false,
   roles = [],
@@ -38,7 +40,20 @@ export default function CompanyDetails({
           {company && company !== '' && (
             <View style={styles.companyBox}>
               {isAttendeeDetails && <GreenBadge />}
-              <CustomText style={styles.textCompany}>{company}</CustomText>
+              <CustomText
+                style={
+                  company_website !== ''
+                    ? styles.textCompanyWeb
+                    : styles.textCompany
+                }
+                onPress={() => {
+                  company_website !== ''
+                    ? Linking.openURL(company_website)
+                    : null;
+                }}
+              >
+                {company}
+              </CustomText>
             </View>
           )}
 
@@ -106,6 +121,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textCompany: {
+    color: COLORS.text,
+    fontSize: 16,
+    fontFamily: 'Roboto-SemiBold',
+    marginLeft: 5,
+  },
+  textCompanyWeb: {
     color: COLORS.primary,
     fontSize: 16,
     fontFamily: 'Roboto-SemiBold',

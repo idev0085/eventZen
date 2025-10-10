@@ -84,9 +84,10 @@ const ConnectionDetails = () => {
         {/* Baaki sab JSX same rahega */}
         <UserCard
           imageUrl={connectionData.avatarUrl}
-          companyName={connectionData.companyName}
-          name={connectionData.rep_name}
-          role={connectionData.connection_role}
+          companyName={connectionData?.companyName}
+          company_website={connectionData?.company_website || ''}
+          name={connectionData?.rep_name}
+          role={connectionData?.connection_role}
         />
         <ContactDetails
           heading="Contact Details"
@@ -120,7 +121,7 @@ const ConnectionDetails = () => {
             {renderRating(connectionData.rating)}
           </View>
         </View>
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <View style={styles.downloadContainer}>
             <Text style={styles.sectionHeading}>Visting Card</Text>
             <TouchableOpacity
@@ -139,7 +140,7 @@ const ConnectionDetails = () => {
               { width: '100%', height: 200 },
             ]}
           />
-        </View>
+        </View> */}
         <Card style={styles.section}>
           <CustomText style={styles.textLabel}>Add Note</CustomText>
           <CustomText style={styles.textMeta}>

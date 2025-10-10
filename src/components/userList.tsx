@@ -99,6 +99,7 @@ export default function UserList({
       <TouchableOpacity
         style={styles.containerAttendees}
         onPress={() => viewDetails(attendeesData?.id)}
+        disabled={isSingle}
       >
         <View style={styles.leftContainer}>
           <View style={styles.imageBox}>
@@ -149,6 +150,7 @@ export default function UserList({
       <TouchableOpacity
         style={styles.containerAttendees}
         onPress={() => viewDetails(speakersData?.id)}
+        disabled={isSingle}
       >
         <View style={styles.leftContainer}>
           <View style={styles.imageBox}>
@@ -199,6 +201,7 @@ export default function UserList({
       <TouchableOpacity
         style={styles.containerAttendees}
         onPress={() => viewDetails(exhibitorsData?.id)}
+        disabled={isSingle}
       >
         <View style={styles.leftContainer}>
           <View style={styles.imageBox}>
@@ -235,6 +238,7 @@ export default function UserList({
       <TouchableOpacity
         style={styles.containerAttendees}
         onPress={() => viewDetails(sponsorsData?.id)}
+        disabled={isSingle}
       >
         <View style={styles.leftContainer}>
           <View style={styles.imageBox}>

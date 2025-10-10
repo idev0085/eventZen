@@ -44,6 +44,7 @@ export default function ViewSpeakersDetailsScreen({ ...props }) {
               name={speakerData?.name}
               designation={speakerData?.role}
               company={speakerData?.company_name}
+              company_website={speakerData?.company_website || ''}
               image={speakerData?.image_url}
               roles={speakerData?.roles}
               isAttendeeDetails={true}

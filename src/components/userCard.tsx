@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Linking } from 'react-native';
 import { COLORS, TEXT_SIZES, VerifiedBadgeIcon } from '../utils/constants';
 import Icon from './icon';
 
@@ -8,6 +8,7 @@ interface UserCardProps {
   companyName: string;
   name: string;
   role?: string;
+  company_website?: string;
 }
 
 const UserCard: React.FC<UserCardProps> = ({
@@ -15,6 +16,7 @@ const UserCard: React.FC<UserCardProps> = ({
   companyName,
   name,
   role,
+  company_website,
 }) => {
   return (
     <View style={styles.card}>
@@ -25,12 +27,26 @@ const UserCard: React.FC<UserCardProps> = ({
         size={80}
         backgroundColor={COLORS.placeholder}
         borderRadius={100}
+        resizeMode="cover"
       />
       <View style={styles.infoContainer}>
         {companyName && (
           <View style={styles.companyContainer}>
             <VerifiedBadgeIcon width={16} height={16} />
-            <Text style={styles.companyName}>{companyName}</Text>
+            <Text
+              style={
+                company_website !== ''
+                  ? styles.companyName
+                  : styles.companyNameText
+              }
+              onPress={() => {
+                company_website !== ''
+                  ? Linking.openURL(company_website)
+                  : null;
+              }}
+            >
+              {companyName}
+            </Text>
           </View>
         )}
         <Text style={styles.name}>{name ?? 'User Unknown'}</Text>
@@ -71,6 +87,12 @@ const styles = StyleSheet.create({
   companyName: {
     fontSize: TEXT_SIZES.xs,
     color: COLORS.primary,
+    marginLeft: 4,
+    fontWeight: '600',
+  },
+  companyNameText: {
+    fontSize: TEXT_SIZES.xs,
+    color: COLORS.text,
     marginLeft: 4,
     fontWeight: '600',
   },

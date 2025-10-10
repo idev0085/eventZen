@@ -170,13 +170,16 @@ const FooterBtn = ({
           onPress={onToggleFav}
           disabled={isPending}
           textStyle={styles.footerBtnText}
+          style={{ width: '48%' }}
         />
+        <View style={{ margin: 'auto' }} />
         <Button
           title={agendaButtonText}
           variant={'secondary'}
           onPress={onToggleAgenda}
-          disabled={isPending}
+          //disabled={isPending}
           textStyle={styles.footerBtnText}
+          style={{ width: '48%' }}
         />
       </View>
     </View>
@@ -392,11 +395,13 @@ const styles = StyleSheet.create({
   },
   footerBtnWrapper: {
     flex: 1,
-    alignItems: 'center',
+    // alignItems: 'center',
+    // marginLeft: 20,
+    // marginRight: 20,
   },
   footerContainer: {
     flexDirection: 'row',
-    gap: 5,
+    // justifyContent: 'space-evenly',
   },
   footerBtnText: {
     color: COLORS.white,
