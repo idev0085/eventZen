@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>eventZen</string>
+	<string>SME Summit 2025</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -39,13 +39,13 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs access to your Camera.</string>
+	<string>This app requires access to your camera to scan QR codes.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>This app needs permission to show you the event location in maps.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs permission to save images to your photo library.</string>
+	<string>This app needs permission to save images to your photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs access to your photos to allow you to select images for your profile and share them with others.</string>
+	<string>This app needs access to your photos to allow you to select images for your profile and share them with others.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>
@@ -68,6 +68,7 @@
 		<string>Roboto-SemiBoldItalic.ttf</string>
 		<string>Roboto-Thin.ttf</string>
 		<string>Roboto-ThinItalic.ttf</string>
+		<string>Ionicons.ttf</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>

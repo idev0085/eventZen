@@ -121,7 +121,7 @@ const ExhibitorsScreenDetails = () => {
         />
 
         <Card style={styles.card}>
-          <CustomText style={styles.textLabel}>Bio</CustomText>
+          <CustomText style={styles.textLabel}>About</CustomText>
           <CustomText style={styles.textMeta}>{exhibitorsData?.bio}</CustomText>
         </Card>
         {profileData?.is_exhibitor_id === exhibitorId && (
