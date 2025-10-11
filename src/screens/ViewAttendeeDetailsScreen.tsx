@@ -47,6 +47,7 @@ export default function ViewAttendeeDetailsScreen({ ...props }) {
               image={attendeesData?.image_url}
               roles={attendeesData?.roles}
               isAttendeeDetails={true}
+              company_website={attendeesData?.company_website || ''}
             />
 
             <ContactDetails
