@@ -5,19 +5,7 @@ import RNBlobUtil from 'react-native-blob-util';
 const androidRequest = async () => {
   if (Platform.OS !== 'android') return true;
   try {
-    if (Number(Platform.Version) >= 33) {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-        {
-          title: 'Media Permission Required',
-          message: 'App needs media access to save files to your gallery',
-          buttonPositive: 'Proceed',
-          buttonNegative: 'Cancel',
-        },
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    }
-    if (Number(Platform.Version) >= 29) {
+    if (Number(Platform.Version) <= 32) {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
