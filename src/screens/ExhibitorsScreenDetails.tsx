@@ -115,6 +115,9 @@ const ExhibitorsScreenDetails = () => {
           onPressSocialLink={url => {
             Linking.openURL(url);
           }}
+          onPressWebsite={() => {
+            Linking.openURL(exhibitorsData.website);
+          }}
         />
 
         <Card style={styles.card}>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Linking } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BackHeader from '../components/BackHeader';
 import { COLORS, JPGIcon, PNGIcon, TEXT_SIZES } from '../utils/constants';
@@ -85,12 +85,16 @@ const ConnectionEdit = () => {
           companyName={connection.companyName}
           name={connection.rep_name}
           designation={connection.rep_designation}
+          company_website={connection.company_website || ''}
         />
         <ContactDetailsCard
           email={connection.rep_email}
           phone={connection.rep_phone}
           address={connection.rep_address}
           website={connection.company_website}
+          onPressWebsite={() => {
+            Linking.openURL(connection.company_website);
+          }}
         />
         <View style={styles.section}>
           <FilterDropDown

@@ -115,6 +115,9 @@ const SponsorsDetailsScreen = () => {
           onPressSocialLink={url => {
             Linking.openURL(url);
           }}
+          onPressWebsite={() => {
+            Linking.openURL(sponsorData.website);
+          }}
         />
 
         <Card style={styles.card}>

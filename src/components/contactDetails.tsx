@@ -104,7 +104,7 @@ export default function ContactDetails({
         </View>
       )}
 
-      {website && (
+      {website && website !== '' && (
         <View style={styles.container}>
           <View style={styles.leftContainer}>
             <CustomText style={styles.textName}>Website</CustomText>

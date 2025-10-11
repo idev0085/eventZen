@@ -55,11 +55,12 @@ const ContactDetailsCard = ({
           <CustomText style={styles.subHeaderValueText}>{address}</CustomText>
         </View>
       )}
-      {website && (
+      {website && website !== '' && (
         <View>
           <CustomText style={styles.subHeaderText}>Website</CustomText>
           <CustomText
             style={[styles.subHeaderValueText, { color: COLORS.primary }]}
+            onPress={onPressWebsite}
           >
             {website}
           </CustomText>

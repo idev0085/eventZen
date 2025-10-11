@@ -69,7 +69,7 @@ const FloatingScannerCTA = () => {
         onButtonPress={handleManualEntry}
       />
 
-      {isScanning && <LoadingOverlay visible={true} />}
+      {/* {isScanning && <LoadingOverlay visible={true} />} */}
     </>
   );
 };
