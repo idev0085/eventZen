@@ -45,7 +45,7 @@ const WebViewer = ({ htmlData, locationURL }: WebViewerProps) => {
   `;
   if (locationURL) {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, padding: 10 }}>
         <WebView
           originWhitelist={['*']}
           source={{ uri: locationURL }}
@@ -84,12 +84,12 @@ const CMSScreen = ({ ...props }) => {
   useEffect(() => {
     // Lock to landscape when the component mounts
     if (props?.page === 'location') {
-      Orientation.lockToLandscape();
+      // Orientation.lockToLandscape();
     }
 
     return () => {
       // Unlock to portrait (or default) when the component unmounts
-      Orientation.lockToPortrait(); // Or Orientation.unlockAllOrientations();
+      // Orientation.lockToPortrait(); // Or Orientation.unlockAllOrientations();
     };
   }, [props?.page]);
 
@@ -116,9 +116,7 @@ const CMSScreen = ({ ...props }) => {
       {props?.page === 'about' && <WebViewer htmlData={htmlData} />}
 
       {props?.page === 'location' && (
-        <WebViewer
-          locationURL={'https://sme.nodejsdapldevelopments.com/venue/app'}
-        />
+        <WebViewer locationURL={'https://eventzen.io/venue/app'} />
       )}
 
       {props?.page === 'privacy-policy' && <WebViewer htmlData={htmlData} />}

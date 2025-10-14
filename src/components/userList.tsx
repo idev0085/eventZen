@@ -17,6 +17,7 @@ interface UserListProps {
   sponsorsData?: object;
   isSingle?: boolean;
 }
+
 export default function UserList({
   name,
   designation,
@@ -260,34 +261,43 @@ export default function UserList({
           )}
 
           <View style={{ margin: 5 }} />
-          {sponsorsData?.level === 'Gold' && (
+
+          {sponsorsData?.level && sponsorsData?.level !== '' && (
+            <Level
+              backgroundColor={sponsorsData?.color_code || COLORS.primary}
+              strokeColor={COLORS.white}
+              label={sponsorsData?.level || 'N/A'}
+            />
+          )}
+
+          {/* {sponsorsData?.level === 'Gold' && (
             <Level
               backgroundColor={COLORS.warning}
               strokeColor="#fff"
               label="Gold"
             />
-          )}
-          {sponsorsData?.level === 'Silver' && (
+          )} */}
+          {/* {sponsorsData?.level === 'Silver' && (
             <Level
               backgroundColor={COLORS.icon}
               strokeColor="#fff"
               label="Silver"
             />
-          )}
-          {sponsorsData?.level === 'Bronze' && (
+          )} */}
+          {/* {sponsorsData?.level === 'Bronze' && (
             <Level
               backgroundColor={COLORS.bronze}
               strokeColor="#fff"
               label="Bronze"
             />
-          )}
-          {sponsorsData?.level === 'Platinum' && (
+          )} */}
+          {/* {sponsorsData?.level === 'Platinum' && (
             <Level
               backgroundColor={COLORS.textInputPrimary}
               strokeColor={COLORS.textPrimary}
               label="Platinum"
             />
-          )}
+          )} */}
           {/* <CustomText style={styles.viewSpeakerText}>
             {exhibitorsData?.location}
           </CustomText> */}

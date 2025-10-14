@@ -70,7 +70,7 @@ const SponsorsDetailsScreen = () => {
   if (isDetailsLoading && !sponsorData) {
     return <LoadingOverlay visible={true} />;
   }
-
+  console.log('sponsorsData', sponsorData);
   return (
     <>
       <BackHeader title="Sponsor Details" showBtn={true} />

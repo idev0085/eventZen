@@ -65,36 +65,45 @@ export default function ContactDetails({
       <CustomText style={[styles.textHeadng, labelTextStyle]}>
         {heading}
       </CustomText>
-      <View style={styles.container}>
-        <View style={styles.leftContainer}>
-          <CustomText style={styles.textName}>Email ID</CustomText>
-          <CustomText style={styles.textDesignation}>
-            {email ? email : '-'}
-          </CustomText>
-        </View>
-        {enableEmailIcon ? (
-          <View style={styles.rightContainer}>
-            <TouchableOpacity onPress={onPressEmail} style={styles.companyBox}>
-              <EmailPadding />
-            </TouchableOpacity>
+      {email && email !== '' && (
+        <View style={styles.container}>
+          <View style={styles.leftContainer}>
+            <CustomText style={styles.textName}>Email ID</CustomText>
+            <CustomText style={styles.textDesignation}>{email}</CustomText>
           </View>
-        ) : null}
-      </View>
-      <View style={styles.container}>
-        <View style={styles.leftContainer}>
-          <CustomText style={styles.textName}>Phone No</CustomText>
-          <CustomText style={styles.textDesignation}>
-            {phone ? phone : '-'}
-          </CustomText>
+          {enableEmailIcon ? (
+            <View style={styles.rightContainer}>
+              <TouchableOpacity
+                onPress={onPressEmail}
+                style={styles.companyBox}
+              >
+                <EmailPadding />
+              </TouchableOpacity>
+            </View>
+          ) : null}
         </View>
-        {enablePhoneIcon ? (
-          <View style={styles.rightContainer}>
-            <TouchableOpacity onPress={onPressPhone} style={styles.companyBox}>
-              <PhonePadding />
-            </TouchableOpacity>
+      )}
+
+      {phone && phone !== '' && (
+        <View style={styles.container}>
+          <View style={styles.leftContainer}>
+            <CustomText style={styles.textName}>Phone No</CustomText>
+            <CustomText style={styles.textDesignation}>
+              {phone ? phone : '-'}
+            </CustomText>
           </View>
-        ) : null}
-      </View>
+          {enablePhoneIcon ? (
+            <View style={styles.rightContainer}>
+              <TouchableOpacity
+                onPress={onPressPhone}
+                style={styles.companyBox}
+              >
+                <PhonePadding />
+              </TouchableOpacity>
+            </View>
+          ) : null}
+        </View>
+      )}
       {address && (
         <View style={styles.container}>
           <View style={styles.leftContainer}>

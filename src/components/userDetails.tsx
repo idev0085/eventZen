@@ -35,8 +35,15 @@ export default function CompanyDetails({
           </View>
         </View>
         <View style={styles.rightContainer}>
-          <CustomText style={styles.textName}>{name}</CustomText>
-          <CustomText style={styles.textDesignation}>{designation}</CustomText>
+          {name && name !== '' && (
+            <CustomText style={styles.textName}>{name}</CustomText>
+          )}
+          {designation && designation !== '' && (
+            <CustomText style={styles.textDesignation}>
+              {designation}
+            </CustomText>
+          )}
+
           {company && company !== '' && (
             <View style={styles.companyBox}>
               {isAttendeeDetails && <GreenBadge />}

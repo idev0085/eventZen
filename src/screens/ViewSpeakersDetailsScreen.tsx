@@ -50,26 +50,29 @@ export default function ViewSpeakersDetailsScreen({ ...props }) {
               isAttendeeDetails={true}
             />
 
-            <ContactDetails
-              heading="Contact Details"
-              email={speakerData?.contact_details?.email}
-              phone={speakerData?.contact_details?.phone}
-              social_media_links={
-                speakerData?.contact_details?.social_media_links
-              }
-              isViewAttendeeDetails={true}
-              onPressEmail={() => {
-                Linking.openURL(
-                  `mailto:${speakerData?.contact_details?.email}`,
-                );
-              }}
-              onPressPhone={() => {
-                Linking.openURL(`tel:${speakerData?.contact_details?.phone}`);
-              }}
-              onPressSocialLink={url => {
-                Linking.openURL(url);
-              }}
-            />
+            {(speakerData?.contact_details?.email !== '' ||
+              speakerData?.contact_details?.phone !== '') && (
+              <ContactDetails
+                heading="Contact Details"
+                email={speakerData?.contact_details?.email}
+                phone={speakerData?.contact_details?.phone}
+                social_media_links={
+                  speakerData?.contact_details?.social_media_links
+                }
+                isViewAttendeeDetails={true}
+                onPressEmail={() => {
+                  Linking.openURL(
+                    `mailto:${speakerData?.contact_details?.email}`,
+                  );
+                }}
+                onPressPhone={() => {
+                  Linking.openURL(`tel:${speakerData?.contact_details?.phone}`);
+                }}
+                onPressSocialLink={url => {
+                  Linking.openURL(url);
+                }}
+              />
+            )}
 
             <Card style={styles.card}>
               <CustomText style={styles.textHeadng}>Bio</CustomText>

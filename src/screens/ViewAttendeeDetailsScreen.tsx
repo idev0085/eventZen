@@ -50,33 +50,43 @@ export default function ViewAttendeeDetailsScreen({ ...props }) {
               company_website={attendeesData?.company_website || ''}
             />
 
-            <ContactDetails
-              heading="Contact Details"
-              email={attendeesData?.contact_details?.email}
-              phone={attendeesData?.contact_details?.phone}
-              social_media_links={
-                attendeesData?.contact_details?.social_media_links
-              }
-              isViewAttendeeDetails={true}
-              onPressEmail={() => {
-                Linking.openURL(
-                  `mailto:${attendeesData?.contact_details?.email}`,
-                );
-              }}
-              onPressPhone={() => {
-                Linking.openURL(`tel:${attendeesData?.contact_details?.phone}`);
-              }}
-              onPressSocialLink={url => {
-                Linking.openURL(url);
-              }}
-            />
+            {(attendeesData?.contact_details?.email !== '' ||
+              attendeesData?.contact_details?.phone !== '') && (
+              <ContactDetails
+                heading="Contact Details"
+                email={attendeesData?.contact_details?.email}
+                phone={attendeesData?.contact_details?.phone}
+                social_media_links={
+                  attendeesData?.contact_details?.social_media_links
+                }
+                isViewAttendeeDetails={true}
+                onPressEmail={() => {
+                  Linking.openURL(
+                    `mailto:${attendeesData?.contact_details?.email}`,
+                  );
+                }}
+                onPressPhone={() => {
+                  Linking.openURL(
+                    `tel:${attendeesData?.contact_details?.phone}`,
+                  );
+                }}
+                onPressSocialLink={url => {
+                  Linking.openURL(url);
+                }}
+              />
+            )}
 
-            <Card style={styles.card}>
-              <CustomText style={styles.textHeadng}>Company Details</CustomText>
-              <CustomText style={styles.textMeta}>
-                {attendeesData?.company_details}
-              </CustomText>
-            </Card>
+            {attendeesData?.company_details &&
+              attendeesData?.company_details !== '' && (
+                <Card style={styles.card}>
+                  <CustomText style={styles.textHeadng}>
+                    Company Details
+                  </CustomText>
+                  <CustomText style={styles.textMeta}>
+                    {attendeesData?.company_details}
+                  </CustomText>
+                </Card>
+              )}
           </>
         )}
       </ScrollView>
@@ -99,7 +109,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     backgroundColor: '#fff',
-    padding: 10,
+    padding: 20,
     borderRadius: 10,
   },
   textHeadng: {
