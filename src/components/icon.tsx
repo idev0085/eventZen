@@ -14,7 +14,7 @@ const Icon: React.FC<IconProps> = ({
   size = 24,
   backgroundColor = COLORS.primary,
   borderRadius = 8,
-  resizeMode = 'cover',
+  resizeMode = 'contain',
 }) => {
   return (
     <Image

@@ -47,7 +47,7 @@ export default function UserList({
                 uri: notificationData?.imageUrl,
               }}
               size={80}
-              backgroundColor={COLORS.placeholder}
+              backgroundColor={COLORS.white}
               borderRadius={50}
             />
           </View>
@@ -109,7 +109,7 @@ export default function UserList({
                 uri: attendeesData?.image_url,
               }}
               size={80}
-              backgroundColor={COLORS.placeholder}
+              backgroundColor={COLORS.white}
               borderRadius={50}
             />
           </View>
@@ -160,7 +160,7 @@ export default function UserList({
                 uri: speakersData?.image_url,
               }}
               size={80}
-              backgroundColor={COLORS.placeholder}
+              backgroundColor={COLORS.white}
               borderRadius={50}
             />
           </View>
@@ -213,7 +213,7 @@ export default function UserList({
                   : exhibitorsData?.image_url,
               }}
               size={80}
-              backgroundColor={COLORS.placeholder}
+              backgroundColor={COLORS.white}
               borderRadius={50}
             />
           </View>
@@ -248,7 +248,7 @@ export default function UserList({
                 uri: isSingle ? sponsorsData?.avatar : sponsorsData?.image_url,
               }}
               size={80}
-              backgroundColor={COLORS.placeholder}
+              backgroundColor={COLORS.white}
               borderRadius={50}
             />
           </View>

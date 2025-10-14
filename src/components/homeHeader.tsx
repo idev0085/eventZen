@@ -36,7 +36,11 @@ const HomeHeader = ({
         <DrawerMenuButton />
         {/* Profile image and text */}
         <View style={styles.profileInfo}>
-          <Image source={{ uri: profileImage }} style={styles.profileImage} />
+          <Image
+            source={{ uri: profileImage }}
+            style={styles.profileImage}
+            resizeMode="contain"
+          />
           <View style={styles.textContainer}>
             <Text style={styles.username}>{userName && userName}</Text>
             <Text style={styles.welcomeMessage}>
@@ -85,6 +89,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     marginRight: 15,
+    backgroundColor: COLORS.white,
   },
   textContainer: {},
   username: {

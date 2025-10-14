@@ -29,7 +29,7 @@ export default function CompanyDetails({
             <Icon
               source={{ uri: image }}
               size={100}
-              backgroundColor={COLORS.placeholder}
+              backgroundColor={COLORS.white}
               borderRadius={50}
             />
           </View>

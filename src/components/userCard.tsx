@@ -25,9 +25,8 @@ const UserCard: React.FC<UserCardProps> = ({
           uri: imageUrl,
         }}
         size={80}
-        backgroundColor={COLORS.placeholder}
+        backgroundColor={COLORS.white}
         borderRadius={100}
-        resizeMode="cover"
       />
       <View style={styles.infoContainer}>
         {companyName && (

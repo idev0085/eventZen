@@ -131,7 +131,7 @@ const Speakers = ({ type, list }) => {
             <Icon
               source={{ uri: item?.image }}
               size={60}
-              backgroundColor={COLORS.placeholder}
+              backgroundColor={COLORS.white}
               borderRadius={50}
             />
             <View style={{ marginLeft: 10 }}>
