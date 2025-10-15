@@ -363,12 +363,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Roboto-Regular',
     color: COLORS.text,
+    paddingRight: 10,
   },
   textSpeakerDesignation: {
     fontSize: 12,
     fontFamily: 'Roboto-Regular',
     color: COLORS.primary,
     marginTop: 5,
+    paddingRight: 100,
   },
   textDetailsType: {
     fontSize: 18,
