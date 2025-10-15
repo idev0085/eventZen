@@ -49,6 +49,9 @@ interface FileUploadCardProps {
   isUploading?: boolean;
   isDeleting?: boolean;
   type?: 'sponsor' | 'connection' | 'exhibitor' | '';
+  profileData?: any | null;
+  exhibitorId?: number | string;
+  sponsorId?: number | string;
 }
 
 const FileUploadCard = ({
@@ -66,6 +69,9 @@ const FileUploadCard = ({
   isUploading = false,
   isDeleting = false,
   type = '',
+  profileData,
+  exhibitorId,
+  sponsorId,
 }: FileUploadCardProps) => {
   const [localFiles, setLocalFiles] = useState<LocalFileState[]>(
     () =>
@@ -268,37 +274,43 @@ const FileUploadCard = ({
     return null;
   };
 
+  console.log('profileData', profileData);
+  console.log('exhibitorId', exhibitorId);
+  console.log('sponsorId', sponsorId);
   return (
     <View style={styles.wrapper}>
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
 
-      <TouchableOpacity
-        style={styles.uploadBox}
-        onPress={handlePick}
-        disabled={isUploading}
-        activeOpacity={0.8}
-      >
-        <View style={styles.placeholder}>
-          {isUploading ? (
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          ) : (
-            <>
-              <View style={styles.uploadIcon}>
-                <CloudUploadIcon width={40} height={40} />
-              </View>
-              <Text style={styles.uploadText}>{title}</Text>
-              <Text style={styles.hintText}>{description}</Text>
-              <TouchableOpacity
-                style={styles.uploadButton}
-                onPress={handlePick}
-              >
-                <CloudUploadIcon color={'#fff'} />
-                <Text style={styles.uploadButtonText}>Upload File</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
-      </TouchableOpacity>
+      {(profileData?.is_exhibitor_id === exhibitorId ||
+        profileData?.is_sponsor_id === sponsorId) && (
+        <TouchableOpacity
+          style={styles.uploadBox}
+          onPress={handlePick}
+          disabled={isUploading}
+          activeOpacity={0.8}
+        >
+          <View style={styles.placeholder}>
+            {isUploading ? (
+              <ActivityIndicator size="large" color={COLORS.primary} />
+            ) : (
+              <>
+                <View style={styles.uploadIcon}>
+                  <CloudUploadIcon width={40} height={40} />
+                </View>
+                <Text style={styles.uploadText}>{title}</Text>
+                <Text style={styles.hintText}>{description}</Text>
+                <TouchableOpacity
+                  style={styles.uploadButton}
+                  onPress={handlePick}
+                >
+                  <CloudUploadIcon color={'#fff'} />
+                  <Text style={styles.uploadButtonText}>Upload File</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </View>
+        </TouchableOpacity>
+      )}
 
       {showInitialFiles && localFiles.length > 0 && (
         <ScrollView style={{ marginTop: 12 }}>
@@ -316,16 +328,19 @@ const FileUploadCard = ({
                   {file.error && (
                     <Text style={{ color: 'red', marginRight: 8 }}>!</Text>
                   )}
-                  <TouchableOpacity
-                    onPress={() => handleDeletePress(file)}
-                    disabled={file.deleting || isDeleting}
-                  >
-                    {file.deleting ? (
-                      <ActivityIndicator size="small" />
-                    ) : (
-                      <CloseIcon width={18} height={18} />
-                    )}
-                  </TouchableOpacity>
+                  {(profileData?.is_exhibitor_id === exhibitorId ||
+                    profileData?.is_sponsor_id === sponsorId) && (
+                    <TouchableOpacity
+                      onPress={() => handleDeletePress(file)}
+                      disabled={file.deleting || isDeleting}
+                    >
+                      {file.deleting ? (
+                        <ActivityIndicator size="small" />
+                      ) : (
+                        <CloseIcon width={18} height={18} />
+                      )}
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
             </View>

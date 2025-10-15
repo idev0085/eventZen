@@ -225,7 +225,7 @@ export default function UserList({
             </CustomText>
           )}
 
-          {exhibitorsData?.location && (
+          {exhibitorsData?.location && exhibitorsData?.location !== '' && (
             <CustomText style={styles.viewSpeakerText}>
               Booth No. {exhibitorsData?.location}
             </CustomText>

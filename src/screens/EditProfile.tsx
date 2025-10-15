@@ -233,8 +233,9 @@ const EditProfile = () => {
             <Icon
               source={{ uri: profileData?.imageUrl }}
               size={100}
-              backgroundColor={COLORS.placeholder}
+              backgroundColor={COLORS.white}
               borderRadius={50}
+              resizeMode="contain"
             />
             <View style={styles.imageBoxEdit}>
               {isUploading ? (

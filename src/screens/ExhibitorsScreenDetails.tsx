@@ -73,6 +73,8 @@ const ExhibitorsScreenDetails = () => {
     return <LoadingOverlay visible={true} />;
   }
 
+  console.log('ExhibitorsData', exhibitorsData);
+
   return (
     <>
       <BackHeader title="Exhibitors Details" showBtn={true} />
@@ -100,11 +102,11 @@ const ExhibitorsScreenDetails = () => {
 
         <ContactDetails
           heading="Contact Details"
-          email={exhibitorsData?.email}
-          phone={exhibitorsData?.phone}
-          address={exhibitorsData?.location}
+          email={exhibitorsData?.email || ''}
+          phone={exhibitorsData?.phone || ''}
+          address={exhibitorsData?.location || ''}
           website={exhibitorsData?.website}
-          socialLinks={exhibitorsData?.social_links}
+          socialLinks={exhibitorsData?.social_links || []}
           isViewExhibitorDetails={true}
           onPressEmail={() => {
             Linking.openURL(`mailto:${exhibitorsData?.email}`);
@@ -120,36 +122,41 @@ const ExhibitorsScreenDetails = () => {
           }}
         />
 
-        <Card style={styles.card}>
-          <CustomText style={styles.textLabel}>About</CustomText>
-          <CustomText style={styles.textMeta}>{exhibitorsData?.bio}</CustomText>
-        </Card>
-        {profileData?.is_exhibitor_id === exhibitorId && (
+        {exhibitorsData?.bio && exhibitorsData?.bio !== '' && (
           <Card style={styles.card}>
-            <FileUploadCard
-              maxFiles={3}
-              maxSizeMB={10}
-              title="Select Multiple files to upload"
-              labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
-              description="SVG, PNG, JPG or GIF (max 10MB)"
-              onUpload={handleFileUpload}
-              onDelete={handleFileDelete}
-              initialFiles={
-                exhibitorsData?.uploaded_files?.map(f => ({
-                  id: f.fileID.toString(),
-                  name: f.name,
-                  url: f.url,
-                })) || []
-              }
-              autoUpload={true}
-              isUploading={isUploading}
-              isDeleting={isDeleting}
-              showInitialFiles={true}
-              label="Upload"
-              type="exhibitor"
-            />
+            <CustomText style={styles.textLabel}>About</CustomText>
+            <CustomText style={styles.textMeta}>
+              {exhibitorsData?.bio}
+            </CustomText>
           </Card>
         )}
+
+        <Card style={styles.card}>
+          <FileUploadCard
+            maxFiles={3}
+            maxSizeMB={10}
+            title="Select Multiple files to upload"
+            labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
+            description="SVG, PNG, JPG or GIF (max 10MB)"
+            onUpload={handleFileUpload}
+            onDelete={handleFileDelete}
+            initialFiles={
+              exhibitorsData?.uploaded_files?.map(f => ({
+                id: f.fileID.toString(),
+                name: f.name,
+                url: f.url,
+              })) || []
+            }
+            autoUpload={true}
+            isUploading={isUploading}
+            isDeleting={isDeleting}
+            showInitialFiles={true}
+            label="Upload"
+            type="exhibitor"
+            profileData={profileData}
+            exhibitorId={exhibitorId}
+          />
+        </Card>
       </ScrollView>
     </>
   );

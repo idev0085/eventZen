@@ -9,9 +9,14 @@ import CustomText from '../components/ui/text';
 import LoadingOverlay from '../components/loadingOverlay';
 import { useConnections } from '../hooks/useApi';
 import { useNavigation } from '@react-navigation/native';
-
+import { BASE_URL } from '../config';
+import { apiCall } from '../utils/helpers';
+import { getToken } from '../utils/tokenManager';
+import Toast from 'react-native-simple-toast';
+import { is } from 'zod/v4/locales';
 export default function ConnectionScreen({ ...props }) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [exporting, setExporting] = useState(false);
   const navigation = useNavigation();
   const {
     data: connectionData,
@@ -25,9 +30,36 @@ export default function ConnectionScreen({ ...props }) {
       item.name?.toLowerCase().includes(searchQuery.toLowerCase()),
     ) || [];
 
+  const doExportConnections = async () => {
+    // Placeholder for export functionality
+    const token = await getToken();
+    console.log(BASE_URL + '/api/connections/lead/export/m');
+    setExporting(true);
+    try {
+      const response = await apiCall(
+        BASE_URL + '/api/connections/lead/export/m',
+        'GET',
+        undefined,
+        token,
+      );
+      Toast.show(response?.message, Toast.LONG);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <>
-      <BackHeader title="Connection Made" showBtn={false} />
+      <BackHeader
+        title="Connection Made"
+        showBtn={false}
+        {...(filteredData.length > 0 && {
+          rightLabel: exporting ? 'Exporting...' : 'Export',
+          rightFunction: doExportConnections,
+        })}
+      />
       <SearchUI
         value={searchQuery}
         placeholder="Search Connections..."

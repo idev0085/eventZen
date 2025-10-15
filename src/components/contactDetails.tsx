@@ -42,6 +42,37 @@ const getIconFromName = (name: string) => {
       return name; // Fallback to the name if no icon is found
   }
 };
+
+/**
+ * Find a non-empty URL by social network name.
+ * Accepts either an array of {name, url} or an object map { facebook: url, ... }.
+ */
+const findUrlByName = (
+  links:
+    | { name: string; url?: string }[]
+    | { [key: string]: string | null | undefined }
+    | undefined,
+  name: string,
+): string | undefined => {
+  if (!links || !name) return undefined;
+
+  const wanted = name.toLowerCase();
+
+  if (Array.isArray(links)) {
+    const match = links.find(l => (l.name || '').toLowerCase() === wanted);
+    const url = match?.url;
+    return url && url.trim() !== '' ? url : undefined;
+  }
+
+  // links is an object map
+  const map = links as { [key: string]: string | null | undefined };
+  // try exact key, then lowercase key
+  const direct = map[name];
+  if (typeof direct === 'string' && direct.trim() !== '') return direct;
+  const lower = map[wanted];
+  if (typeof lower === 'string' && lower.trim() !== '') return lower;
+  return undefined;
+};
 export default function ContactDetails({
   heading,
   email,
@@ -60,6 +91,29 @@ export default function ContactDetails({
   enablePhoneIcon = true,
   labelTextStyle = {},
 }: ContactDetailsProps) {
+  // Precompute social URLs (works with both array and map shapes)
+  const facebookUrl = findUrlByName(
+    socialLinks.length ? socialLinks : social_media_links,
+    'facebook',
+  );
+  const instagramUrl = findUrlByName(
+    socialLinks.length ? socialLinks : social_media_links,
+    'instagram',
+  );
+  const linkedinUrl = findUrlByName(
+    socialLinks.length ? socialLinks : social_media_links,
+    'linkedin',
+  );
+  const twitterUrl = findUrlByName(
+    socialLinks.length ? socialLinks : social_media_links,
+    'twitter',
+  );
+
+  const openSocialLink = (url?: string | null) => {
+    if (!url || typeof url !== 'string' || url.trim() === '') return;
+    if (onPressSocialLink) return onPressSocialLink(url);
+    return Linking.openURL(url);
+  };
   return (
     <Card style={styles.card}>
       <CustomText style={[styles.textHeadng, labelTextStyle]}>
@@ -88,9 +142,7 @@ export default function ContactDetails({
         <View style={styles.container}>
           <View style={styles.leftContainer}>
             <CustomText style={styles.textName}>Phone No</CustomText>
-            <CustomText style={styles.textDesignation}>
-              {phone ? phone : '-'}
-            </CustomText>
+            <CustomText style={styles.textDesignation}>{phone}</CustomText>
           </View>
           {enablePhoneIcon ? (
             <View style={styles.rightContainer}>
@@ -104,7 +156,7 @@ export default function ContactDetails({
           ) : null}
         </View>
       )}
-      {address && (
+      {address && address !== '' && (
         <View style={styles.container}>
           <View style={styles.leftContainer}>
             <CustomText style={styles.textName}>Address</CustomText>
@@ -124,80 +176,95 @@ export default function ContactDetails({
         </View>
       )}
 
-      {isViewAttendeeDetails && social_media_links && (
-        <View style={styles.container}>
-          <View style={styles.leftContainer}>
-            <CustomText style={styles.textName}>Social Media Links</CustomText>
-            <View style={styles.companyBox}>
-              {social_media_links?.facebook && (
-                <TouchableOpacity
-                  onPress={() =>
-                    onPressSocialLink(social_media_links?.facebook)
-                  }
-                  style={{ marginTop: 10, marginRight: 10 }}
-                >
-                  <SocialFacebook />
-                </TouchableOpacity>
-              )}
-              {social_media_links?.instagram && (
-                <TouchableOpacity
-                  onPress={() =>
-                    onPressSocialLink(social_media_links?.instagram)
-                  }
-                  style={{ marginTop: 10, marginRight: 10 }}
-                >
-                  <SocialInstagram />
-                </TouchableOpacity>
-              )}
-              {social_media_links?.linkedin && (
-                <TouchableOpacity
-                  onPress={() =>
-                    onPressSocialLink(social_media_links?.linkedin)
-                  }
-                  style={{ marginTop: 10, marginRight: 10 }}
-                >
-                  <SocialLinkedin />
-                </TouchableOpacity>
-              )}
-              {social_media_links?.twitter && (
-                <TouchableOpacity
-                  onPress={() => onPressSocialLink(social_media_links?.twitter)}
-                  style={{ marginTop: 10, marginRight: 10 }}
-                >
-                  <SocialTwitter />
-                </TouchableOpacity>
-              )}
-            </View>
-          </View>
-        </View>
-      )}
-
-      {isViewExhibitorDetails && socialLinks?.length > 0 && (
-        <View style={styles.container}>
-          <View style={styles.leftContainer}>
-            <CustomText style={styles.textName}>Social Media Links</CustomText>
-            <View style={styles.companyBox}>
-              {socialLinks
-                .filter(link => !!link.url && link.url.trim() !== '')
-                .map((link, index) => (
+      {isViewAttendeeDetails &&
+        (facebookUrl || instagramUrl || linkedinUrl || twitterUrl) && (
+          <View style={styles.container}>
+            <View style={styles.leftContainer}>
+              <CustomText style={styles.textName}>
+                Social Media Links
+              </CustomText>
+              <View style={styles.companyBox}>
+                {facebookUrl && (
                   <TouchableOpacity
-                    key={index}
-                    onPress={() => {
-                      if (link.url) {
-                        // Use Linking to open the URL
-
-                        Linking.openURL(link.url!);
-                      }
-                    }}
+                    onPress={() => openSocialLink(facebookUrl)}
                     style={{ marginTop: 10, marginRight: 10 }}
                   >
-                    {getIconFromName(link.name)}
+                    <SocialFacebook />
                   </TouchableOpacity>
-                ))}
+                )}
+                {instagramUrl && (
+                  <TouchableOpacity
+                    onPress={() => openSocialLink(instagramUrl)}
+                    style={{ marginTop: 10, marginRight: 10 }}
+                  >
+                    <SocialInstagram />
+                  </TouchableOpacity>
+                )}
+                {linkedinUrl && (
+                  <TouchableOpacity
+                    onPress={() => openSocialLink(linkedinUrl)}
+                    style={{ marginTop: 10, marginRight: 10 }}
+                  >
+                    <SocialLinkedin />
+                  </TouchableOpacity>
+                )}
+                {twitterUrl && (
+                  <TouchableOpacity
+                    onPress={() => openSocialLink(twitterUrl)}
+                    style={{ marginTop: 10, marginRight: 10 }}
+                  >
+                    <SocialTwitter />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           </View>
-        </View>
-      )}
+        )}
+
+      {isViewExhibitorDetails &&
+        (facebookUrl || instagramUrl || linkedinUrl || twitterUrl) && (
+          <View style={styles.container}>
+            <View style={styles.leftContainer}>
+              <CustomText style={styles.textName}>
+                Social Media Links
+              </CustomText>
+              <View style={styles.companyBox}>
+                {facebookUrl && (
+                  <TouchableOpacity
+                    onPress={() => openSocialLink(facebookUrl)}
+                    style={{ marginTop: 10, marginRight: 10 }}
+                  >
+                    <SocialFacebook />
+                  </TouchableOpacity>
+                )}
+                {instagramUrl && (
+                  <TouchableOpacity
+                    onPress={() => openSocialLink(instagramUrl)}
+                    style={{ marginTop: 10, marginRight: 10 }}
+                  >
+                    <SocialInstagram />
+                  </TouchableOpacity>
+                )}
+                {linkedinUrl && (
+                  <TouchableOpacity
+                    onPress={() => openSocialLink(linkedinUrl)}
+                    style={{ marginTop: 10, marginRight: 10 }}
+                  >
+                    <SocialLinkedin />
+                  </TouchableOpacity>
+                )}
+                {twitterUrl && (
+                  <TouchableOpacity
+                    onPress={() => openSocialLink(twitterUrl)}
+                    style={{ marginTop: 10, marginRight: 10 }}
+                  >
+                    <SocialTwitter />
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+          </View>
+        )}
     </Card>
   );
 }

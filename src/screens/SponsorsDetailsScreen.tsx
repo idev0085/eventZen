@@ -100,11 +100,11 @@ const SponsorsDetailsScreen = () => {
 
         <ContactDetails
           heading="Contact Details"
-          email={sponsorData?.email}
-          phone={sponsorData?.phone}
-          address={sponsorData?.location}
-          website={sponsorData?.website}
-          socialLinks={sponsorData?.social_links}
+          email={sponsorData?.email || ''}
+          phone={sponsorData?.phone || ''}
+          address={sponsorData?.location || ''}
+          website={sponsorData?.website || ''}
+          socialLinks={sponsorData?.social_links || []}
           isViewExhibitorDetails={true}
           onPressEmail={() => {
             Linking.openURL(`mailto:${sponsorData?.email}`);
@@ -120,37 +120,39 @@ const SponsorsDetailsScreen = () => {
           }}
         />
 
-        <Card style={styles.card}>
-          <CustomText style={styles.textLabel}>About</CustomText>
-          <CustomText style={styles.textMeta}>{sponsorData?.bio}</CustomText>
-        </Card>
-
-        {profileData?.is_sponsor_id === sponsorId && (
+        {sponsorData?.bio && sponsorData?.bio !== '' && (
           <Card style={styles.card}>
-            <FileUploadCard
-              maxFiles={3}
-              maxSizeMB={10}
-              title="Select Multiple files to upload"
-              labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
-              description="SVG, PNG, JPG or GIF (max 10MB)"
-              onUpload={handleFileUpload}
-              onDelete={handleFileDelete}
-              initialFiles={
-                sponsorData?.uploaded_files?.map(f => ({
-                  id: f.fileID.toString(),
-                  name: f.name,
-                  url: f.url,
-                })) || []
-              }
-              autoUpload={true}
-              isUploading={isUploading}
-              isDeleting={isDeleting}
-              showInitialFiles={true}
-              label="Upload"
-              type="sponsor"
-            />
+            <CustomText style={styles.textLabel}>About</CustomText>
+            <CustomText style={styles.textMeta}>{sponsorData?.bio}</CustomText>
           </Card>
         )}
+
+        <Card style={styles.card}>
+          <FileUploadCard
+            maxFiles={3}
+            maxSizeMB={10}
+            title="Select Multiple files to upload"
+            labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
+            description="SVG, PNG, JPG or GIF (max 10MB)"
+            onUpload={handleFileUpload}
+            onDelete={handleFileDelete}
+            initialFiles={
+              sponsorData?.uploaded_files?.map(f => ({
+                id: f.fileID.toString(),
+                name: f.name,
+                url: f.url,
+              })) || []
+            }
+            autoUpload={true}
+            isUploading={isUploading}
+            isDeleting={isDeleting}
+            showInitialFiles={true}
+            label="Upload"
+            type="sponsor"
+            profileData={profileData}
+            sponsorId={sponsorId}
+          />
+        </Card>
       </ScrollView>
     </>
   );
