@@ -33,7 +33,7 @@ const ListItem: React.FC<ListItemProps> = ({
   return (
     <TouchableOpacity style={styles.item} onPress={onPress}>
       {avatar && (
-        <Image source={avatar} style={styles.image} resizeMode="contain" />
+        <Image source={avatar} style={styles.image} resizeMode="cover" />
       )}
       {/* {leftImage && <Image source={leftImage} style={styles.image} />} */}
       <View style={styles.textContainer}>
@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    resizeMode: 'contain',
     backgroundColor: COLORS.white,
   },
   textContainer: {

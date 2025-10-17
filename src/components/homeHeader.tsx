@@ -39,7 +39,7 @@ const HomeHeader = ({
           <Image
             source={{ uri: profileImage }}
             style={styles.profileImage}
-            resizeMode="contain"
+            resizeMode="cover"
           />
           <View style={styles.textContainer}>
             <Text style={styles.username}>{userName && userName}</Text>

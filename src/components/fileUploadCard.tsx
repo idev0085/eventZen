@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import {
   CloseIcon,
@@ -315,7 +316,11 @@ const FileUploadCard = ({
       {showInitialFiles && localFiles.length > 0 && (
         <ScrollView style={{ marginTop: 12 }}>
           {localFiles.map((file, i) => (
-            <View key={`${file.id ?? file.name}-${i}`} style={styles.list}>
+            <TouchableOpacity
+              key={`${file.id ?? file.name}-${i}`}
+              style={styles.list}
+              onPress={() => Linking.openURL(file?.url)}
+            >
               <View>{getFileTypeIcon(file.name)}</View>
               <View style={styles.fileInfoContainer}>
                 <Text style={styles.fileName} numberOfLines={1}>
@@ -343,7 +348,7 @@ const FileUploadCard = ({
                   )}
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       )}
@@ -408,7 +413,13 @@ const styles = StyleSheet.create({
     gap: 5,
     marginBottom: 6,
   },
-  fileName: { color: COLORS.primary, fontSize: TEXT_SIZES.xs, flex: 1 },
+  fileName: {
+    color: COLORS.primary,
+    fontSize: TEXT_SIZES.xs,
+    flex: 1,
+    textDecorationLine: 'underline',
+    textDecorationColor: COLORS.primary,
+  },
   fileInfoContainer: {
     flex: 1,
     flexDirection: 'row',

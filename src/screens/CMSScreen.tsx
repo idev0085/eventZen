@@ -15,7 +15,6 @@ import { EditProfileIcon, COLORS } from '../utils/constants';
 import { WebView } from 'react-native-webview';
 import { BASE_URL } from '../config';
 import { apiCall } from '../utils/helpers';
-import Orientation from 'react-native-orientation-locker';
 
 // const LoadingIndicatorView = () => {
 //   return (

@@ -14,7 +14,7 @@ const Icon: React.FC<IconProps> = ({
   size = 24,
   backgroundColor = COLORS.primary,
   borderRadius = 8,
-  resizeMode = 'contain',
+  resizeMode = 'cover',
 }) => {
   return (
     <Image
@@ -29,7 +29,7 @@ const Icon: React.FC<IconProps> = ({
 };
 const styles = StyleSheet.create({
   icon: {
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderWidth: 0.5,
     borderColor: '#ccc',
   },

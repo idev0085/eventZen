@@ -6,7 +6,7 @@ import {
   Text,
   RefreshControl,
 } from 'react-native';
-import { OneSignal, LogLevel } from 'react-native-onesignal';
+// import { OneSignal, LogLevel } from 'react-native-onesignal';
 import HomeHeader from '../components/homeHeader';
 import QuickActionMenu from '../components/quickActionMenu';
 import UpcomingEvent from '../components/upcomingEvent';
@@ -26,8 +26,9 @@ import SessionListItem from '../components/sessionListItem';
 import Card from '../components/card';
 import { ONESIGNAL_API_KEY, BASE_URL } from '../config';
 import LoadingOverlay from '../components/loadingOverlay';
-import { useHomeData, useProfile, useUpdateOneSignal } from '../hooks/useApi';
+import { useHomeData, useProfile } from '../hooks/useApi';
 import { getToken } from '../utils/tokenManager';
+import { OneSignal, LogLevel } from 'react-native-onesignal';
 
 const HomeSessions = ({ ...props }) => {
   return (
@@ -69,7 +70,6 @@ const HomeScreen = ({ ...props }) => {
   OneSignal.initialize(ONESIGNAL_API_KEY);
   OneSignal.Notifications.requestPermission(true);
   OneSignal.Notifications.addEventListener('click', event => {
-    //Alert.alert('Notification Clicked', JSON.stringify(event));
     props.navigation.navigate('NotificationsScreen');
   });
 
@@ -110,8 +110,6 @@ const HomeScreen = ({ ...props }) => {
       };
       console.log('OneSignal update payload:', obj);
       updateOneSignal(obj);
-      // const { data: onesignalResponse } = useUpdateOneSignal(obj);
-      // console.log('OneSignal update response:', onesignalResponse);
     };
     fetchData();
   }, []);
