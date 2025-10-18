@@ -19,7 +19,7 @@ import Checkbox from '@react-native-community/checkbox';
 export default function LoginScreen({ ...props }) {
   const { height, width } = useWindowDimensions();
 
-  const [email, setEmail] = useState('henry.roy@example.com');
+  const [email, setEmail] = useState('');
   const { performRequestOtp, isRequestingOtp } = useAuth();
   const [isChecked, setChecked] = useState(false);
 
