@@ -38,6 +38,7 @@ const ConnectionFound = () => {
               companyName={connection.company}
               name={connection.name}
               designation={connection.designation}
+              company_website={connection.company_website || ''}
             />
             <ContactDetailsCard
               email={connection.email}
