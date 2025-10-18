@@ -131,32 +131,35 @@ const ExhibitorsScreenDetails = () => {
           </Card>
         )}
 
-        <Card style={styles.card}>
-          <FileUploadCard
-            maxFiles={3}
-            maxSizeMB={10}
-            title="Select Multiple files to upload"
-            labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
-            description="SVG, PNG, JPG or GIF (max 10MB)"
-            onUpload={handleFileUpload}
-            onDelete={handleFileDelete}
-            initialFiles={
-              exhibitorsData?.uploaded_files?.map(f => ({
-                id: f.fileID.toString(),
-                name: f.name,
-                url: f.url,
-              })) || []
-            }
-            autoUpload={true}
-            isUploading={isUploading}
-            isDeleting={isDeleting}
-            showInitialFiles={true}
-            label="Upload"
-            type="exhibitor"
-            profileData={profileData}
-            exhibitorId={exhibitorId}
-          />
-        </Card>
+        {(profileData?.is_exhibitor_id === exhibitorId ||
+          exhibitorsData?.uploaded_files?.length > 0) && (
+          <Card style={styles.card}>
+            <FileUploadCard
+              maxFiles={3}
+              maxSizeMB={10}
+              title="Select Multiple files to upload"
+              labelStyle={{ fontSize: 16, fontWeight: '700', marginBottom: 18 }}
+              description="SVG, PNG, JPG or GIF (max 10MB)"
+              onUpload={handleFileUpload}
+              onDelete={handleFileDelete}
+              initialFiles={
+                exhibitorsData?.uploaded_files?.map(f => ({
+                  id: f.fileID.toString(),
+                  name: f.name,
+                  url: f.url,
+                })) || []
+              }
+              autoUpload={true}
+              isUploading={isUploading}
+              isDeleting={isDeleting}
+              showInitialFiles={true}
+              label="Upload"
+              type="exhibitor"
+              profileData={profileData}
+              exhibitorId={exhibitorId}
+            />
+          </Card>
+        )}
       </ScrollView>
     </>
   );

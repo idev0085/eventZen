@@ -93,9 +93,9 @@ const ConnectionDetails = () => {
         />
         <ContactDetails
           heading="Contact Details"
-          email={connectionData.rep_email}
-          phone={connectionData.rep_phone}
-          address={connectionData.rep_address}
+          email={connectionData.rep_email || ''}
+          phone={connectionData.rep_phone || ''}
+          address={connectionData.rep_address || ''}
           website={connectionData.company_website}
           onPressEmail={() => {
             Linking.openURL(`mailto:${connectionData?.rep_email}`);

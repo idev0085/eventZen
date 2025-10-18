@@ -114,7 +114,7 @@ const ConnectionEdit = () => {
             onRatingChange={newRating => handleInputChange('rating', newRating)}
           />
         </View>
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <FileUploadCard
             maxFiles={1}
             maxSizeMB={5}
@@ -132,7 +132,7 @@ const ConnectionEdit = () => {
             label="Upload"
             type="connection"
           />
-        </View>
+        </View> */}
         <AddNote
           heading="Note"
           placeholder="Update your note..."
