@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 10,
     justifyContent: 'center',
+    paddingRight: 50,
   },
   imageBox: {
     backgroundColor: COLORS.placeholder,

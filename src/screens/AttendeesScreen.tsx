@@ -1,9 +1,9 @@
-import React, { use, useEffect, useState } from 'react';
-import { Alert, StyleSheet, View, RefreshControl, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, StyleSheet, View, Text, FlatList } from 'react-native';
 import { COLORS } from '../utils/constants';
 
-import SessionListItem from '../components/sessionListItem';
-import { DrawerLayoutAndroid, ScrollView } from 'react-native-gesture-handler';
+import SessionListItem from '../components/sessionListitem';
+import { DrawerLayoutAndroid } from 'react-native-gesture-handler';
 import Card from '../components/card';
 import SearchUI from '../components/Search';
 import CustomText from '../components/ui/text';
@@ -14,6 +14,8 @@ import { getToken } from '../utils/tokenManager';
 import LoadingOverlay from '../components/loadingOverlay';
 import UserList from '../components/userList';
 import { useAttendees } from '../hooks/useApi';
+
+type Attendee = { id?: number | string; name?: string; [key: string]: any };
 
 export default function AttendeesScreen({ ...props }) {
   const [apiData, setApiData] = useState([]);
@@ -52,28 +54,25 @@ export default function AttendeesScreen({ ...props }) {
         placeholder="Search Attendees..."
         onChangeText={setSearchQuery}
       />
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefetching}
-            onRefresh={refetchData}
-            tintColor={COLORS.primary}
-          />
+      <FlatList<Attendee>
+        data={filteredData}
+        keyExtractor={(item, index) =>
+          item?.id ? String(item.id) : String(index)
         }
-      >
-        {isLoading ? (
-          <LoadingOverlay visible={loading} />
-        ) : (
-          filteredData?.map((value, index) => (
-            <UserList
-              key={index}
-              attendeesData={value}
-              viewDetails={viewDetails}
-            />
-          ))
+        renderItem={({ item }) => (
+          <UserList attendeesData={item} viewDetails={viewDetails} />
         )}
-      </ScrollView>
+        contentContainerStyle={styles.scrollContainer}
+        refreshing={isRefetching}
+        onRefresh={refetchData}
+        ListEmptyComponent={
+          isLoading ? <LoadingOverlay visible={loading} /> : <></>
+        }
+        initialNumToRender={20}
+        maxToRenderPerBatch={20}
+        windowSize={21}
+        removeClippedSubviews
+      />
     </>
   );
 }

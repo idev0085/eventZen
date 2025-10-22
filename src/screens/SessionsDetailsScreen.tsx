@@ -388,12 +388,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold',
     color: COLORS.text,
     marginTop: 5,
+    paddingRight: 50,
   },
   textOverViewIconLabel: {
     fontSize: 15,
     fontFamily: 'Roboto-Regular',
     color: COLORS.textPrimary,
     marginLeft: 10,
+    paddingRight: 50,
   },
   footerBtnWrapper: {
     flex: 1,
