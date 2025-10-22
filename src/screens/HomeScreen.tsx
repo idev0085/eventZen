@@ -131,7 +131,6 @@ const HomeScreen = ({ ...props }) => {
 
     // trigger the permission check (non-blocking)
     checkOneSignalPermission();
-
     // setLocationShared exists on some SDK versions; try both top-level and User namespace
     try {
       const setLocationSharedFn =
@@ -177,10 +176,13 @@ const HomeScreen = ({ ...props }) => {
   const updateOneSignalKey = async () => {
     const token = await getToken();
     try {
-      const userID = await OneSignal.User.getOnesignalId();
-      console.log('OneSignal User ID:', userID);
+      const subscriptionId =
+        await OneSignal.User.pushSubscription.getPushSubscriptionId();
+      console.log('OneSignal Push Subscription ID:', subscriptionId);
+      //const userID = await OneSignal.User.getOnesignalId();
+      //console.log('OneSignal User ID:', userID);
       let obj = {
-        onesignal_userid: userID,
+        onesignal_userid: subscriptionId,
       };
       console.log('OneSignal update payload:', obj);
       const response = await apiCall(
